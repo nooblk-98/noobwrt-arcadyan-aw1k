@@ -2,6 +2,8 @@
 
 A custom firmware built on top of **ImmortalWRT** (a fork of **OpenWrt**), tailored specifically for the Arcadyan AW1000 Telstra 5G Home Modem. This optimized build enhances **network stability**, **system performance**, and introduces **custom features** that are not available through stock or vanilla firmware.
 
+![Sitemap Uploader Screenshot](/images/main.png)
+
 ## Key Highlights
 
 * Performance-tuned kernel and system settings
@@ -13,4 +15,3 @@ A custom firmware built on top of **ImmortalWRT** (a fork of **OpenWrt**), tailo
 
 > Ideal for advanced users seeking a better experience than what stock firmware offers.
 
-![Sitemap Uploader Screenshot](/images/main.png)
