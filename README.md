@@ -1,1 +1,14 @@
-# Noobwart-aw1000
+# Arcadyan AW1000 - Noobwart Firmware
+
+A custom firmware built on top of **ImmortalWRT** (a fork of **OpenWrt**), tailored specifically for the Arcadyan AW1000 Telstra 5G Home Modem. This optimized build enhances **network stability**, **system performance**, and introduces **custom features** that are not available through stock or vanilla firmware.
+
+## Key Highlights
+
+* Performance-tuned kernel and system settings
+* Optimized for balanced throughput and responsiveness
+* Prebuilt support for packages not installable via default firmware
+* Enhanced compatibility for 5G modem and WAN failover setups
+* Improved firewall and QoS options
+* Regular Updates and bug fixes based on users feedback
+
+> Ideal for advanced users seeking a better experience than what stock firmware offers.
