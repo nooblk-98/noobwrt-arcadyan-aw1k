@@ -12,3 +12,5 @@ A custom firmware built on top of **ImmortalWRT** (a fork of **OpenWrt**), tailo
 * Regular Updates and bug fixes based on users feedback
 
 > Ideal for advanced users seeking a better experience than what stock firmware offers.
+
+![Sitemap Uploader Screenshot](/images/main.png)
