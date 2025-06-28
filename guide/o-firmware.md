@@ -84,7 +84,7 @@ After rebooting, the router will boot into OpenWrt.
 3. Once logged in, run the custom firmware flash script:
 
    ```sh
-   wget -O - https://raw.githubusercontent.com/nooblk-98/arcadyan-aw1000-mod-firmware/refs/heads/main/flash/flash-lite.sh | sh
+    wget -O /tmp/flash-lite.sh https://raw.githubusercontent.com/nooblk-98/arcadyan-aw1000-mod-firmware/refs/heads/main/flash/flash-lite.sh && chmod +x /tmp/flash-lite.sh && sh /tmp/flash-lite.sh
    ```
 
    > ⚠️ Make sure the script is readable and safe before executing it.
