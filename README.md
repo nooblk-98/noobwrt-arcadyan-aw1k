@@ -23,11 +23,16 @@ Flash free version to router using terminal
 wget -O /tmp/flash-lite.sh https://raw.githubusercontent.com/nooblk-98/arcadyan-aw1000-mod-firmware/refs/heads/main/flash/flash-lite.sh && chmod +x /tmp/flash-lite.sh && sh /tmp/flash-lite.sh
 
 ```
+
+## Complete Flash Guide
+
+[Original Firmware Users](./guide/o-firmware.md) 
+
+[Custom Firmware Users](./guide/m-firmware.md) 
     
+---
 
-# 📶 LED Indicator Guide
-
-## ✅ **5G Mode Indicator (5G LEDs)**
+## **5G Mode Indicator (5G LEDs)**
 
 | LED Color | Status       | Meaning                                 |
 | --------- | ------------ | --------------------------------------- |
@@ -39,7 +44,7 @@ wget -O /tmp/flash-lite.sh https://raw.githubusercontent.com/nooblk-98/arcadyan-
 ---
 
 
-## 📡 **Signal Strength Indicator (Signal LEDs)**
+## **Signal Strength Indicator (Signal LEDs)**
 
 | LED Color | Status   | Meaning                  |
 | --------- | -------- | ------------------------ |
@@ -51,11 +56,7 @@ wget -O /tmp/flash-lite.sh https://raw.githubusercontent.com/nooblk-98/arcadyan-
 ---
 
 
-## Complete Flash Guide
 
-[Original Firmware Users](./guide/o-firmware.md) 
-
-[Custom Firmware Users](./guide/m-firmware.md) 
 
 
 
