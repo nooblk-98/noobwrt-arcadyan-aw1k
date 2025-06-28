@@ -21,9 +21,9 @@ A custom firmware built on top of **ImmortalWRT** (a fork of **OpenWrt**), tailo
 
 ## Complete Flash Guide
 
-[Original Firmware Users](https://linktodocumentation) 
+[Original Firmware Users](./guide/0-firmware.md) 
 
-[Custom Firmware Users](https://linktodocumentation)
+[Custom Firmware Users](./guide/m-firmware.md) 
 
 
 
