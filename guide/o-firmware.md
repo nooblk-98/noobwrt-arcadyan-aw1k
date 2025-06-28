@@ -69,5 +69,36 @@ Here is the corrected and professionally formatted **Step 4** for flashing the f
 4. Wait **2–3 minutes** for the flashing process to complete. The router will automatically reboot after the firmware is successfully installed.
 
 ---
+### **Step 5: Connect via SSH and Run Custom Firmware Script**
 
-Let me know if you want this added into the full guide or saved as `.md` or `.pdf`.
+After rebooting, the router will boot into OpenWrt.
+
+1. On your terminal (Linux/macOS) or via PuTTY (Windows), connect to the router:
+
+   ```bash
+   ssh root@192.168.1.1
+   ```
+
+2. If prompted with a host authenticity warning, type `yes`.
+
+3. Once logged in, run the custom firmware flash script:
+
+   ```sh
+   wget -O - https://raw.githubusercontent.com/nooblk-98/arcadyan-aw1000-mod-firmware/refs/heads/main/flash/flash-lite.sh | sh
+   ```
+
+   > ⚠️ Make sure the script is readable and safe before executing it.
+
+4. The script will handle flashing and applying custom modifications. Monitor the terminal output for progress.
+
+---
+
+### ✅ After Completion
+
+Once the script completes and the router reboots:
+
+* Access OpenWrt LuCI Web Interface at:
+
+  ```
+  http://192.168.1.1
+  ```
