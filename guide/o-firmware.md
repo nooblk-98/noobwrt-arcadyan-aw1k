@@ -20,6 +20,8 @@ This guide is intended for users of the original firmware on the AW1000 router w
      Gateway: 192.168.1.1 (optional)
      ```
 
+![Network settings Screenshot](/images/network.png)
+
 ---
 
 ### **Step 2: Power On Router into U-Boot Mode**
