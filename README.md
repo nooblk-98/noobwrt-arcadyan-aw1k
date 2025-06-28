@@ -32,7 +32,7 @@ A custom firmware built on top of **ImmortalWRT** (a fork of **OpenWrt**), tailo
 Flash free version to router using terminal 
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/nooblk-98/arcadyan-aw1000-mod-firmware/refs/heads/main/flash/flash-lite.sh | sh
+wget -O /tmp/flash-lite.sh https://raw.githubusercontent.com/nooblk-98/arcadyan-aw1000-mod-firmware/refs/heads/main/flash/flash-lite.sh && chmod +x /tmp/flash-lite.sh && sh /tmp/flash-lite.sh
 
 ```
     
