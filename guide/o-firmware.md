@@ -45,13 +45,29 @@ This guide is intended for users of the original firmware on the AW1000 router w
 
 ---
 
-### **Step 4: Flash the Custom Firmware**
-
-1. Download the `openwrt-ramips-mt7621-aw1000-squashfs-factory.bin` file (or your custom `.bin` image).
-2. On the U-Boot web page:
-
-   * Click **Choose File** and select your `.bin` firmware.
-   * Click **Update Firmware**.
-3. Wait 2–3 minutes for the process to complete. The router will reboot automatically.
+Here is the corrected and professionally formatted **Step 4** for flashing the firmware:
 
 ---
+
+### **Step 4: Flash the Firmware**
+
+1. Download the official **OpenWrt (ImmortalWrt) raw firmware** file from the following URL:
+
+   ```
+   https://downloads.immortalwrt.org/releases/24.10.2/targets/qualcommax/ipq807x/immortalwrt-24.10.2-qualcommax-ipq807x-arcadyan_aw1000-squashfs-factory.ubi
+   ```
+
+   > You can also use a custom `.ubi` firmware if you have one prepared.
+
+2. Open the **U-Boot recovery page** at `http://192.168.1.1` in your browser.
+
+3. On the U-Boot web interface:
+
+   * Click **Choose File** and select the downloaded `.ubi` firmware file.
+   * Click **Update Firmware** or **Upload** (label may vary depending on version).
+
+4. Wait **2–3 minutes** for the flashing process to complete. The router will automatically reboot after the firmware is successfully installed.
+
+---
+
+Let me know if you want this added into the full guide or saved as `.md` or `.pdf`.
