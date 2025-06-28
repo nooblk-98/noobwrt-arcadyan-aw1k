@@ -87,8 +87,6 @@ After rebooting, the router will boot into OpenWrt.
     wget -O /tmp/flash-lite.sh https://raw.githubusercontent.com/nooblk-98/arcadyan-aw1000-mod-firmware/refs/heads/main/flash/flash-lite.sh && chmod +x /tmp/flash-lite.sh && sh /tmp/flash-lite.sh
    ```
 
-   > ⚠️ Make sure the script is readable and safe before executing it.
-
 4. The script will handle flashing and applying custom modifications. Monitor the terminal output for progress.
 
 ---
