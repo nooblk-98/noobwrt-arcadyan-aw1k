@@ -27,7 +27,7 @@ This guide is intended for users of the original firmware on the AW1000 router w
 ### **Step 2: Power On Router into U-Boot Mode**
 
 1. Unplug the router from power.
-2. Press and **hold the reset/WPS button** (usually on the back).
+2. Press and **hold the reset button** (usually on the back).
 3. While holding the button, **plug in power**.
 4. Continue holding for **8–10 seconds** until:
 
