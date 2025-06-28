@@ -15,6 +15,18 @@ A custom firmware built on top of **ImmortalWRT** (a fork of **OpenWrt**), tailo
 
 > Ideal for advanced users seeking a better experience than what stock firmware offers.
 
+
+
+
+
+## Complete Flash Guide
+
+[Original Firmware Users](https://linktodocumentation) 
+
+[Custom Firmware Users](https://linktodocumentation)
+
+
+
 ## Flash Lite Firmware
 
 Flash free version to router using terminal 
@@ -24,5 +36,3 @@ bash <(curl -fsSL https://raw.githubusercontent.com/nooblk-98/arcadyan-aw1000-mo
 
 ```
     
-
-
