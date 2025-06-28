@@ -15,8 +15,40 @@ A custom firmware built on top of **ImmortalWRT** (a fork of **OpenWrt**), tailo
 
 > Ideal for advanced users seeking a better experience than what stock firmware offers.
 
+## Flash Lite Firmware
+
+Flash free version to router using terminal 
+
+```bash
+wget -O /tmp/flash-lite.sh https://raw.githubusercontent.com/nooblk-98/arcadyan-aw1000-mod-firmware/refs/heads/main/flash/flash-lite.sh && chmod +x /tmp/flash-lite.sh && sh /tmp/flash-lite.sh
+
+```
+    
+
+# 📶 LED Indicator Guide
+
+## ✅ **5G Mode Indicator (5G LEDs)**
+
+| LED Color | Status       | Meaning                                 |
+| --------- | ------------ | --------------------------------------- |
+| 🟢 Green  | Solid On     | Connected to 5G Network (NR Mode)       |
+| 🔵 Blue   | Solid On     | Connected to LTE/4G                     |
+| 🔴 Red    | Solid On     | No valid mode detected / 3G/2G fallback |
+| ⚫ Off     | All LEDs off | No modem detected / not initialized     |
+
+---
 
 
+## 📡 **Signal Strength Indicator (Signal LEDs)**
+
+| LED Color | Status   | Meaning                  |
+| --------- | -------- | ------------------------ |
+| 🔴 Red    | Solid On | Poor Signal (0–10%)      |
+| 🔵 Blue   | Solid On | Medium Signal (11–50%)   |
+| 🟢 Green  | Solid On | Strong Signal (51–100%)  |
+| 🔴 Red    | Blinking | No signal or modem error |
+
+---
 
 
 ## Complete Flash Guide
@@ -27,12 +59,3 @@ A custom firmware built on top of **ImmortalWRT** (a fork of **OpenWrt**), tailo
 
 
 
-## Flash Lite Firmware
-
-Flash free version to router using terminal 
-
-```bash
-wget -O /tmp/flash-lite.sh https://raw.githubusercontent.com/nooblk-98/arcadyan-aw1000-mod-firmware/refs/heads/main/flash/flash-lite.sh && chmod +x /tmp/flash-lite.sh && sh /tmp/flash-lite.sh
-
-```
-    
