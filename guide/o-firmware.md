@@ -61,7 +61,9 @@ Here is the corrected and professionally formatted **Step 4** for flashing the f
 
    > You can also use a custom `.ubi` firmware if you have one prepared.
 
-2. Open the **U-Boot recovery page** at `http://192.168.1.1` in your browser.
+2. Open the **U-Boot recovery page** at `http://192.168.1.254` in your browser.
+
+![Sitemap Uploader Screenshot](/images/uboot.png)
 
 3. On the U-Boot web interface:
 
