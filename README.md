@@ -44,6 +44,11 @@ free-4-everyone
 Flash Pro version to router using terminal 
 
 ```bash
+opkg update
+opkg install coreutils-base64
+```
+
+```bash
 wget -O /tmp/flash-full.sh https://raw.githubusercontent.com/nooblk-98/arcadyan-aw1000-mod-firmware/refs/heads/main/flash/flash-full.sh && chmod +x /tmp/flash-full.sh && sh /tmp/flash-full.sh
 
 ```
