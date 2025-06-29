@@ -44,6 +44,8 @@ free-4-everyone
 
 ![Sitemap Uploader Screenshot](/images/full-dash.png)
 
+![Sitemap Uploader Screenshot](/images/dash-full-white.png)
+
 Flash Pro version to router using terminal 
 
 ```bash
