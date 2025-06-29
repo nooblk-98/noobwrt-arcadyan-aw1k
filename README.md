@@ -24,6 +24,11 @@ wget -O /tmp/flash-lite.sh https://raw.githubusercontent.com/nooblk-98/arcadyan-
 
 ```
 
+key
+```bash
+free-4-everyone
+```
+
 ## Flash Pro Firmware
 
 Flash Pro version to router using terminal 
