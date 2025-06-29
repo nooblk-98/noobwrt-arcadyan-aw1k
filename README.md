@@ -60,17 +60,19 @@ wget -O /tmp/flash-full.sh https://raw.githubusercontent.com/nooblk-98/arcadyan-
 
 | **Feature**                            | **Free Version**  | **Pro Version**        |
 | -------------------------------------- | ----------------- | ---------------------- |
-| 🔓 License Requirement                 | `free-4-everyone` | Individual License Key |
-| ⚙️ Basic Firmware Core                 | ✅ Included        | ✅ Included             |
-| 🚀 Performance Optimizations           | ✅ Enhanced        | ✅ Enhanced             |
-| 🌐 WAN Failover Support                | ✅ Manual          | ✅ Auto & Manual        |
-| 📡 Modem & LED Control                 | ✅ Full Support    | ✅ Full Support         |
-| 🔧 Preinstalled Packages               | ✅ Limited         | ✅ Full Suite           |
-| 📈 Real-Time System Monitoring         | ❌ Not Available   | ✅ Available            |
-| 🔐 Advanced Firewall/QoS Profiles      | ❌ Not Available   | ✅ Enabled              |
-| 🛠️ Technical Support & Community Help | ✅ Community Only  | ✅ Priority Support     |
-| 🧪 Developer Tools & Debug Options     | ❌ Not Available   | ✅ Full Access          |
-| 🔄 Update Frequency                    | ✅                 | ✅                      |
+| License Requirement                 | `free-4-everyone` | Individual License Key |
+| UI                                     | Simple         | Advanced                 |
+| Passwall                                 | Passwall 1      | Passwall 1  / 2             |
+| Basic Firmware Core                 | ✅ Included        | ✅ Included             |
+| Performance Optimizations           | ✅ Enhanced        | ✅ Enhanced             |
+| WAN Failover Support                | ✅ Manual          | ✅ Auto & Manual        |
+| Modem & LED Control                 | ✅ Full Support    | ✅ Full Support         |
+| Preinstalled Packages               | ✅ Limited         | ✅ Full Suite           |
+| Real-Time System Monitoring         | ❌ Not Available   | ✅ Available            |
+| Advanced Firewall/QoS Profiles      | ❌ Not Available   | ✅ Enabled              |
+| Technical Support & Community Help | ✅ Community Only  | ✅ Priority Support     |
+| Developer Tools & Debug Options     | ❌ Not Available   | ✅ Full Access          |
+| Update Frequency                    | ✅                 | ✅                      |
 
 ---
 
