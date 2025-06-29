@@ -41,7 +41,7 @@ This guide is intended for users of the original firmware on the AW1000 router w
 1. Open your browser and go to:
 
    ```
-   http://192.168.1.1
+   http://192.168.1.254
    ```
 2. You should see the **U-Boot recovery page**.
 
