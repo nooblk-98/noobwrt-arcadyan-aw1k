@@ -17,17 +17,23 @@ A custom firmware built on top of **ImmortalWRT** (a fork of **OpenWrt**), tailo
 
 ## Flash Lite Firmware
 
-Flash free version to router using terminal 
+Flash the free version of the firmware to your router using the terminal:
 
 ```bash
 wget -O /tmp/flash-lite.sh https://raw.githubusercontent.com/nooblk-98/arcadyan-aw1000-mod-firmware/refs/heads/main/flash/flash-lite.sh && chmod +x /tmp/flash-lite.sh && sh /tmp/flash-lite.sh
-
 ```
 
-key
+**License Key**
+Use the following license key when prompted:
+
 ```bash
 free-4-everyone
 ```
+
+---
+
+Let me know if you want to add device compatibility, warnings, or UI previews.
+
 
 ## Flash Pro Firmware
 
