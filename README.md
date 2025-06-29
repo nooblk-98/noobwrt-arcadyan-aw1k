@@ -70,7 +70,7 @@ wget -O /tmp/flash-full.sh https://raw.githubusercontent.com/nooblk-98/arcadyan-
 | 🔐 Advanced Firewall/QoS Profiles      | ❌ Not Available   | ✅ Enabled              |
 | 🛠️ Technical Support & Community Help | ✅ Community Only  | ✅ Priority Support     |
 | 🧪 Developer Tools & Debug Options     | ❌ Not Available   | ✅ Full Access          |
-| 🔄 Update Frequency                    | ✅ Manual Updates  | ✅ Manual & OTA Updates |
+| 🔄 Update Frequency                    | ✅                 | ✅                      |
 
 ---
 
