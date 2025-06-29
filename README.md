@@ -75,8 +75,8 @@ wget -O /tmp/flash-full.sh https://raw.githubusercontent.com/nooblk-98/arcadyan-
 
 ---
 
+## ⚠️ Known Issues / To-Do
 
-
-
+  * [ ] Fix Dialog HBB SIM Not Registering
 
 
