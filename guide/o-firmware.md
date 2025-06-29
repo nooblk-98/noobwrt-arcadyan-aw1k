@@ -93,6 +93,11 @@ After rebooting, the router will boot into OpenWrt.
 
 ---
 
+### How to Flash Video
+
+<video src="./video/how-to-flash.mp4" controls width="600"></video>
+
+
 ### ✅ After Completion
 
 Once the script completes and the router reboots:
