@@ -42,7 +42,7 @@ Let me know if you want to add device compatibility, warnings, or UI previews.
 Flash Pro version to router using terminal 
 
 ```bash
-wget -O /tmp/flash-full.sh https://raw.githubusercontent.com/nooblk-98/arcadyan-aw1000-mod-firmware/refs/heads/main/flash/flash-full.sh && chmod +x /tmp/flash-lite.sh && sh /tmp/flash-full.sh
+wget -O /tmp/flash-full.sh https://raw.githubusercontent.com/nooblk-98/arcadyan-aw1000-mod-firmware/refs/heads/main/flash/flash-full.sh && chmod +x /tmp/flash-full.sh && sh /tmp/flash-full.sh
 
 ```
 
