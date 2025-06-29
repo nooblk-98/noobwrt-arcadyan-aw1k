@@ -18,7 +18,7 @@ A custom firmware built on top of **ImmortalWRT** (a fork of **OpenWrt**), tailo
 
 ### ✅ Direct Join Link to Your Telegram Group (For Support and Purchase)
 
-[https://t.me/noobWart](https://t.me/noobWart)
+[https://t.me/noobWart](https://t.me/+EDud7op603M5OWI1)
 
 
 
