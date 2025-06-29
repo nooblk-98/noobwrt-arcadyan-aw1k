@@ -75,7 +75,7 @@ wget -O /tmp/flash-full.sh https://raw.githubusercontent.com/nooblk-98/arcadyan-
 | NAS Tools                            | ❌ Not Available     | ✅ Included             |
 | Cloudflare Zero Trust                          | ✅ Included      | ✅ Included             |
 | Basic Firmware Core                 | ✅ Included        | ✅ Included             |
-| Pre Installed Themes               | Classic      | Aplha / Aragon / Classic          |
+| Pre Installed Themes               | Classic      | Alpha / Aragon / Classic          |
 | Dialog HBB Issue               | ✅ Fixed     | ✅ Fixed        |
 | Performance Optimizations           | ✅ Enhanced        | ✅ Enhanced             |
 | WAN Failover Support                | ✅ Manual          | ✅ Auto & Manual        |
