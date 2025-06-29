@@ -68,7 +68,7 @@ wget -O /tmp/flash-full.sh https://raw.githubusercontent.com/nooblk-98/arcadyan-
 
 ## Complete Flash Guide
 
-[Original Firmware Users](./guide/o-firmware.md) 
+[Original Firmware Users + Dead Recovery](./guide/o-firmware.md) 
 
 [Custom Firmware Users](./guide/m-firmware.md) 
     
