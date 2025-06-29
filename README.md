@@ -22,6 +22,7 @@ A custom firmware built on top of **ImmortalWRT** (a fork of **OpenWrt**), tailo
 Flash the free version of the firmware to your router using the terminal:
 ```bash
 opkg update
+opkg install curl
 opkg install coreutils-base64
 ```
 ```bash
@@ -45,6 +46,7 @@ Flash Pro version to router using terminal
 
 ```bash
 opkg update
+opkg install curl
 opkg install coreutils-base64
 ```
 
