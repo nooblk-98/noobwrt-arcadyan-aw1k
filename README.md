@@ -39,6 +39,8 @@ Let me know if you want to add device compatibility, warnings, or UI previews.
 
 ## Flash Pro Firmware
 
+![Sitemap Uploader Screenshot](/images/full-dash.png)
+
 Flash Pro version to router using terminal 
 
 ```bash
