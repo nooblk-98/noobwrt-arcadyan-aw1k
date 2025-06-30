@@ -115,6 +115,12 @@ wget -O /tmp/flash-full.sh https://raw.githubusercontent.com/nooblk-98/arcadyan-
 4. Enter the **PCI** and **ARFCN** values.
 5. Click **Submit** to lock the modem to the selected cell.
 
+### How Change Ui Theme 
+
+1. Go to: `system > system > Language and style > Design`
+2. Select the desired theme apply the settings.
+
+
 ---
 
 
