@@ -99,26 +99,36 @@ wget -O /tmp/flash-full.sh https://raw.githubusercontent.com/nooblk-98/arcadyan-
 | Update Frequency                    | ✅                 | ✅                      |
 
 ---
-
 ## FAQ
 
-### How to Lock Bands on the Router
+### How to Lock Bands on the Router?
 
-1. Go to: `modem > qmodem > Advanced Modem Settings > Lock Band`
-2. Select the desired bands and apply the settings.
+Go to `modem > qmodem > Advanced Modem Settings > Lock Band`, then select the desired bands and apply the settings.
 
-### How to Lock a Cell Tower on the Router
+---
 
-1. Navigate to: `modem > qmodem > Advanced Modem Settings > Neighbor Cell`
-2. Click **Run Scan** to search for nearby towers.
-3. Select a cell from the list.
+### How to Lock a Cell Tower on the Router?
+
+1. Go to `modem > qmodem > Advanced Modem Settings > Neighbor Cell`.
+2. Click **Run Scan** to find nearby towers.
+3. Choose a cell from the results.
 4. Enter the **PCI** and **ARFCN** values.
-5. Click **Submit** to lock the modem to the selected cell.
+5. Click **Submit** to lock onto the selected cell.
 
-### How Change Ui Theme 
+---
 
-1. Go to: `system > system > Language and style > Design`
-2. Select the desired theme apply the settings.
+### How to Change the UI Theme?
+
+Navigate to `system > system > Language and style > Design`, select your preferred theme, and apply the changes.
+
+---
+
+### What Do the 5G Mode Indicator LED Colors Mean?
+
+* 🟢 **Green (Solid On):** Connected to 5G Network (NR Mode)
+* 🔵 **Blue (Solid On):** Connected to LTE/4G
+* 🔴 **Red (Solid On):** No valid mode detected / fallback to 3G/2G
+* ⚫ **Off:** No modem detected or not initialized
 
 
 ---
