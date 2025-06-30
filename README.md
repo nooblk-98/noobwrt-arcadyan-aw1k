@@ -28,7 +28,6 @@ A custom firmware built on top of **ImmortalWRT** (a fork of **OpenWrt**), tailo
 
 ![Sitemap Uploader Screenshot](/images/dash-lite-white.png)
 
-![Sitemap Uploader Screenshot](/images/dash-full-alpha.png)
 
 Flash the free version of the firmware to your router using the terminal:
 ```bash
@@ -54,6 +53,8 @@ free-4-everyone
 ![Sitemap Uploader Screenshot](/images/full-dash.png)
 
 ![Sitemap Uploader Screenshot](/images/dash-full-white.png)
+
+![Sitemap Uploader Screenshot](/images/dash-full-alpha.png)
 
 Flash Pro version to router using terminal 
 
