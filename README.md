@@ -28,6 +28,8 @@ A custom firmware built on top of **ImmortalWRT** (a fork of **OpenWrt**), tailo
 
 ![Sitemap Uploader Screenshot](/images/dash-lite-white.png)
 
+![Sitemap Uploader Screenshot](/images/dash-full-alpha.png)
+
 Flash the free version of the firmware to your router using the terminal:
 ```bash
 opkg update
