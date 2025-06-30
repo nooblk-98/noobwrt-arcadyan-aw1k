@@ -99,6 +99,7 @@ wget -O /tmp/flash-full.sh https://raw.githubusercontent.com/nooblk-98/arcadyan-
 | Update Frequency                    | ✅                 | ✅                      |
 
 ---
+
 ## FAQ
 
 ### How to Lock Bands on the Router?
@@ -130,30 +131,14 @@ Navigate to `system > system > Language and style > Design`, select your preferr
 * 🔴 **Red (Solid On):** No valid mode detected / fallback to 3G/2G
 * ⚫ **Off:** No modem detected or not initialized
 
-
 ---
 
+### What Do the Signal Strength Indicator LED Colors Mean?
 
-## **5G Mode Indicator (5G LEDs)**
-
-| LED Color | Status       | Meaning                                 |
-| --------- | ------------ | --------------------------------------- |
-| 🟢 Green  | Solid On     | Connected to 5G Network (NR Mode)       |
-| 🔵 Blue   | Solid On     | Connected to LTE/4G                     |
-| 🔴 Red    | Solid On     | No valid mode detected / 3G/2G fallback |
-| ⚫ Off     | All LEDs off | No modem detected / not initialized     |
-
----
-
-
-## **Signal Strength Indicator (Signal LEDs)**
-
-| LED Color | Status   | Meaning                  |
-| --------- | -------- | ------------------------ |
-| 🔴 Red    | Solid On | Poor Signal (0–10%)      |
-| 🔵 Blue   | Solid On | Medium Signal (11–50%)   |
-| 🟢 Green  | Solid On | Strong Signal (51–100%)  |
-| 🔴 Red    | Blinking | No signal or modem error |
+* 🔴 **Red (Solid On):** Poor Signal (0–10%)
+* 🔵 **Blue (Solid On):** Medium Signal (11–50%)
+* 🟢 **Green (Solid On):** Strong Signal (51–100%)
+* 🔴 **Red (Blinking):** No signal or modem error
 
 ---
 
