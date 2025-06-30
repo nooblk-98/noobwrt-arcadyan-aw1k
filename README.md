@@ -100,6 +100,23 @@ wget -O /tmp/flash-full.sh https://raw.githubusercontent.com/nooblk-98/arcadyan-
 
 ---
 
+## FAQ
+
+### How to Lock Bands on the Router
+
+1. Go to: `modem > qmodem > Advanced Modem Settings > Lock Band`
+2. Select the desired bands and apply the settings.
+
+### How to Lock a Cell Tower on the Router
+
+1. Navigate to: `modem > qmodem > Advanced Modem Settings > Neighbor Cell`
+2. Click **Run Scan** to search for nearby towers.
+3. Select a cell from the list.
+4. Enter the **PCI** and **ARFCN** values.
+5. Click **Submit** to lock the modem to the selected cell.
+
+---
+
 
 ## **5G Mode Indicator (5G LEDs)**
 
