@@ -5,6 +5,9 @@ After rebooting, the router will boot into OpenWrt.
 1. On your terminal (Linux/macOS) or via PuTTY (Windows), connect to the router:
 
    ```bash
+   ssh-keygen -R 192.168.1.1
+   ```
+   ```bash
    ssh root@192.168.1.1
    ```
 
