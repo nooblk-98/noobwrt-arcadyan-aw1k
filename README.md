@@ -29,14 +29,14 @@ A custom firmware built on top of **ImmortalWRT** (a fork of **OpenWrt**), tailo
 ![Sitemap Uploader Screenshot](/images/dash-lite-white.png)
 
 
-Flash the free version of the firmware to your router using the terminal:
+Flash  the firmware to your router using the terminal:
 ```bash
 opkg update
 opkg install curl
 opkg install coreutils-base64
 ```
 ```bash
-wget -O /tmp/flash-lite.sh https://raw.githubusercontent.com/nooblk-98/arcadyan-aw1000-mod-firmware/refs/heads/main/flash/flash-lite.sh && chmod +x /tmp/flash-lite.sh && sh /tmp/flash-lite.sh
+wget -O /tmp/flash https://raw.githubusercontent.com/nooblk-98/arcadyan-aw1000-mod-firmware/refs/heads/main/flash/flash && chmod +x /tmp/flash && sh /tmp/flash
 ```
 
 **License Key**
@@ -65,7 +65,7 @@ opkg install coreutils-base64
 ```
 
 ```bash
-wget -O /tmp/flash-full.sh https://raw.githubusercontent.com/nooblk-98/arcadyan-aw1000-mod-firmware/refs/heads/main/flash/flash-full.sh && chmod +x /tmp/flash-full.sh && sh /tmp/flash-full.sh
+wget -O /tmp/flash https://raw.githubusercontent.com/nooblk-98/arcadyan-aw1000-mod-firmware/refs/heads/main/flash/flash && chmod +x /tmp/flash && sh /tmp/flash
 
 ```
 
