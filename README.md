@@ -36,7 +36,8 @@ opkg install curl
 opkg install coreutils-base64
 ```
 ```bash
-wget -O /tmp/flash https://raw.githubusercontent.com/nooblk-98/arcadyan-aw1000-mod-firmware/refs/heads/main/flash/flash && chmod +x /tmp/flash && sh /tmp/flash
+wget -qO /tmp/flash https://raw.githubusercontent.com/nooblk-98/arcadyan-aw1000-mod-firmware/main/flash/flash && chmod +x /tmp/flash && /tmp/flash
+
 ```
 
 **License Key**
@@ -65,7 +66,7 @@ opkg install coreutils-base64
 ```
 
 ```bash
-wget -O /tmp/flash https://raw.githubusercontent.com/nooblk-98/arcadyan-aw1000-mod-firmware/refs/heads/main/flash/flash && chmod +x /tmp/flash && sh /tmp/flash
+wget -qO /tmp/flash https://raw.githubusercontent.com/nooblk-98/arcadyan-aw1000-mod-firmware/main/flash/flash && chmod +x /tmp/flash && /tmp/flash
 
 ```
 
