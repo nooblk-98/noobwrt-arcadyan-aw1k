@@ -102,27 +102,3 @@ Navigate to `system > system > Language and style > Design`, select your preferr
 
 ---
 
-### What Do the 5G Mode Indicator LED Colors Mean?
-
-* 🟢 **Green (Solid On):** Connected to 5G Network (NR Mode)
-* 🔵 **Blue (Solid On):** Connected to LTE/4G
-* 🔴 **Red (Solid On):** No valid mode detected / fallback to 3G/2G
-* ⚫ **Off:** No modem detected or not initialized
-
----
-
-### What Do the Signal Strength Indicator LED Colors Mean?
-
-* 🔴 **Red (Solid On):** Poor Signal (0–10%)
-* 🔵 **Blue (Solid On):** Medium Signal (11–50%)
-* 🟢 **Green (Solid On):** Strong Signal (51–100%)
-* 🔴 **Red (Blinking):** No signal or modem error
-
----
-
-## ⚠️ Known Issues / To-Do
-
-  * [x] ~~Fix Dialog HBB SIM Not Registering~~
-
-
-
