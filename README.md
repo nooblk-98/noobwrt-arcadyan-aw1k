@@ -15,13 +15,6 @@ A custom firmware built on top of **ImmortalWRT** (a fork of **OpenWrt**), tailo
 
 > Ideal for advanced users seeking a better experience than what stock firmware offers.
 
-
-### Direct Join Link to Your Telegram Group (For Support and Purchase)
-
-[https://t.me/noobWart](https://t.me/+EDud7op603M5OWI1)
-
----
-
 ## 🌐 Visit Our Website for More Details
 
 For full release notes, downloads, support and community discussions, head over to:  
