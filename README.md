@@ -41,15 +41,6 @@ opkg install coreutils-base64
 wget -qO /tmp/flash https://raw.githubusercontent.com/nooblk-98/arcadyan-aw1000-mod-firmware/main/flash/flash && chmod +x /tmp/flash && /tmp/flash
 
 ```
-
-## Complete Flash Guide
-
-[Original Firmware Users + Dead Recovery](./guide/o-firmware.md) 
-
-[Custom Firmware Users](./guide/m-firmware.md) 
-    
----
-
 ## FAQ
 
 ### How to Lock Bands on the Router?
