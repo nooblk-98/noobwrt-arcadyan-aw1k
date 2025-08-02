@@ -78,29 +78,6 @@ wget -qO /tmp/flash https://raw.githubusercontent.com/nooblk-98/arcadyan-aw1000-
     
 ---
 
-## 🆚 Free vs Pro Version
-
-| **Feature**                            | **Free Version**  | **Pro Version**        |
-| -------------------------------------- | ----------------- | ---------------------- |
-| License Requirement                 | `free-4-everyone` | Individual License Key |
-| UI                                     | Simple         | Advanced                 |
-| Passwall                                 | Passwall 1      | Passwall 1  / 2             |
-| NAS Tools                            | ❌ Not Available     | ✅ Included             |
-| Cloudflare Zero Trust                          | ✅ Included      | ✅ Included             |
-| Basic Firmware Core                 | ✅ Included        | ✅ Included             |
-| Pre Installed Themes               | Classic      | Alpha / Aragon / Classic          |
-| Dialog HBB Issue               | ✅ Fixed     | ✅ Fixed        |
-| Performance Optimizations           | ✅ Enhanced        | ✅ Enhanced             |
-| WAN Failover Support                | ✅ Manual          | ✅ Auto & Manual        |
-| Modem & LED Control                 | ✅ Full Support    | ✅ Full Support         |
-| Preinstalled Packages               | ✅ Limited         | ✅ Full Suite           |
-| Advanced Firewall/QoS Profiles      | ❌ Not Available   | ✅ Enabled              |
-| Technical Support & Community Help | ✅ Community Only  | ✅ Priority Support     |
-| Developer Tools & Debug Options     | ❌ Not Available   | ✅ Full Access          |
-| Update Frequency                    | ✅                 | ✅                      |
-
----
-
 ## FAQ
 
 ### How to Lock Bands on the Router?
