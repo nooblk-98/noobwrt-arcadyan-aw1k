@@ -44,7 +44,7 @@ wget -qO /tmp/flash https://raw.githubusercontent.com/nooblk-98/arcadyan-aw1000-
 Use the following license key when prompted:
 
 ```bash
-free-4-everyone
+IPCV-365R-FPOE-2PSC
 ```
 
 ---
