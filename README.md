@@ -21,34 +21,6 @@ A custom firmware built on top of **ImmortalWRT** (a fork of **OpenWrt**), tailo
 [https://t.me/noobWart](https://t.me/+EDud7op603M5OWI1)
 
 
-
-## Flash Lite Firmware
-
-![Sitemap Uploader Screenshot](/images/lite-dash.png)
-
-![Sitemap Uploader Screenshot](/images/dash-lite-white.png)
-
-
-Flash  the firmware to your router using the terminal:
-```bash
-opkg update
-opkg install curl
-opkg install coreutils-base64
-```
-```bash
-wget -qO /tmp/flash https://raw.githubusercontent.com/nooblk-98/arcadyan-aw1000-mod-firmware/main/flash/flash && chmod +x /tmp/flash && /tmp/flash
-
-```
-
-**License Key**
-Use the following license key when prompted:
-
-```bash
-IPCV-365R-FPOE-2PSC
-```
-
----
-
 ## Flash Pro Firmware
 
 ![Sitemap Uploader Screenshot](/images/full-dash.png)
