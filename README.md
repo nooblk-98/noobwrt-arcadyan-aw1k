@@ -19,8 +19,6 @@ NoobWRT is a performance‑tuned OpenWrt build (based on ImmortalWRT) for the Ar
 
 ![Pro Dashboard](/images/full-dash.png)
 ![Pro Dashboard — Light](/images/dash-full-white.png)
-![Pro Dashboard — Alpha](/images/dash-full-alpha.png)
-![Lite Dashboard](/images/lite-dash.png)
 
 ## Quick Install (on OpenWrt/ImmortalWRT)
 
