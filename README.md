@@ -129,9 +129,8 @@ Need a router? Our seller can provide a compatible AW1000 prepped for NoobWRT.
 Click any image to view in your GitHub viewer.
 
 ![Pro Dashboard](/images/full-dash.png)
+
 ![Pro Dashboard (Light)](/images/dash-full-white.png)
-![Pro Dashboard (Alpha)](/images/dash-full-alpha.png)
-![Lite Dashboard](/images/lite-dash.png)
 
 ## Packed with Features (Packages)
 
