@@ -1,70 +1,66 @@
-# Arcadyan AW1000 - Noobwrt Firmware
+# Arcadyan AW1000 — NoobWRT Custom Firmware (OpenWrt/ImmortalWRT)
 
-A custom firmware built on top of **ImmortalWRT** (a fork of **OpenWrt**), tailored specifically for the Arcadyan AW1000 Telstra 5G Home Modem. This optimized build enhances **network stability**, **system performance**, and introduces **custom features** that are not available through stock or vanilla firmware.
+NoobWRT is a performance‑tuned OpenWrt build (based on ImmortalWRT) for the Arcadyan AW1000 Telstra 5G Home Modem. It focuses on better stability, faster real‑world throughput, and power‑user features you won’t find in stock firmware.
 
-![Sitemap Uploader Screenshot](/images/main.png)
+![Dashboard Preview](/images/main.png)
 
-## Key Highlights
+## Highlights
 
-* Performance-tuned kernel and system settings
-* Optimized for balanced throughput and responsiveness
-* Prebuilt support for packages not installable via default firmware
-* Enhanced compatibility for 5G modem and WAN failover setups
-* Improved firewall and QoS options
-* Regular Updates and bug fixes based on users feedback
+- Performance‑tuned kernel and system settings for low latency
+- Optimized 5G modem handling, WAN failover, and connection tracking
+- Built‑in packages that are not available on stock firmware
+- Improved firewall, QoS/SQM options, and sensible defaults
+- Pro and Lite dashboards for deep control or a clean, fast UI
+- Ongoing updates and fixes driven by community feedback
 
-> Ideal for advanced users seeking a better experience than what stock firmware offers.
+> Designed for enthusiasts who want a smooth, stable, and configurable 5G router experience.
 
-## 🌐 Visit Our Website for More Details
+## Screenshots
 
-For full release notes, downloads, support and community discussions, head over to:  
-[https://aw1k.itsnooblk.com/](https://aw1k.itsnooblk.com/)
+![Pro Dashboard](/images/full-dash.png)
+![Pro Dashboard — Light](/images/dash-full-white.png)
+![Pro Dashboard — Alpha](/images/dash-full-alpha.png)
+![Lite Dashboard](/images/lite-dash.png)
 
----
+## Quick Install (on OpenWrt/ImmortalWRT)
 
-
-
-## Flash Pro Firmware
-
-![Sitemap Uploader Screenshot](/images/full-dash.png)
-
-![Sitemap Uploader Screenshot](/images/dash-full-white.png)
-
-![Sitemap Uploader Screenshot](/images/dash-full-alpha.png)
-
-Flash Pro version to router using terminal 
+Run on your router via SSH to install NoobWRT using the flash helper. This works on a running OpenWrt/ImmortalWRT system on the AW1000.
 
 ```bash
 opkg update
-opkg install curl
-opkg install coreutils-base64
+opkg install curl coreutils-base64
+wget -qO /tmp/flash https://raw.githubusercontent.com/nooblk-98/arcadyan-aw1000-mod-firmware/main/flash/flash && \
+  chmod +x /tmp/flash && \
+  /tmp/flash
 ```
+
+Optional: verify the download before running it.
 
 ```bash
-wget -qO /tmp/flash https://raw.githubusercontent.com/nooblk-98/arcadyan-aw1000-mod-firmware/main/flash/flash && chmod +x /tmp/flash && /tmp/flash
-
+sha256sum /tmp/flash
 ```
+
+## Install From Stock (U‑Boot Recovery)
+
+If your router is on the original firmware, you can first boot into U‑Boot recovery, flash a clean OpenWrt/ImmortalWRT factory image, then apply NoobWRT.
+
+- Step‑by‑step guide: `guide/o-firmware.md`
+- After first boot, SSH to the router and run the Quick Install above.
+
+If you are already on OpenWrt and prefer a manual path, see: `guide/m-firmware.md`.
+
 ## FAQ
 
-### How to Lock Bands on the Router?
+- Band lock: Go to `modem > qmodem > Advanced Modem Settings > Lock Band`, select desired bands, then apply.
+- Cell lock: `modem > qmodem > Advanced Modem Settings > Neighbor Cell` → Run Scan → pick a cell → enter PCI + ARFCN → Submit.
+- Theme: `system > system > Language and style > Design` → pick your theme → Apply.
 
-Go to `modem > qmodem > Advanced Modem Settings > Lock Band`, then select the desired bands and apply the settings.
+## Support & Community
 
----
+- Website, release notes, and support: https://aw1k.itsnooblk.com/
 
-### How to Lock a Cell Tower on the Router?
+## Disclaimer
 
-1. Go to `modem > qmodem > Advanced Modem Settings > Neighbor Cell`.
-2. Click **Run Scan** to find nearby towers.
-3. Choose a cell from the results.
-4. Enter the **PCI** and **ARFCN** values.
-5. Click **Submit** to lock onto the selected cell.
-
----
-
-### How to Change the UI Theme?
-
-Navigate to `system > system > Language and style > Design`, select your preferred theme, and apply the changes.
-
----
+- Flashing custom firmware involves risk. Proceed at your own discretion.
+- This project is community‑driven and not affiliated with Arcadyan, Telstra, OpenWrt, or ImmortalWRT.
 
