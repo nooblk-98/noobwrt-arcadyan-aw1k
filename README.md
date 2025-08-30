@@ -25,8 +25,6 @@ NoobWRT is a performance‑tuned OpenWrt build (based on ImmortalWRT) for the Ar
 Run on your router via SSH to install NoobWRT using the flash helper. This works on a running OpenWrt/ImmortalWRT system on the AW1000.
 
 ```bash
-opkg update
-opkg install curl coreutils-base64
 wget -qO /tmp/flash https://raw.githubusercontent.com/nooblk-98/arcadyan-aw1000-mod-firmware/main/flash/flash && \
   chmod +x /tmp/flash && \
   /tmp/flash
