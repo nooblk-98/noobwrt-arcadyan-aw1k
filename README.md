@@ -1,149 +1,90 @@
-# NoobWRT for Arcadyan AW1000 (OpenWrt/ImmortalWRT)
+<div align="center">
 
-Supercharge your AW1000 with NoobWRT.
+# NoobWRT for Arcadyan AW1000
 
-Unlock enterprise-grade performance, rock-solid security, and flexible customization.
+High‑performance ImmortalWRT/OpenWrt firmware for the Arcadyan AW1000.
 
-[Buy Now](https://wa.me/94716172860) · [See it in Action](https://youtu.be/6eYihpGg7Sw)
+[![Release](https://img.shields.io/github/v/release/nooblk-98/arcadyan-aw1000-mod-firmware?sort=semver)](https://github.com/nooblk-98/arcadyan-aw1000-mod-firmware/releases)
+![Target](https://img.shields.io/badge/target-Arcadyan%20AW1000-blue)
+![Base](https://img.shields.io/badge/base-ImmortalWRT%20%2F%20OpenWrt-green)
+![Kernel](https://img.shields.io/badge/kernel-6.6.100-success)
+![Status](https://img.shields.io/badge/status-stable-brightgreen)
+
+[Buy Now](https://wa.me/94716172860) · [Setup Video](https://youtu.be/6eYihpGg7Sw)
 
 ![NoobWRT Dashboard](/images/main.png)
 
-Everything you need, nothing you don’t.
+</div>
 
-A firmware built for power users who demand stability, performance, and control.
+## Overview
 
-## Release Notes
+NoobWRT transforms the AW1000 into a fast, secure, customizable router. It’s tuned for stability and performance, with a curated app set and sensible defaults.
 
-- Fixed 5G LED indicator behavior.
-- Updated all packages to latest available versions.
-- Removed PassWall.
-- Added HomeProxy.
+## Table of Contents
 
-If you previously used PassWall, please migrate your configuration. HomeProxy is now the recommended proxy solution.
+- Quick Start
+- What’s New
+- Features
+- Screenshots
+- Specifications
+- Packages
+- Indicators & Defaults
+- FAQ
+- Support & Pricing
 
-## Features
+## Quick Start
 
-- Blazing-fast performance: wire-speed routing and low latency with hardware flow offloading
-- Advanced security: firewall hardening, WireGuard/OpenVPN ready, and regular security updates
-- Extensive package support: one-click installs for LuCI apps, Adblock, USB tools, and more
-- Unmatched stability: built on ImmortalWRT for long-term reliability and updates
-
-## Optimization
-
-Optimized for space and flexibility
-
-- Maximized free space: optimized image leaves more overlay space for packages and configs
-- Dynamic overlay support: adapts automatically to your storage size, no manual tweaks
-
-Example device stats (for reference):
-
-```
-Memory (Total/Used/Cached): 866.07 MiB / 343.31 MiB / 142.20 MiB
-Storage (Disk/Temp):        562.95 MiB / 433.04 MiB
-```
-
-## Installation
-
-Simple and safe — get running in minutes.
-
-1. Connect to the router
-- Use an SSH client (PuTTY/Terminal) to reach your router.
-
-2. Copy the command
-- Copy the command below.
-
-3. Paste and run
-- Paste in SSH and press Enter; follow the prompts.
+Flash safely in minutes via SSH.
 
 ```bash
 wget -qO /tmp/flash https://raw.githubusercontent.com/nooblk-98/arcadyan-aw1000-mod-firmware/main/flash/flash && chmod +x /tmp/flash && /tmp/flash
 ```
 
-Installer menu preview:
+Recovery from stock (U‑Boot):
+- Connect PC to yellow LAN, set static IP `192.168.1.2/24`.
+- Hold reset, power on, keep holding ~8–10 s to enter recovery.
+- Open `http://192.168.1.254`, upload factory `.ubi`, wait 2–3 minutes.
+- SSH to `192.168.1.1` and run the installer command above.
 
-```
-========================================
-NoobWRT - Firmware Flasher
-Contact: https://wa.me/94716172860
-========================================
+## What’s New
 
-Choose which firmware you want to flash:
-1) Noobwrt Pro Firmware
-2) Noobwrt Free Firmware
-3) Noobwrt devBuild Firmware
+- Fixed 5G LED indicator behavior.
+- Updated all packages to latest versions.
+- Removed PassWall.
+- Added HomeProxy (recommended replacement; migrate any PassWall configs).
 
-Enter option (1/2/3): 1
-Are you sure you want to flash (sysupgrade-pro.bin)? [y/N]: y
-Enter your license key:
-```
+## Features
 
-Advanced install (U-Boot recovery from stock):
+- Performance: wire‑speed routing, low latency, hardware flow offloading.
+- Security: firewall hardening, ready for WireGuard/OpenVPN, frequent updates.
+- Apps: curated LuCI apps, Adblock, USB tools, diagnostics, and more.
+- Reliability: based on ImmortalWRT for long‑term stability and updates.
 
-1) Connect PC to a yellow LAN port and set static IPv4:
+## Screenshots
 
-```
-IP: 192.168.1.2
-Mask: 255.255.255.0
-GW:   192.168.1.1 (optional)
-```
+![Dashboard (Pro)](/images/full-dash.png)
 
-2) Enter U-Boot recovery: hold reset, power on, keep holding ~8–10 s
+![Dashboard (Light)](/images/dash-full-white.png)
 
-3) Open http://192.168.1.254, upload a factory .ubi, wait 2–3 minutes
+## Specifications
 
-4) SSH to 192.168.1.1 and run the installer command above
-
-## Indicators
-
-- Power light: device is powered and ready
-- 5G indicator: shows 5G mobile connection status
-- Internet status: confirms active internet connection
-- Signal strength: cellular signal quality level
-- New SMS: unread SMS on the SIM
-
-## Defaults
-
-- Default Wi‑Fi SSIDs: "NoobWRT 2GHz" and "NoobWRT 5GHz"
-- Default Wi‑Fi password: 123456789
-- Admin login: user `root`, no password set
-
-For security, set a strong admin password on first login.
-
-## Pricing
-
-NoobWRT Firmware — 2000 LKR
-
-- One-time purchase
-- Lifetime updates
-- Community forum support
-- Full feature set
-
-[Buy Firmware via WhatsApp](https://wa.me/94716172860)
-
-Need a router? Our seller can provide a compatible AW1000 prepped for NoobWRT.
-
-[Contact Seller](https://wa.me/94716172860)
-
-## Technical Specifications
-
-- Compatibility: Arcadyan AW1000 (qualcommax/ipq807x)
+- Device: Arcadyan AW1000 (qualcommax/ipq807x)
 - Version: NoobWRT 24.10.1
 - Kernel: 6.6.100
 - CPU: 1.4 GHz Quad‑Core
 - RAM: 1 GB DDR4
 - Storage: 256 MB NAND
 
-## Visual Tour
+Example device stats:
 
-Click any image to view in your GitHub viewer.
+```
+Memory (Total/Used/Cached): 866.07 MiB / 343.31 MiB / 142.20 MiB
+Storage (Disk/Temp):        562.95 MiB / 433.04 MiB
+```
 
-![Pro Dashboard](/images/full-dash.png)
+## Packages
 
-![Pro Dashboard (Light)](/images/dash-full-white.png)
-
-## Packed with Features (Packages)
-
-Popular packages preloaded to enhance your router out of the box.
+Popular packages preloaded to enhance your router out‑of‑the‑box.
 
 <details>
 <summary>Show package list</summary>
@@ -157,31 +98,43 @@ coreutils-stat, curl, dbus, ddns-scripts, ddns-scripts-services
 
 </details>
 
+## Indicators & Defaults
+
+- Power light: device is powered and ready
+- 5G indicator: shows 5G mobile connection status
+- Internet status: confirms active internet connection
+- Signal strength: cellular signal quality level
+- New SMS: unread SMS on the SIM
+
+Defaults:
+- Wi‑Fi SSIDs: "NoobWRT 2GHz" and "NoobWRT 5GHz"
+- Wi‑Fi password: `123456789`
+- Admin login: user `root`, no password set
+
+Change the admin password on first login.
+
 ## FAQ
 
 - What is NoobWRT?
-  - A performance‑tuned OpenWrt (ImmortalWRT) build for the AW1000 with extra features, better stability, and curated defaults.
+  - A performance‑tuned ImmortalWRT/OpenWrt build for the AW1000 with extra features, better stability, and curated defaults.
 - Is it safe to flash this firmware?
-  - Flashing always carries risk. Follow the steps carefully and ensure stable power. A U‑Boot recovery path is available.
-- What kind of support do I get?
-  - Community‑based support and updates. Commercial help available via WhatsApp.
+  - Flashing always carries risk. Follow the steps carefully and ensure stable power. U‑Boot recovery is available.
 - Can I revert to stock firmware?
   - Yes. Use the U‑Boot recovery page to upload a stock or factory image.
 - How to lock bands?
-  - modem > qmodem > Advanced Modem Settings > Lock Band, select bands, Apply.
+  - modem > qmodem > Advanced Modem Settings > Lock Band; select bands; Apply.
 - How to lock a cell tower?
   - modem > qmodem > Advanced Modem Settings > Neighbor Cell -> Run Scan -> choose cell -> enter PCI + ARFCN -> Submit.
 - How to change the UI theme?
   - system > system > Language and style > Design -> choose theme -> Apply.
 
-## Get Started
+## Support & Pricing
 
-- Buy the firmware: https://wa.me/94716172860
-- Watch setup: https://youtu.be/6eYihpGg7Sw
-- Website & releases: https://aw1k.itsnooblk.com/
-- View on GitHub: https://github.com/nooblk-98/arcadyan-aw1000-mod-firmware
+- Price: NoobWRT Firmware — 2000 LKR
+- Includes: one‑time purchase, lifetime updates, community support
+- Contact: https://wa.me/94716172860
+- Video: https://youtu.be/6eYihpGg7Sw
+- Website: https://aw1k.itsnooblk.com/
+- GitHub: https://github.com/nooblk-98/arcadyan-aw1000-mod-firmware
 
-— Firmware maintained by NoobLK
-
-© 2025 NoobWRT. All rights reserved.
-
+— Firmware maintained by NoobLK • © 2025 NoobWRT
