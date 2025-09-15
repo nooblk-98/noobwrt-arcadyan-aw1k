@@ -1,30 +1,39 @@
-# NoobWRT for Arcadyan AW1000 (OpenWrt/ImmortalWRT) 🇱🇰
+# NoobWRT for Arcadyan AW1000 (OpenWrt/ImmortalWRT)
 
-Supercharge Your AW1000 with NoobWRT
+Supercharge your AW1000 with NoobWRT.
 
-Unlock enterprise-grade performance, rock-solid security, and limitless customization on your router.
+Unlock enterprise-grade performance, rock-solid security, and flexible customization.
 
-[Buy Now](https://wa.me/94716172860) • [See it in Action](https://youtu.be/6eYihpGg7Sw)
+[Buy Now](https://wa.me/94716172860) · [See it in Action](https://youtu.be/6eYihpGg7Sw)
 
 ![NoobWRT Dashboard](/images/main.png)
 
-Everything You Need, Nothing You Don't
+Everything you need, nothing you don’t.
 
 A firmware built for power users who demand stability, performance, and control.
 
+## Release Notes
+
+- Fixed 5G LED indicator behavior.
+- Updated all packages to latest available versions.
+- Removed PassWall.
+- Added HomeProxy.
+
+If you previously used PassWall, please migrate your configuration. HomeProxy is now the recommended proxy solution.
+
 ## Features
 
-- Blazing-Fast Performance: wire-speed routing and low latency with hardware flow offloading
-- Advanced Security: firewall hardening, WireGuard/OpenVPN ready, and regular security updates
-- Extensive Package Support: one-click installs for LuCI apps, Adblock, USB tools, and more
-- Unmatched Stability: built on ImmortalWRT for long-term reliability and updates
+- Blazing-fast performance: wire-speed routing and low latency with hardware flow offloading
+- Advanced security: firewall hardening, WireGuard/OpenVPN ready, and regular security updates
+- Extensive package support: one-click installs for LuCI apps, Adblock, USB tools, and more
+- Unmatched stability: built on ImmortalWRT for long-term reliability and updates
 
 ## Optimization
 
-Optimized for Space & Flexibility
+Optimized for space and flexibility
 
-- Maximized Free Space: highly optimized image leaves more overlay space for packages and configs
-- Dynamic Overlay Support: adapts automatically to your storage size, no manual tweaks
+- Maximized free space: optimized image leaves more overlay space for packages and configs
+- Dynamic overlay support: adapts automatically to your storage size, no manual tweaks
 
 Example device stats (for reference):
 
@@ -35,15 +44,15 @@ Storage (Disk/Temp):        562.95 MiB / 433.04 MiB
 
 ## Installation
 
-Simple & Safe Installation — get running in minutes.
+Simple and safe — get running in minutes.
 
-1) Connect to Router
+1. Connect to the router
 - Use an SSH client (PuTTY/Terminal) to reach your router.
 
-2) Copy the Command
+2. Copy the command
 - Copy the command below.
 
-3) Paste and Run
+3. Paste and run
 - Paste in SSH and press Enter; follow the prompts.
 
 ```bash
@@ -78,7 +87,7 @@ Mask: 255.255.255.0
 GW:   192.168.1.1 (optional)
 ```
 
-2) Enter U-Boot recovery: hold reset, power on, keep holding ~8–10s
+2) Enter U-Boot recovery: hold reset, power on, keep holding ~8–10 s
 
 3) Open http://192.168.1.254, upload a factory .ubi, wait 2–3 minutes
 
@@ -86,16 +95,16 @@ GW:   192.168.1.1 (optional)
 
 ## Indicators
 
-- Power Light: device is powered and ready
-- 5G Indicator: shows 5G mobile connection status
-- Internet Status: confirms active internet connection
-- Signal Strength: cellular signal quality level
+- Power light: device is powered and ready
+- 5G indicator: shows 5G mobile connection status
+- Internet status: confirms active internet connection
+- Signal strength: cellular signal quality level
 - New SMS: unread SMS on the SIM
 
 ## Defaults
 
-- Default Wi-Fi SSIDs: "NoobWRT 2GHz" and "NoobWRT 5GHz"
-- Default Wi-Fi password: 123456789
+- Default Wi‑Fi SSIDs: "NoobWRT 2GHz" and "NoobWRT 5GHz"
+- Default Wi‑Fi password: 123456789
 - Admin login: user `root`, no password set
 
 For security, set a strong admin password on first login.
@@ -120,7 +129,7 @@ Need a router? Our seller can provide a compatible AW1000 prepped for NoobWRT.
 - Compatibility: Arcadyan AW1000 (qualcommax/ipq807x)
 - Version: NoobWRT 24.10.1
 - Kernel: 6.6.100
-- CPU: 1.4 GHz Quad-Core
+- CPU: 1.4 GHz Quad‑Core
 - RAM: 1 GB DDR4
 - Storage: 256 MB NAND
 
@@ -151,13 +160,13 @@ coreutils-stat, curl, dbus, ddns-scripts, ddns-scripts-services
 ## FAQ
 
 - What is NoobWRT?
-  - A performance-tuned OpenWrt (ImmortalWRT) build for the AW1000 with extra features, better stability, and curated defaults.
+  - A performance‑tuned OpenWrt (ImmortalWRT) build for the AW1000 with extra features, better stability, and curated defaults.
 - Is it safe to flash this firmware?
-  - Flashing always carries risk. Follow the steps carefully and ensure stable power. A U-Boot recovery path is available.
+  - Flashing always carries risk. Follow the steps carefully and ensure stable power. A U‑Boot recovery path is available.
 - What kind of support do I get?
-  - Community-based support and updates. Commercial help available via WhatsApp.
+  - Community‑based support and updates. Commercial help available via WhatsApp.
 - Can I revert to stock firmware?
-  - Yes. Use the U-Boot recovery page to upload a stock or factory image.
+  - Yes. Use the U‑Boot recovery page to upload a stock or factory image.
 - How to lock bands?
   - modem > qmodem > Advanced Modem Settings > Lock Band, select bands, Apply.
 - How to lock a cell tower?
@@ -175,3 +184,4 @@ coreutils-stat, curl, dbus, ddns-scripts, ddns-scripts-services
 — Firmware maintained by NoobLK
 
 © 2025 NoobWRT. All rights reserved.
+
