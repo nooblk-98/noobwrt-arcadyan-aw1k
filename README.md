@@ -107,8 +107,8 @@ Choose the firmware variant based on your available overlay space.
 | Component | Details |
 |-----------|---------|
 | **Device** | Arcadyan AW1000 (qualcommax/ipq807x) |
-| **Firmware Version** | NoobWRT 24.10.1 |
-| **Kernel** | Linux 6.6.100 |
+| **Firmware Version** | Latest Immortlwrt |
+| **Kernel** | Latest Immortlwrt |
 | **CPU** | 1.4 GHz Quad-Core ARM Cortex |
 | **RAM** | 1 GB DDR4 |
 | **Storage** | 256 MB NAND Flash |
