@@ -5,12 +5,14 @@
 ### High-performance ImmortalWRT/OpenWrt firmware for the Arcadyan AW1000
 
 [![Release](https://img.shields.io/github/v/release/nooblk-98/arcadyan-aw1000-mod-firmware?sort=semver&style=for-the-badge)](https://github.com/nooblk-98/arcadyan-aw1000-mod-firmware/releases)
+[![Build Status](https://img.shields.io/badge/Build-Jenkins-blue?style=for-the-badge&logo=jenkins)](https://jenkins.itsnooblk.com/blue/organizations/jenkins/noobwrt-aw1k/activity)
 [![Target](https://img.shields.io/badge/target-Arcadyan%20AW1000-blue?style=for-the-badge)](https://github.com/nooblk-98/noobwrt-arcadyan-aw1k)
 [![Base](https://img.shields.io/badge/base-ImmortalWRT%20%2F%20OpenWrt-green?style=for-the-badge)](https://github.com/nooblk-98/noobwrt-arcadyan-aw1k)
 [![Kernel](https://img.shields.io/badge/kernel-6.6.100-success?style=for-the-badge)](https://github.com/nooblk-98/noobwrt-arcadyan-aw1k)
 [![Status](https://img.shields.io/badge/status-stable-brightgreen?style=for-the-badge)](https://github.com/nooblk-98/noobwrt-arcadyan-aw1k)
 
 <p align="center">
+  <a href="https://jenkins.itsnooblk.com/blue/organizations/jenkins/noobwrt-aw1k/activity">🔧 Build Status</a> •
   <a href="https://youtu.be/6eYihpGg7Sw">📺 Setup Video</a> •
   <a href="#-features">✨ Features</a> •
   <a href="#-faq">❓ FAQ</a>
@@ -31,10 +33,22 @@
 - 🎯 **Stability** - Battle-tested configuration for 24/7 reliability
 - 🛠️ **Flexibility** - Curated app ecosystem with sensible defaults
 
+### 🔄 Automated Monthly Builds
+
+NoobWRT features **automated monthly builds** powered by Jenkins CI/CD, ensuring you always have access to:
+
+- 📦 **Latest package updates** from upstream ImmortalWRT/OpenWrt
+- 🔒 **Security patches** applied automatically
+- 🐛 **Bug fixes** integrated as soon as they're available
+- 📊 **Transparent build process** - [View build status and history](https://jenkins.itsnooblk.com/blue/organizations/jenkins/noobwrt-aw1k/activity)
+
+Every release is automatically built, tested, and published to ensure reliability and consistency.
+
 ---
 
 ## 📑 Table of Contents
 
+- [🔄 Automated Builds](#-automated-monthly-builds)
 - [✨ Features](#-features)
 - [📸 Screenshots](#-screenshots)
 - [⚙️ Specifications](#️-specifications)
