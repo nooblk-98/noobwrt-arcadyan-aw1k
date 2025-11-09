@@ -75,11 +75,8 @@
 
 <div align="center">
 
-### Dark Theme Dashboard
-![Dashboard (Pro)](/images/full-dash.png)
-
-### Light Theme Dashboard
-![Dashboard (Light)](/images/dash-full-white.png)
+### UI
+![Dashboard](/images/dash.png)
 
 </div>
 
