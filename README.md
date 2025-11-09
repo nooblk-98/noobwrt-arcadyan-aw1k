@@ -11,7 +11,6 @@
 [![Status](https://img.shields.io/badge/status-stable-brightgreen?style=for-the-badge)](https://github.com/nooblk-98/noobwrt-arcadyan-aw1k)
 
 <p align="center">
-  <a href="https://wa.me/94716172860">💬 Buy Now</a> •
   <a href="https://youtu.be/6eYihpGg7Sw">📺 Setup Video</a> •
   <a href="#-features">✨ Features</a> •
   <a href="#-faq">❓ FAQ</a>
