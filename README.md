@@ -46,8 +46,38 @@ Every release is automatically built, tested, and published to ensure reliabilit
 
 ---
 
+## ⚠️ **IMPORTANT: Choose the Correct Firmware Version**
+
+Each release includes **two firmware variants**. Using the wrong version **will brick your device**!
+
+| Firmware File | Overlay Size | Device Compatibility | Use Case |
+|---------------|--------------|---------------------|----------|
+| **`lite-squashfs-sysupgrade.bin`** | ~12 MB | Devices with **limited storage** | Essential packages only |
+| **`full-squashfs-sysupgrade.bin`** | ~100+ MB | Devices with **ample storage** (256MB+ NAND) | Full package set included |
+
+### 🚨 Critical Warning
+
+> **⛔ DO NOT flash the wrong firmware variant!**
+>
+> - If you have a device with **limited overlay space (< 50MB)**, use **`lite-squashfs-sysupgrade.bin`**
+> - If you have a device with **100MB+ overlay space**, use **`full-squashfs-sysupgrade.bin`**
+> - **Flashing the full version on a limited storage device WILL BRICK IT!**
+> - Check your current overlay size: System → Software → Available space
+
+### How to Check Your Device
+
+Before flashing, SSH into your router or check via LuCI:
+```bash
+df -h | grep overlay
+```
+
+Choose the firmware variant based on your available overlay space.
+
+---
+
 ## 📑 Table of Contents
 
+- [⚠️ Firmware Selection (CRITICAL)](#️-important-choose-the-correct-firmware-version)
 - [🔄 Automated Builds](#-automated-monthly-builds)
 - [✨ Features](#-features)
 - [📸 Screenshots](#-screenshots)
@@ -56,34 +86,6 @@ Every release is automatically built, tested, and published to ensure reliabilit
 - [💡 Indicators & Defaults](#-indicators--defaults)
 - [❓ FAQ](#-faq)
 - [📄 License](#-license)
-
----
-
-
-## ✨ Features
-
-### 🚄 High Performance
-- **Wire-speed routing** with hardware flow offloading
-- **Low latency** optimized packet processing
-- **Multi-core CPU utilization** for maximum throughput
-
-### 🛡️ Enhanced Security
-- **Firewall hardening** with advanced ruleset configuration
-- **VPN ready** - WireGuard & OpenVPN pre-configured
-- **Frequent security updates** from ImmortalWRT upstream
-
-### 📱 Rich Application Suite
-- **Curated LuCI apps** for comprehensive router management
-- **Adblock** - System-wide ad blocking with multiple blocklist sources
-- **USB utilities** - Storage mounting & USB tethering support
-- **Diagnostic tools** - Network analysis and troubleshooting
-
-### 🔧 Long-term Reliability
-- Built on **ImmortalWRT** for extended support lifecycle
-- **Stable releases** with thorough testing and validation
-- **Active maintenance** with regular bug fixes and improvements
-
----
 
 ## 📸 Screenshots
 
