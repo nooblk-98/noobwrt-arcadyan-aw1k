@@ -6,15 +6,17 @@
 
 [![Release](https://img.shields.io/github/v/release/nooblk-98/arcadyan-aw1000-mod-firmware?sort=semver&style=for-the-badge)](https://github.com/nooblk-98/arcadyan-aw1000-mod-firmware/releases)
 [![Build Status](https://img.shields.io/badge/Build-Jenkins-blue?style=for-the-badge&logo=jenkins)](https://jenkins.itsnooblk.com/blue/organizations/jenkins/noobwrt-aw1k/activity)
+[![Issues](https://img.shields.io/github/issues/nooblk-98/noobwrt-arcadyan-aw1k?style=for-the-badge)](https://github.com/nooblk-98/noobwrt-arcadyan-aw1k/issues)
 [![Target](https://img.shields.io/badge/target-Arcadyan%20AW1000-blue?style=for-the-badge)](https://github.com/nooblk-98/noobwrt-arcadyan-aw1k)
 [![Base](https://img.shields.io/badge/base-ImmortalWRT%20%2F%20OpenWrt-green?style=for-the-badge)](https://github.com/nooblk-98/noobwrt-arcadyan-aw1k)
-[![Kernel](https://img.shields.io/badge/kernel-6.6.100-success?style=for-the-badge)](https://github.com/nooblk-98/noobwrt-arcadyan-aw1k)
+[![Kernel](https://img.shields.io/badge/kernel-latest-success?style=for-the-badge)](https://github.com/nooblk-98/noobwrt-arcadyan-aw1k)
 [![Status](https://img.shields.io/badge/status-stable-brightgreen?style=for-the-badge)](https://github.com/nooblk-98/noobwrt-arcadyan-aw1k)
 
 <p align="center">
   <a href="https://jenkins.itsnooblk.com/blue/organizations/jenkins/noobwrt-aw1k/activity">🔧 Build Status</a> •
   <a href="https://youtu.be/6eYihpGg7Sw">📺 Setup Video</a> •
   <a href="#-features">✨ Features</a> •
+  <a href="https://github.com/nooblk-98/noobwrt-arcadyan-aw1k/issues/new">🐛 Report Issue</a> •
   <a href="#-faq">❓ FAQ</a>
 </p>
 
@@ -85,6 +87,7 @@ Choose the firmware variant based on your available overlay space.
 - [📦 Packages](#-packages)
 - [💡 Indicators & Defaults](#-indicators--defaults)
 - [❓ FAQ](#-faq)
+- [🤝 Contributing](#-contributing)
 - [📄 License](#-license)
 
 ## 📸 Screenshots
@@ -234,6 +237,45 @@ Select your preferred theme from the dropdown and click **Apply**.
 For support and inquiries, contact via [WhatsApp](https://wa.me/94716172860) or check the [Setup Video](https://youtu.be/6eYihpGg7Sw) for detailed instructions.
 
 </details>
+
+---
+
+## 🤝 Contributing
+
+We welcome contributions from the community! Your feedback and ideas help make NoobWRT better for everyone.
+
+### 🐛 Report Bugs
+
+Found a bug? Help us fix it!
+
+1. Check if the issue already exists in our [Issue Tracker](https://github.com/nooblk-98/noobwrt-arcadyan-aw1k/issues)
+2. If not, [create a new issue](https://github.com/nooblk-98/noobwrt-arcadyan-aw1k/issues/new)
+3. Include:
+   - **Firmware version** you're using
+   - **Device variant** (lite or full)
+   - **Steps to reproduce** the bug
+   - **Expected vs actual behavior**
+   - **Logs or screenshots** if applicable
+
+### 💡 Suggest Improvements
+
+Have an idea to improve NoobWRT?
+
+1. [Open an issue](https://github.com/nooblk-98/noobwrt-arcadyan-aw1k/issues/new) with the "enhancement" label
+2. Describe:
+   - **What feature** you'd like to see
+   - **Why it would be useful** to the community
+   - **How it might work** (if you have ideas)
+
+### 📋 Issue Guidelines
+
+When creating an issue, please:
+- ✅ Use a clear and descriptive title
+- ✅ Provide as much detail as possible
+- ✅ Be respectful and constructive
+- ✅ Check for duplicates before posting
+
+**Your contributions help shape the future of NoobWRT!** 🚀
 
 ---
 
