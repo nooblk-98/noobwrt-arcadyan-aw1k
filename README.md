@@ -94,6 +94,7 @@ Choose the firmware variant based on your available overlay space.
 ### UI
 ![Dashboard](/images/dash.png)
 
+![ss1](/images/ss1.png)
 </div>
 
 ---
@@ -169,9 +170,25 @@ NoobWRT is a performance-tuned ImmortalWRT/OpenWrt firmware build specifically o
 </details>
 
 <details>
+<summary><b>⚠️ Which firmware file should I download? (CRITICAL)</b></summary>
+
+**This is the most important question!** Choosing the wrong firmware will brick your device.
+
+- **`lite-squashfs-sysupgrade.bin`** → For devices with ~12MB overlay (limited storage)
+- **`full-squashfs-sysupgrade.bin`** → For devices with 100MB+ overlay (standard AW1000 with 256MB NAND)
+
+**How to check:** Run `df -h | grep overlay` via SSH or check System → Software in LuCI.
+
+**If unsure, use the LITE version!** It's safer and can be upgraded to FULL later if you have space.
+
+</details>
+
+<details>
 <summary><b>Is it safe to flash this firmware?</b></summary>
 
-Flashing firmware always carries some risk. However, if you follow the installation steps carefully and ensure stable power during the process, it should be safe. The device has U-Boot recovery available as a fallback option in case something goes wrong.
+Flashing firmware always carries some risk. However, if you follow the installation steps carefully, **choose the correct firmware variant**, and ensure stable power during the process, it should be safe. The device has U-Boot recovery available as a fallback option in case something goes wrong.
+
+**⚠️ Most critical:** Make absolutely sure you're using the correct firmware variant (lite vs full) for your device's storage capacity.
 
 </details>
 
