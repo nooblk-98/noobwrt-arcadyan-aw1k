@@ -52,10 +52,14 @@ Every release is automatically built, tested, and published to ensure reliabilit
 
 Each release includes two firmware variants. Using the wrong version can brick your device.
 
+<div align="center">
+
 | Firmware File | Overlay Size | Device Compatibility | Use Case |
 |---------------|--------------|----------------------|----------|
 | `lite-squashfs-sysupgrade.bin` | ~12 MB | Devices with limited storage | Essential packages only |
 | `full-squashfs-sysupgrade.bin` | ~100+ MB | Devices with ample storage (256MB+ NAND) | Full package set included |
+
+</div>
 
 ### Critical Warning
 
@@ -109,6 +113,8 @@ Choose the firmware variant based on your available overlay space.
 
 ## Specifications
 
+<div align="center">
+
 | Component | Details |
 |-----------|---------|
 | Device | Arcadyan AW1000 (qualcommax/ipq807x) |
@@ -119,6 +125,8 @@ Choose the firmware variant based on your available overlay space.
 | Storage | 256 MB NAND Flash |
 | Wireless | Dual-band 802.11ac Wi-Fi |
 | Ports | Multiple Gigabit Ethernet and USB |
+
+</div>
 
 ---
 
@@ -145,6 +153,8 @@ coreutils-stat, curl, dbus, ddns-scripts, ddns-scripts-services
 
 ### LED Indicators
 
+<div align="center">
+
 | Indicator | Meaning |
 |-----------|---------|
 | Power Light | Device is powered on and ready |
@@ -153,7 +163,11 @@ coreutils-stat, curl, dbus, ddns-scripts, ddns-scripts-services
 | Signal Strength | Cellular signal quality level |
 | New SMS | Unread SMS messages on the SIM card |
 
+</div>
+
 ### Default Settings
+
+<div align="center">
 
 | Setting | Default Value |
 |---------|---------------|
@@ -163,6 +177,8 @@ coreutils-stat, curl, dbus, ddns-scripts, ddns-scripts-services
 | Admin Username | `root` |
 | Admin Password | (not set - configure on first login) |
 | LAN IP Address | `192.168.1.1` |
+
+</div>
 
 > Important: Change the default admin password and Wi-Fi credentials immediately after first login for security.
 
