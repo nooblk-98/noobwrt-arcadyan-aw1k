@@ -20,7 +20,7 @@
   <a href="#-faq">❓ FAQ</a>
 </p>
 
-![NoobWRT Dashboard](/images/main.png)
+![NoobWRT Dashboard](/images/logo.png)
 
 </div>
 
