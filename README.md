@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🚀 NoobWRT for Arcadyan AW1000
+# NoobWRT for Arcadyan AW1000
 
 ### High-performance ImmortalWRT/OpenWrt firmware for the Arcadyan AW1000
 
@@ -8,13 +8,11 @@
 [![Build Status](https://img.shields.io/badge/Build-Jenkins-blue?style=for-the-badge&logo=jenkins)](https://jenkins.itsnooblk.com/blue/organizations/jenkins/noobwrt-aw1k/activity)
 [![Issues](https://img.shields.io/github/issues/nooblk-98/noobwrt-arcadyan-aw1k?style=for-the-badge)](https://github.com/nooblk-98/noobwrt-arcadyan-aw1k/issues)
 [![Target](https://img.shields.io/badge/target-Arcadyan%20AW1000-blue?style=for-the-badge)](https://github.com/nooblk-98/noobwrt-arcadyan-aw1k)
-[![Base](https://img.shields.io/badge/base-ImmortalWRT%20%2F%20OpenWrt-green?style=for-the-badge)](https://github.com/nooblk-98/noobwrt-arcadyan-aw1k)
-[![Kernel](https://img.shields.io/badge/kernel-latest-success?style=for-the-badge)](https://github.com/nooblk-98/noobwrt-arcadyan-aw1k)
+[![Base](https://img.shields.io/badge/base-ImmortalWRT-green?style=for-the-badge)](https://github.com/nooblk-98/noobwrt-arcadyan-aw1k)
 [![Status](https://img.shields.io/badge/status-stable-brightgreen?style=for-the-badge)](https://github.com/nooblk-98/noobwrt-arcadyan-aw1k)
 
 <p align="center">
-  <a href="https://jenkins.itsnooblk.com/blue/organizations/jenkins/noobwrt-aw1k/activity">🔧 Build Status</a> •
-  <a href="https://youtu.be/6eYihpGg7Sw">📺 Setup Video</a> •
+  <a href="https://jk.itsnooblk.com/blue/organizations/jenkins/noobwrt-aw1k/activity">🔧 Build Status</a> •
   <a href="#-features">✨ Features</a> •
   <a href="https://github.com/nooblk-98/noobwrt-arcadyan-aw1k/issues/new">🐛 Report Issue</a> •
   <a href="#-faq">❓ FAQ</a>
@@ -26,14 +24,14 @@
 
 ---
 
-## 📖 Overview
+## Overview
 
 **NoobWRT** transforms the Arcadyan AW1000 into a fast, secure, and highly customizable router. Built on the robust ImmortalWRT/OpenWrt foundation, it's meticulously tuned for:
 
-- ⚡ **Performance** - Wire-speed routing with minimal latency
-- 🔒 **Security** - Hardened firewall and regular security updates
-- 🎯 **Stability** - Battle-tested configuration for 24/7 reliability
-- 🛠️ **Flexibility** - Curated app ecosystem with sensible defaults
+- **Performance** - Wire-speed routing with minimal latency
+- **Security** - Hardened firewall and regular security updates
+- **Stability** - Battle-tested configuration for 24/7 reliability
+- **Flexibility** - Curated app ecosystem with sensible defaults
 
 ### 🔄 Automated Monthly Builds
 
