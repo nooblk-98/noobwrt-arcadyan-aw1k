@@ -12,7 +12,7 @@
 [![Status](https://img.shields.io/badge/status-stable-brightgreen?style=for-the-badge)](https://github.com/nooblk-98/noobwrt-arcadyan-aw1k)
 
 <p align="center">
-  <a href="https://jk.itsnooblk.com/blue/organizations/jenkins/noobwrt-aw1k/activity">🔧 Build Status</a> •
+  <a href="https://jk.itsnooblk.com/job/aw1k-builder/">🔧 Build Status</a> •
   <a href="#-features">✨ Features</a> •
   <a href="https://github.com/nooblk-98/noobwrt-arcadyan-aw1k/issues/new">🐛 Report Issue</a> •
   <a href="#-faq">❓ FAQ</a>
@@ -33,14 +33,14 @@
 - **Stability** - Battle-tested configuration for 24/7 reliability
 - **Flexibility** - Curated app ecosystem with sensible defaults
 
-### 🔄 Automated Monthly Builds
+### Automated Monthly Builds
 
 NoobWRT features **automated monthly builds** powered by Jenkins CI/CD, ensuring you always have access to:
 
-- 📦 **Latest package updates** from upstream ImmortalWRT/OpenWrt
-- 🔒 **Security patches** applied automatically
-- 🐛 **Bug fixes** integrated as soon as they're available
-- 📊 **Transparent build process** - [View build status and history](https://jenkins.itsnooblk.com/blue/organizations/jenkins/noobwrt-aw1k/activity)
+- **Latest package updates** from upstream ImmortalWRT/OpenWrt
+- *Security patches** applied automatically
+- **Bug fixes** integrated as soon as they're available
+- **Transparent build process** - [View build status and history](https://jk.itsnooblk.com/job/aw1k-builder/)
 
 ![Jenkins](/images/jenkins.png)
 
