@@ -147,6 +147,54 @@ coreutils-stat, curl, dbus, ddns-scripts, ddns-scripts-services
 
 </details>
 
+### Custom Packages Included in Full Firmware
+
+- `luci-app-smartdns`
+- `luci-app-aria2`
+- `luci-app-cloudflared`
+- `luci-app-nlbwmon`
+- `luci-app-internet-detector`
+- `luci-app-vnstat2`
+- `luci-app-autoreboot`
+- `luci-app-filemanager`
+- `luci-app-tailscale`
+- `luci-app-openvpn`
+- `luci-app-statistics`
+- `luci-app-banip`
+- `luci-app-ddns`
+- `luci-app-samba4`
+- `luci-app-package-manager`
+- `luci-app-diskman`
+- `luci-app-eqos`
+- `luci-app-frpc`
+- `luci-app-hd-idle`
+- `luci-app-homeproxy`
+- `luci-app-qbittorrent`
+- `luci-app-sshtunnel`
+- `luci-app-wifischedule`
+- `luci-app-wol`
+- `luci-app-zerotier`
+- `luci-app-ipinfo`
+- `luci-app-wrtbwmon`
+- `luci-app-adguardhome`
+- `luci-app-watchcat`
+- `luci-app-ramfree`
+- `luci-app-sqm`
+- `luci-app-cpufreq`
+- `luci-app-ttyd`
+- `luci-app-modemdata`
+- `luci-app-mwan3`
+- `luci-proto-wireguard`
+- `luci-app-mwan`
+- `luci-app-qmodem`
+- `luci-app-sms-tool-js`
+- `luci-app-qmodem-ttl`
+- `luci-app-adblock`
+- `luci-theme-argon`
+- `luci-app-argon-config`
+- `luci-theme-carbonpx`
+- `luci-theme-peditx`
+
 ---
 
 ## Indicators and Defaults
