@@ -132,20 +132,22 @@ Choose the firmware variant based on your available overlay space.
 
 ## Packages
 
-264+ pre-installed packages to enhance your router out of the box.
+### Custom Packages Included in Full Firmware
 
-<details>
-<summary><b>Click to view the package list</b></summary>
-<br>
-
-adblock, aria2, aria2-openssl, ariang, attr, avahi-dbus-daemon, bash, bc, blkid, bzip2, chat, chinadns-ng,
-collectd, collectd-mod-cpu, collectd-mod-interface, collectd-mod-iwinfo, collectd-mod-load, collectd-mod-memory,
-collectd-mod-network, collectd-mod-rrdtool, comgt, coreutils, coreutils-base64, coreutils-nohup, coreutils-sort,
-coreutils-stat, curl, dbus, ddns-scripts, ddns-scripts-services
-
-... and many more for a complete router experience.
-
-</details>
+- `luci-app-smartdns`
+- `luci-app-aria2`
+- `luci-app-cloudflared`
+- `luci-app-nlbwmon`
+- `luci-app-internet-detector`
+- `luci-app-vnstat2`
+- `luci-app-autoreboot`
+- `luci-app-filemanager`
+- `luci-app-tailscale`
+- `luci-app-openvpn`
+- `luci-app-statistics`
+- `luci-app-banip`
+- `luci-app-ddns`
+- `luci-app-samba4`
 
 ### Custom Packages Included in Full Firmware
 
