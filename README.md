@@ -2,7 +2,7 @@
 
 # NoobWRT for Arcadyan AW1000
 
-### High-performance ImmortalWRT/OpenWrt firmware for the Arcadyan AW1000
+High-performance ImmortalWRT/OpenWrt firmware for the Arcadyan AW1000
 
 [![Release](https://img.shields.io/github/v/release/nooblk-98/arcadyan-aw1000-mod-firmware?sort=semver&style=for-the-badge)](https://github.com/nooblk-98/arcadyan-aw1000-mod-firmware/releases)
 [![Build Status](https://img.shields.io/badge/Build-Jenkins-blue?style=for-the-badge&logo=jenkins)](https://jenkins.itsnooblk.com/blue/organizations/jenkins/noobwrt-aw1k/activity)
@@ -12,10 +12,10 @@
 [![Status](https://img.shields.io/badge/status-stable-brightgreen?style=for-the-badge)](https://github.com/nooblk-98/noobwrt-arcadyan-aw1k)
 
 <p align="center">
-  <a href="https://jk.itsnooblk.com/job/aw1k-builder/">🔧 Build Status</a> •
-  <a href="#-features">✨ Features</a> •
-  <a href="https://github.com/nooblk-98/noobwrt-arcadyan-aw1k/issues/new">🐛 Report Issue</a> •
-  <a href="#-faq">❓ FAQ</a>
+  <a href="https://jk.itsnooblk.com/job/aw1k-builder/">Build Status</a> ?
+  <a href="#features">Features</a> ?
+  <a href="https://github.com/nooblk-98/noobwrt-arcadyan-aw1k/issues/new">Report Issue</a> ?
+  <a href="#faq">FAQ</a>
 </p>
 
 ![NoobWRT Dashboard](/images/logo.png)
@@ -26,21 +26,21 @@
 
 ## Overview
 
-**NoobWRT** transforms the Arcadyan AW1000 into a fast, secure, and highly customizable router. Built on the robust ImmortalWRT/OpenWrt foundation, it's meticulously tuned for:
+NoobWRT transforms the Arcadyan AW1000 into a fast, secure, and highly customizable router. Built on the ImmortalWRT/OpenWrt foundation, it is tuned for:
 
-- **Performance** - Wire-speed routing with minimal latency
-- **Security** - Hardened firewall and regular security updates
-- **Stability** - Battle-tested configuration for 24/7 reliability
-- **Flexibility** - Curated app ecosystem with sensible defaults
+- Performance: wire-speed routing with minimal latency
+- Security: hardened firewall and regular security updates
+- Stability: tested configuration for 24/7 reliability
+- Flexibility: curated app ecosystem with sensible defaults
 
 ### Automated Monthly Builds
 
-NoobWRT features **automated monthly builds** powered by Jenkins CI/CD, ensuring you always have access to:
+NoobWRT provides automated monthly builds powered by Jenkins CI/CD, ensuring access to:
 
-- **Latest package updates** from upstream ImmortalWRT/OpenWrt
-- *Security patches** applied automatically
-- **Bug fixes** integrated as soon as they're available
-- **Transparent build process** - [View build status and history](https://jk.itsnooblk.com/job/aw1k-builder/)
+- Latest package updates from upstream ImmortalWRT/OpenWrt
+- Security patches applied automatically
+- Bug fixes integrated as soon as they are available
+- Transparent build process: [view build status and history](https://jk.itsnooblk.com/job/aw1k-builder/)
 
 ![Jenkins](/images/jenkins.png)
 
@@ -48,27 +48,28 @@ Every release is automatically built, tested, and published to ensure reliabilit
 
 ---
 
-## ⚠️ **IMPORTANT: Choose the Correct Firmware Version**
+## Important: Choose the Correct Firmware Version
 
-Each release includes **two firmware variants**. Using the wrong version **will brick your device**!
+Each release includes two firmware variants. Using the wrong version can brick your device.
 
 | Firmware File | Overlay Size | Device Compatibility | Use Case |
-|---------------|--------------|---------------------|----------|
-| **`lite-squashfs-sysupgrade.bin`** | ~12 MB | Devices with **limited storage** | Essential packages only |
-| **`full-squashfs-sysupgrade.bin`** | ~100+ MB | Devices with **ample storage** (256MB+ NAND) | Full package set included |
+|---------------|--------------|----------------------|----------|
+| `lite-squashfs-sysupgrade.bin` | ~12 MB | Devices with limited storage | Essential packages only |
+| `full-squashfs-sysupgrade.bin` | ~100+ MB | Devices with ample storage (256MB+ NAND) | Full package set included |
 
-### 🚨 Critical Warning
+### Critical Warning
 
-> **⛔ DO NOT flash the wrong firmware variant!**
+> Do not flash the wrong firmware variant.
 >
-> - If you have a device with **limited overlay space (< 50MB)**, use **`lite-squashfs-sysupgrade.bin`**
-> - If you have a device with **100MB+ overlay space**, use **`full-squashfs-sysupgrade.bin`**
-> - **Flashing the full version on a limited storage device WILL BRICK IT!**
-> - Check your current overlay size: System → Software → Available space
+> - If you have a device with limited overlay space (< 50MB), use `lite-squashfs-sysupgrade.bin`
+> - If you have a device with 100MB+ overlay space, use `full-squashfs-sysupgrade.bin`
+> - Flashing the full version on a limited storage device will brick it
+> - Check your current overlay size: System -> Software -> Available space
 
 ### How to Check Your Device
 
 Before flashing, SSH into your router or check via LuCI:
+
 ```bash
 df -h | grep overlay
 ```
@@ -77,52 +78,56 @@ Choose the firmware variant based on your available overlay space.
 
 ---
 
-## 📑 Table of Contents
+## Table of Contents
 
-- [⚠️ Firmware Selection (CRITICAL)](#️-important-choose-the-correct-firmware-version)
-- [🔄 Automated Builds](#-automated-monthly-builds)
-- [✨ Features](#-features)
-- [📸 Screenshots](#-screenshots)
-- [⚙️ Specifications](#️-specifications)
-- [📦 Packages](#-packages)
-- [💡 Indicators & Defaults](#-indicators--defaults)
-- [❓ FAQ](#-faq)
-- [🤝 Contributing](#-contributing)
-- [📄 License](#-license)
+- [Overview](#overview)
+- [Automated Monthly Builds](#automated-monthly-builds)
+- [Important: Choose the Correct Firmware Version](#important-choose-the-correct-firmware-version)
+- [Screenshots](#screenshots)
+- [Specifications](#specifications)
+- [Packages](#packages)
+- [Indicators and Defaults](#indicators-and-defaults)
+- [FAQ](#faq)
+- [Contributing](#contributing)
+- [License](#license)
 
-## 📸 Screenshots
+---
+
+## Screenshots
 
 <div align="center">
 
 ### UI
+
 ![Dashboard](/images/dash.png)
 
 ![ss1](/images/ss1.png)
+
 </div>
 
 ---
 
-## ⚙️ Specifications
+## Specifications
 
 | Component | Details |
 |-----------|---------|
-| **Device** | Arcadyan AW1000 (qualcommax/ipq807x) |
-| **Firmware Version** | Latest Immortlwrt |
-| **Kernel** | Latest Immortlwrt |
-| **CPU** | 1.4 GHz Quad-Core ARM Cortex |
-| **RAM** | 1 GB DDR4 |
-| **Storage** | 256 MB NAND Flash |
-| **Wireless** | Dual-band 802.11ac Wi-Fi |
-| **Ports** | Multiple Gigabit Ethernet + USB |
+| Device | Arcadyan AW1000 (qualcommax/ipq807x) |
+| Firmware Version | Latest ImmortalWRT |
+| Kernel | Latest ImmortalWRT |
+| CPU | 1.4 GHz Quad-Core ARM Cortex |
+| RAM | 1 GB DDR4 |
+| Storage | 256 MB NAND Flash |
+| Wireless | Dual-band 802.11ac Wi-Fi |
+| Ports | Multiple Gigabit Ethernet and USB |
 
 ---
 
-## 📦 Packages
+## Packages
 
-**264+ pre-installed packages** to enhance your router out-of-the-box! 🎁
+264+ pre-installed packages to enhance your router out of the box.
 
 <details>
-<summary><b>📋 Click to view complete package list</b></summary>
+<summary><b>Click to view the package list</b></summary>
 <br>
 
 adblock, aria2, aria2-openssl, ariang, attr, avahi-dbus-daemon, bash, bc, blkid, bzip2, chat, chinadns-ng,
@@ -130,104 +135,102 @@ collectd, collectd-mod-cpu, collectd-mod-interface, collectd-mod-iwinfo, collect
 collectd-mod-network, collectd-mod-rrdtool, comgt, coreutils, coreutils-base64, coreutils-nohup, coreutils-sort,
 coreutils-stat, curl, dbus, ddns-scripts, ddns-scripts-services
 
-... and many more for a complete router experience!
+... and many more for a complete router experience.
 
 </details>
 
 ---
 
-## 💡 Indicators & Defaults
+## Indicators and Defaults
 
-### 🔔 LED Indicators
+### LED Indicators
 
 | Indicator | Meaning |
 |-----------|---------|
-| 🟢 **Power Light** | Device is powered on and ready |
-| 📡 **5G Indicator** | Active 5G mobile connection status |
-| 🌐 **Internet Status** | Confirms active internet connection |
-| 📶 **Signal Strength** | Cellular signal quality level |
-| 📨 **New SMS** | Unread SMS messages on the SIM card |
+| Power Light | Device is powered on and ready |
+| 5G Indicator | Active 5G mobile connection status |
+| Internet Status | Confirms active internet connection |
+| Signal Strength | Cellular signal quality level |
+| New SMS | Unread SMS messages on the SIM card |
 
-### 🔐 Default Settings
+### Default Settings
 
 | Setting | Default Value |
 |---------|---------------|
-| **Wi-Fi SSID (2.4GHz)** | `NoobWRT 2GHz` |
-| **Wi-Fi SSID (5GHz)** | `NoobWRT 5GHz` |
-| **Wi-Fi Password** | `123456789` |
-| **Admin Username** | `root` |
-| **Admin Password** | *(not set - configure on first login)* |
-| **LAN IP Address** | `192.168.1.1` |
+| Wi-Fi SSID (2.4GHz) | `NoobWRT 2GHz` |
+| Wi-Fi SSID (5GHz) | `NoobWRT 5GHz` |
+| Wi-Fi Password | `123456789` |
+| Admin Username | `root` |
+| Admin Password | (not set - configure on first login) |
+| LAN IP Address | `192.168.1.1` |
 
-> ⚠️ **Important**: Change the default admin password and Wi-Fi credentials immediately after first login for security!
+> Important: Change the default admin password and Wi-Fi credentials immediately after first login for security.
 
 ---
 
-## ❓ FAQ
+## FAQ
 
 <details>
 <summary><b>What is NoobWRT?</b></summary>
 
-NoobWRT is a performance-tuned ImmortalWRT/OpenWrt firmware build specifically optimized for the Arcadyan AW1000. It features enhanced stability, curated applications, and sensible default configurations for the best out-of-the-box experience.
+NoobWRT is a performance-tuned ImmortalWRT/OpenWrt firmware build optimized for the Arcadyan AW1000. It features enhanced stability, curated applications, and sensible default configurations.
 
 </details>
 
 <details>
-<summary><b>⚠️ Which firmware file should I download? (CRITICAL)</b></summary>
+<summary><b>Which firmware file should I download?</b></summary>
 
-**This is the most important question!** Choosing the wrong firmware will brick your device.
+Choosing the wrong firmware can brick your device.
 
-- **`lite-squashfs-sysupgrade.bin`** → For devices with ~12MB overlay (limited storage)
-- **`full-squashfs-sysupgrade.bin`** → For devices with 100MB+ overlay (standard AW1000 with 256MB NAND)
+- `lite-squashfs-sysupgrade.bin` for devices with ~12MB overlay (limited storage)
+- `full-squashfs-sysupgrade.bin` for devices with 100MB+ overlay (standard AW1000 with 256MB NAND)
 
-**How to check:** Run `df -h | grep overlay` via SSH or check System → Software in LuCI.
+How to check: Run `df -h | grep overlay` via SSH or check System -> Software in LuCI.
 
-**If unsure, use the LITE version!** It's safer and can be upgraded to FULL later if you have space.
+If unsure, use the lite version. It is safer and can be upgraded to full later if you have space.
 
 </details>
 
 <details>
 <summary><b>Is it safe to flash this firmware?</b></summary>
 
-Flashing firmware always carries some risk. However, if you follow the installation steps carefully, **choose the correct firmware variant**, and ensure stable power during the process, it should be safe. The device has U-Boot recovery available as a fallback option in case something goes wrong.
-
-**⚠️ Most critical:** Make absolutely sure you're using the correct firmware variant (lite vs full) for your device's storage capacity.
+Flashing firmware always carries some risk. If you follow the installation steps carefully, choose the correct firmware variant, and ensure stable power during the process, it should be safe. The device has U-Boot recovery available as a fallback option.
 
 </details>
 
 <details>
 <summary><b>Can I revert to stock firmware?</b></summary>
 
-Yes! You can revert to the stock firmware at any time. Simply access the U-Boot recovery page and upload the stock or factory firmware image.
+Yes. Access the U-Boot recovery page and upload the stock or factory firmware image.
 
 </details>
 
 <details>
 <summary><b>How do I lock specific LTE/5G bands?</b></summary>
 
-Navigate to: **Modem** → **qModem** → **Advanced Modem Settings** → **Lock Band**
+Navigate to: Modem -> qModem -> Advanced Modem Settings -> Lock Band
 
-Select your desired bands and click **Apply**.
+Select your desired bands and click Apply.
 
 </details>
 
 <details>
 <summary><b>How do I lock to a specific cell tower?</b></summary>
 
-1. Go to **Modem** → **qModem** → **Advanced Modem Settings** → **Neighbor Cell**
-2. Click **Run Scan** to discover nearby towers
+1. Go to Modem -> qModem -> Advanced Modem Settings -> Neighbor Cell
+2. Click Run Scan to discover nearby towers
 3. Choose your preferred cell tower
-4. Enter the **PCI** and **ARFCN** values
-5. Click **Submit**
+4. Enter the PCI and ARFCN values
+5. Click Submit
 
 </details>
 
 <details>
 <summary><b>How do I change the UI theme?</b></summary>
 
-Navigate to: **System** → **System** → **Language and Style** → **Design**
+Navigate to: System -> System -> Language and Style -> Design
 
-Select your preferred theme from the dropdown and click **Apply**.
+Select your preferred theme from the dropdown and click Apply.
 
 </details>
 
@@ -240,46 +243,42 @@ For support and inquiries, contact via [WhatsApp](https://wa.me/94716172860) or 
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
-We welcome contributions from the community! Your feedback and ideas help make NoobWRT better for everyone.
+We welcome contributions from the community. Feedback and ideas help make NoobWRT better for everyone.
 
-### 🐛 Report Bugs
+### Report Bugs
 
-Found a bug? Help us fix it!
-
-1. Check if the issue already exists in our [Issue Tracker](https://github.com/nooblk-98/noobwrt-arcadyan-aw1k/issues)
+1. Check if the issue already exists in the [Issue Tracker](https://github.com/nooblk-98/noobwrt-arcadyan-aw1k/issues)
 2. If not, [create a new issue](https://github.com/nooblk-98/noobwrt-arcadyan-aw1k/issues/new)
 3. Include:
-   - **Firmware version** you're using
-   - **Device variant** (lite or full)
-   - **Steps to reproduce** the bug
-   - **Expected vs actual behavior**
-   - **Logs or screenshots** if applicable
+   - Firmware version you are using
+   - Device variant (lite or full)
+   - Steps to reproduce the bug
+   - Expected vs actual behavior
+   - Logs or screenshots if applicable
 
-### 💡 Suggest Improvements
-
-Have an idea to improve NoobWRT?
+### Suggest Improvements
 
 1. [Open an issue](https://github.com/nooblk-98/noobwrt-arcadyan-aw1k/issues/new) with the "enhancement" label
 2. Describe:
-   - **What feature** you'd like to see
-   - **Why it would be useful** to the community
-   - **How it might work** (if you have ideas)
+   - What feature you would like to see
+   - Why it would be useful to the community
+   - How it might work (if you have ideas)
 
-### 📋 Issue Guidelines
+### Issue Guidelines
 
 When creating an issue, please:
-- ✅ Use a clear and descriptive title
-- ✅ Provide as much detail as possible
-- ✅ Be respectful and constructive
-- ✅ Check for duplicates before posting
+- Use a clear and descriptive title
+- Provide as much detail as possible
+- Be respectful and constructive
+- Check for duplicates before posting
 
-**Your contributions help shape the future of NoobWRT!** 🚀
+Your contributions help shape the future of NoobWRT.
 
 ---
 
-## 📄 License
+## License
 
 This firmware is based on [ImmortalWRT](https://github.com/immortalwrt/immortalwrt) and [OpenWrt](https://openwrt.org/), which are licensed under the GPL-2.0 license.
 
@@ -287,9 +286,9 @@ This firmware is based on [ImmortalWRT](https://github.com/immortalwrt/immortalw
 
 <div align="center">
 
-**NoobWRT** - Firmware maintained by **[NoobLK](https://github.com/nooblk-98)**
+NoobWRT - Firmware maintained by [NoobLK](https://github.com/nooblk-98)
 
-© 2025 NoobWRT • Made with ❤️ for the Community
+Copyright 2025 NoobWRT
 
 [![GitHub](https://img.shields.io/badge/GitHub-nooblk--98-181717?style=flat&logo=github)](https://github.com/nooblk-98)
 [![WhatsApp](https://img.shields.io/badge/WhatsApp-Contact-25D366?style=flat&logo=whatsapp)](https://wa.me/94716172860)
