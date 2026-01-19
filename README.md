@@ -42,7 +42,7 @@ NoobWRT provides automated monthly builds powered by Jenkins CI/CD, ensuring acc
 - Bug fixes integrated as soon as they are available
 - Transparent build process: [view build status and history](https://jk.itsnooblk.com/job/aw1k-builder/)
 
-![Jenkins](/images/jenkins.png)
+![Jenkins](/images/jenkins-build.png)
 
 Every release is automatically built, tested, and published to ensure reliability and consistency.
 
