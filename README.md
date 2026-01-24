@@ -105,7 +105,9 @@ Choose the firmware variant based on your available overlay space.
 
 ![Dashboard](/images/dash.png)
 
-![ss1](/images/ss1.png)
+![toolset](/images/toolset.png)
+
+![theme](/images/theme.png)
 
 </div>
 
