@@ -134,53 +134,106 @@ Choose the firmware variant based on your available overlay space.
 
 ## Packages
 
-### Custom Packages Included in Full Firmware
+<div align="center">
 
-- `luci-app-smartdns`
-- `luci-app-aria2`
-- `luci-app-cloudflared`
-- `luci-app-nlbwmon`
-- `luci-app-internet-detector`
-- `luci-app-vnstat2`
-- `luci-app-autoreboot`
-- `luci-app-filemanager`
-- `luci-app-tailscale`
-- `luci-app-openvpn`
-- `luci-app-statistics`
-- `luci-app-banip`
-- `luci-app-ddns`
-- `luci-app-samba4`
-- `luci-app-package-manager`
-- `luci-app-diskman`
-- `luci-app-eqos`
-- `luci-app-frpc`
-- `luci-app-hd-idle`
-- `luci-app-homeproxy`
-- `luci-app-qbittorrent`
-- `luci-app-sshtunnel`
-- `luci-app-wifischedule`
-- `luci-app-wol`
-- `luci-app-zerotier`
-- `luci-app-ipinfo`
-- `luci-app-wrtbwmon`
-- `luci-app-adguardhome`
-- `luci-app-watchcat`
-- `luci-app-ramfree`
-- `luci-app-sqm`
-- `luci-app-cpufreq`
-- `luci-app-ttyd`
-- `luci-app-modemdata`
-- `luci-app-mwan3`
-- `luci-proto-wireguard`
-- `luci-app-mwan`
-- `luci-app-qmodem`
-- `luci-app-sms-tool-js`
-- `luci-app-qmodem-ttl`
-- `luci-app-adblock`
-- `luci-theme-argon`
-- `luci-app-argon-config`
-- `luci-theme-carbonpx`
-- `luci-theme-peditx`
+| Package | Full | Lite |
+|---------|:----:|:----:|
+| **Base System** | | |
+| `luci` | ✓ | ✓ |
+| `htop` | ✓ | ✓ |
+| `autocore` | ✓ | ✓ |
+| `bash` | ✓ | ✓ |
+| `block-mount` | ✓ | ✓ |
+| `ds-lite` | ✓ | ✓ |
+| `ethtool-full` | ✓ | ✓ |
+| `coreutils` | ✓ | ✓ |
+| `coreutils-base64` | ✓ | ✓ |
+| `coreutils-nohup` | ✓ | ✓ |
+| `curl` | ✓ | ✓ |
+| `openssh-sftp-server` | ✓ | |
+| `resolveip` | ✓ | ✓ |
+| `tcping` | ✓ | ✓ |
+| `unzip` | ✓ | ✓ |
+| **Network & Firewall** | | |
+| `dnsmasq-full` | ✓ | ✓ |
+| `firewall4` | ✓ | ✓ |
+| `nftables` | ✓ | ✓ |
+| `kmod-nft-core` | ✓ | ✓ |
+| `iptables-nft` | ✓ | ✓ |
+| **Modem Support** | | |
+| `luci-app-qmodem` | ✓ | ✓ |
+| `luci-app-sms-tool-js` | ✓ | ✓ |
+| `luci-app-qmodem-ttl` | ✓ | ✓ |
+| `quectel-CM-5G-M` | ✓ | ✓ |
+| `tom_modem` | ✓ | ✓ |
+| `luci-app-modemdata` | ✓ | ✓ |
+| `comgt` | ✓ | ✓ |
+| **VPN & Proxy** | | |
+| `luci-app-passwall` | ✓ | |
+| `luci-app-passwall2` | ✓ | |
+| `haproxy` | ✓ | |
+| `xray-core` | ✓ | |
+| `chinadns-ng` | ✓ | |
+| `dns2socks` | ✓ | |
+| `dns2tcp` | ✓ | |
+| `microsocks` | ✓ | |
+| `kmod-wireguard` | ✓ | ✓ |
+| `wireguard-tools` | ✓ | ✓ |
+| `luci-proto-wireguard` | ✓ | ✓ |
+| `luci-proto-amneziawg` | ✓ | |
+| `luci-app-openvpn` | ✓ | ✓ |
+| `luci-app-tailscale` | ✓ | ✓ |
+| `luci-app-zerotier` | ✓ | |
+| **System Management** | | |
+| `luci-app-ramfree` | ✓ | ✓ |
+| `luci-app-sqm` | ✓ | ✓ |
+| `luci-app-cpufreq` | ✓ | ✓ |
+| `luci-app-ttyd` | ✓ | ✓ |
+| `luci-app-mwan3` | ✓ | |
+| `luci-app-netstat` | ✓ | ✓ |
+| `luci-app-nft-ttl` | ✓ | ✓ |
+| **USB Support** | | |
+| `usbutils` | ✓ | ✓ |
+| `kmod-usb-serial` | ✓ | ✓ |
+| `kmod-usb-serial-option` | ✓ | ✓ |
+| `kmod-usb-serial-wwan` | ✓ | ✓ |
+| `kmod-usb-net` | ✓ | ✓ |
+| `kmod-usb-net-asix-ax88179` | ✓ | ✓ |
+| `kmod-usb-net-cdc-ether` | ✓ | ✓ |
+| `kmod-usb-net-cdc-ncm` | ✓ | ✓ |
+| `kmod-usb-net-huawei-cdc-ncm` | ✓ | ✓ |
+| `kmod-usb-net-ipheth` | ✓ | ✓ |
+| `kmod-usb-net-qmi-wwan` | ✓ | ✓ |
+| `kmod-usb-net-rndis` | ✓ | ✓ |
+| `kmod-usb-ohci` | ✓ | ✓ |
+| `kmod-usb-storage` | ✓ | ✓ |
+| `usb-modeswitch` | ✓ | ✓ |
+| **Themes** | | |
+| `luci-theme-argon` | ✓ | ✓ |
+| `luci-app-argon-config` | ✓ | ✓ |
+| **Applications** | | |
+| `luci-app-smartdns` | ✓ | ✓ |
+| `luci-app-cloudflared` | ✓ | |
+| `luci-app-nlbwmon` | ✓ | ✓ |
+| `luci-app-internet-detector` | ✓ | ✓ |
+| `luci-app-autoreboot` | ✓ | |
+| `luci-app-filemanager` | ✓ | ✓ |
+| `luci-app-statistics` | ✓ | |
+| `luci-app-banip` | ✓ | |
+| `luci-app-samba4` | ✓ | ✓ |
+| `luci-app-package-manager` | ✓ | |
+| `luci-app-diskman` | ✓ | ✓ |
+| `luci-app-eqos` | ✓ | ✓ |
+| `luci-app-frpc` | ✓ | ✓ |
+| `luci-app-hd-idle` | ✓ | ✓ |
+| `luci-app-homeproxy` | ✓ | ✓ |
+| `luci-app-qbittorrent` | ✓ | |
+| `luci-app-wifischedule` | ✓ | ✓ |
+| `luci-app-wol` | ✓ | |
+| `luci-app-wrtbwmon` | ✓ | |
+| `luci-app-adguardhome` | ✓ | |
+
+</div>
 
 ---
 
