@@ -126,6 +126,29 @@ Choose the firmware variant based on your available overlay space.
 
 ---
 
+## Indicators and Defaults
+
+### LED Indicators
+
+**Power Light:** Device is powered on and ready  
+**5G Indicator:** Active 5G mobile connection status  
+**Internet Status:** Confirms active internet connection  
+**Signal Strength:** Cellular signal quality level  
+**New SMS:** Unread SMS messages on the SIM card
+
+### Default Settings
+
+**Wi-Fi SSID (2.4GHz):** `NoobWRT 2GHz`  
+**Wi-Fi SSID (5GHz):** `NoobWRT 5GHz`  
+**Wi-Fi Password:** `123456789`  
+**Admin Username:** `root`  
+**Admin Password:** (not set - configure on first login)  
+**LAN IP Address:** `192.168.1.1`
+
+> Important: Change the default admin password and Wi-Fi credentials immediately after first login for security.
+
+---
+
 ## Packages
 
 <div align="center">
@@ -178,6 +201,7 @@ Choose the firmware variant based on your available overlay space.
 | `luci-app-openvpn` | ✓ | ✓ |
 | `luci-app-tailscale` | ✓ | ✓ |
 | `luci-app-zerotier` | ✓ | |
+| `luci-app-homeproxy` | ✓ | ✓ |
 | **System Management** | | |
 | `luci-app-ramfree` | ✓ | ✓ |
 | `luci-app-sqm` | ✓ | ✓ |
@@ -220,7 +244,6 @@ Choose the firmware variant based on your available overlay space.
 | `luci-app-eqos` | ✓ | ✓ |
 | `luci-app-frpc` | ✓ | ✓ |
 | `luci-app-hd-idle` | ✓ | ✓ |
-| `luci-app-homeproxy` | ✓ | ✓ |
 | `luci-app-qbittorrent` | ✓ | |
 | `luci-app-wifischedule` | ✓ | ✓ |
 | `luci-app-wol` | ✓ | |
