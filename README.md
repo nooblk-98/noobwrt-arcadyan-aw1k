@@ -254,41 +254,6 @@ Choose the firmware variant based on your available overlay space.
 
 ---
 
-## Indicators and Defaults
-
-### LED Indicators
-
-<div align="center">
-
-| Indicator | Meaning |
-|-----------|---------|
-| Power Light | Device is powered on and ready |
-| 5G Indicator | Active 5G mobile connection status |
-| Internet Status | Confirms active internet connection |
-| Signal Strength | Cellular signal quality level |
-| New SMS | Unread SMS messages on the SIM card |
-
-</div>
-
-### Default Settings
-
-<div align="center">
-
-| Setting | Default Value |
-|---------|---------------|
-| Wi-Fi SSID (2.4GHz) | `NoobWRT 2GHz` |
-| Wi-Fi SSID (5GHz) | `NoobWRT 5GHz` |
-| Wi-Fi Password | `123456789` |
-| Admin Username | `root` |
-| Admin Password | (not set - configure on first login) |
-| LAN IP Address | `192.168.1.1` |
-
-</div>
-
-> Important: Change the default admin password and Wi-Fi credentials immediately after first login for security.
-
----
-
 ## FAQ
 
 <details>
