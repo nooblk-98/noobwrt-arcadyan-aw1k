@@ -254,6 +254,83 @@ Choose the firmware variant based on your available overlay space.
 
 ---
 
+## Modem Firmware Upgrade Guide (RG500Q-EA)
+
+### ⚠️ Important Notes
+
+- **China Version Warning:** If your firmware version ends with `ACY` (e.g., `RG500QEAAAR11A07M4G_ACY`), it's a China-customized version and may not work properly. Upgrade to the latest version.
+- **Risk Warning:** Performing a firmware upgrade carries some risk. You may not be able to downgrade afterward. Ensure stable power during the process.
+
+### Quick Upgrade Steps
+1. **Download Latest Firmware**
+   - Download version: **R13 01.200**
+   - Download link: [Google Drive](https://drive.google.com/file/d/1SnuogB48SNOrdLDLh3NhIpyy_drIWhFS/view?usp=sharing)
+
+2. **Extract and Upload**
+   - Extract the firmware file
+   - Upload it to your router
+
+3. **Flash the Firmware**
+   - Use QFirehose tool to install the firmware:
+   ```bash
+   QFirehose /path/to/firmware/
+   ```
+
+4. **Verify the Upgrade**
+   - Check the new firmware version using AT commands:
+   ```bash
+   ATI
+   ```
+
+---
+
+## Recovery Instructions
+
+If something goes wrong during the upgrade (power cut, interrupted upload, firmware mismatch, or unexpected reboot), don't panic. Try these recovery methods:
+
+### 1. **Failsafe Mode** (Recommended for beginners)
+- **What it does:** Lets you access the router without loading the full system
+- **How to use:**
+  1. Power off your router
+  2. Press and hold the reset button
+  3. Power on while holding reset (keep holding for 10+ seconds)
+  4. Access the router via SSH or TFTP to re-upload a valid firmware
+
+### 2. **Serial Console Access** (Advanced)
+- **What it does:** Direct low-level access to the router for debugging and recovery
+- **How to use:**
+  1. Connect to the router's serial/UART console
+  2. Use debug commands for recovery
+
+### 3. **USB Boot Option** (Best Prevention)
+- **What it does:** Allows you to boot from USB instead of internal storage, preventing permanent bricking
+- **When to use:** Set this up BEFORE you have problems
+
+#### USB Boot Setup Guide
+
+1. **Get the USB Boot Files**
+   - Download the official OpenWrt kernel image
+   - Rename it to `initramfs.bin`
+
+2. **Prepare Your USB Drive**
+   - Get a USB drive (1GB or larger)
+   - Download and use [Win32 Disk Imager](https://sourceforge.net/projects/win32diskimager/)
+   - Write `initramfs.bin` to the USB drive
+   - ⚠️ Warning: The USB drive will be completely formatted
+
+3. **Boot from USB**
+   - Power off your router
+   - Insert the USB drive
+   - Power on the router
+   - The router should boot from USB
+
+4. **Flash Safe Firmware**
+   - Download the official OpenWrt sysupgrade image
+   - Access the Web UI
+   - Flash it through the Web UI
+
+---
+
 ## FAQ
 
 <details>
