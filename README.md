@@ -362,11 +362,6 @@ You can expand NoobWRT functionality by installing additional packages from the 
 4. **Verify Installation**
    - Check **System → Software** to confirm the package appears in the installed list
 
-
-### Available Custom Packages
-
-Visit **https://feeds.itsnooblk.com/** to browse all available packages for NoobWRT.
-
 ---
 
 ## FAQ
