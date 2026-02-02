@@ -331,6 +331,44 @@ If something goes wrong during the upgrade (power cut, interrupted upload, firmw
 
 ---
 
+## Installing Additional Packages
+
+You can expand NoobWRT functionality by installing additional packages from the custom feed at **https://feeds.itsnooblk.com/**
+
+### Steps to Install Additional Packages
+
+1. **Download Package from Custom Feed**
+   - Visit https://feeds.itsnooblk.com/
+   - Download the desired `.ipk` package file to your computer
+
+2. **Upload to Router**
+   - Access http://192.168.1.1 in your browser
+   - Go to **System → File Manager**
+   - Navigate to `/tmp` directory
+   - Click **Upload** and select your downloaded `.ipk` file
+
+3. **Install via SSH or LuCI**
+   - **Option A (SSH - Recommended):**
+     ```bash
+     ssh root@192.168.1.1
+     opkg install /tmp/package-name.ipk
+     ```
+   - **Option B (Web UI):**
+     - Go to **System → Software**
+     - Click **Upload Package**
+     - Select your uploaded `.ipk` file
+     - Click **Install**
+
+4. **Verify Installation**
+   - Check **System → Software** to confirm the package appears in the installed list
+
+
+### Available Custom Packages
+
+Visit **https://feeds.itsnooblk.com/** to browse all available packages for NoobWRT.
+
+---
+
 ## FAQ
 
 <details>
