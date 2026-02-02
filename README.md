@@ -333,7 +333,7 @@ If something goes wrong during the upgrade (power cut, interrupted upload, firmw
 
 ## Installing Additional Packages
 
-You can expand NoobWRT functionality by installing additional packages from the custom feed at **https://feeds.itsnooblk.com/**
+You can expand NoobWRT functionality by installing additional packages from the custom feeds
 
 ### Steps to Install Additional Packages
 
