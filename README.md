@@ -152,6 +152,9 @@ Choose the firmware variant based on your available overlay space.
 ## Packages
 
 <div align="center">
+<table>
+<tr>
+<td width="50%">
 
 | Package | Full | Lite |
 |---------|:----:|:----:|
@@ -185,6 +188,12 @@ Choose the firmware variant based on your available overlay space.
 | `tom_modem` | ✓ | ✓ |
 | `luci-app-modemdata` | ✓ | ✓ |
 | `comgt` | ✓ | ✓ |
+
+</td>
+<td width="50%">
+
+| Package | Full | Lite |
+|---------|:----:|:----:|
 | **VPN & Proxy** | | |
 | `luci-app-passwall` | ✓ | |
 | `luci-app-passwall2` | ✓ | |
@@ -250,6 +259,9 @@ Choose the firmware variant based on your available overlay space.
 | `luci-app-wrtbwmon` | ✓ | |
 | `luci-app-adguardhome` | ✓ | |
 
+</td>
+</tr>
+</table>
 </div>
 
 ---
