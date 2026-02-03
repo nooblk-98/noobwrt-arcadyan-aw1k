@@ -197,6 +197,12 @@ Choose the firmware variant based on your available overlay space.
 | `dns2socks` | ✓ | |
 | `dns2tcp` | ✓ | |
 | `microsocks` | ✓ | |
+| `kmod-wireguard` | ✓ | ✓ |
+| `wireguard-tools` | ✓ | ✓ |
+| `luci-proto-wireguard` | ✓ | ✓ |
+| `luci-proto-amneziawg` | ✓ | |
+| `luci-app-openvpn` | ✓ | ✓ |
+| `luci-app-tailscale` | ✓ | ✓ |
 
 </td>
 <td width="50%">
@@ -204,12 +210,6 @@ Choose the firmware variant based on your available overlay space.
 | Package | Full | Lite |
 |---------|:----:|:----:|
 | **VPN & Proxy** (cont.) | | |
-| `kmod-wireguard` | ✓ | ✓ |
-| `wireguard-tools` | ✓ | ✓ |
-| `luci-proto-wireguard` | ✓ | ✓ |
-| `luci-proto-amneziawg` | ✓ | |
-| `luci-app-openvpn` | ✓ | ✓ |
-| `luci-app-tailscale` | ✓ | ✓ |
 | `luci-app-zerotier` | ✓ | |
 | `luci-app-homeproxy` | ✓ | ✓ |
 | **System Management** | | |
