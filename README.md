@@ -22,6 +22,10 @@ High-performance ImmortalWRT/OpenWrt firmware for the Arcadyan AW1000
 
 </div>
 
+<p align="center">
+    <img src="https://img.shields.io/github/downloads/rizkikotet-dev/arcadyan-aw1k/total?style=for-the-badge&logo=openwrt&labelColor=blue" alt="GitHub Downloads (all assets, all releases)">
+</p>
+
 ---
 
 ## Overview
