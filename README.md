@@ -12,19 +12,14 @@ High-performance ImmortalWRT/OpenWrt firmware for the Arcadyan AW1000
 [![Status](https://img.shields.io/badge/status-stable-brightgreen?style=for-the-badge)](https://github.com/nooblk-98/noobwrt-arcadyan-aw1k)
 
 <p align="center">
-  <a href="https://jk.itsnooblk.com/job/aw1k-builder/">Build Status</a> ?
-  <a href="#features">Features</a> ?
-  <a href="https://github.com/nooblk-98/noobwrt-arcadyan-aw1k/issues/new">Report Issue</a> ?
-  <a href="#faq">FAQ</a>
+   <img src="https://img.shields.io/github/downloads/nooblk-98/noobwrt-arcadyan-aw1k/total?style=for-the-badge&logo=openwrt&labelColor=blue" alt="GitHub Downloads (all assets, all releases)">
 </p>
 
 ![NoobWRT Dashboard](/images/logo.png)
 
 </div>
 
-<p align="center">
-    <img src="https://img.shields.io/github/downloads/rizkikotet-dev/arcadyan-aw1k/total?style=for-the-badge&logo=openwrt&labelColor=blue" alt="GitHub Downloads (all assets, all releases)">
-</p>
+
 
 ---
 
