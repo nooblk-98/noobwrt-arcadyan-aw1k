@@ -188,12 +188,6 @@ Choose the firmware variant based on your available overlay space.
 | `tom_modem` | ✓ | ✓ |
 | `luci-app-modemdata` | ✓ | ✓ |
 | `comgt` | ✓ | ✓ |
-
-</td>
-<td width="50%">
-
-| Package | Full | Lite |
-|---------|:----:|:----:|
 | **VPN & Proxy** | | |
 | `luci-app-passwall` | ✓ | |
 | `luci-app-passwall2` | ✓ | |
@@ -203,6 +197,13 @@ Choose the firmware variant based on your available overlay space.
 | `dns2socks` | ✓ | |
 | `dns2tcp` | ✓ | |
 | `microsocks` | ✓ | |
+
+</td>
+<td width="50%">
+
+| Package | Full | Lite |
+|---------|:----:|:----:|
+| **VPN & Proxy** (cont.) | | |
 | `kmod-wireguard` | ✓ | ✓ |
 | `wireguard-tools` | ✓ | ✓ |
 | `luci-proto-wireguard` | ✓ | ✓ |
