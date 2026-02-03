@@ -199,14 +199,14 @@ Choose the firmware variant based on your available overlay space.
 | `luci-proto-amneziawg` | ✓ | |
 | `luci-app-openvpn` | ✓ | ✓ |
 | `luci-app-tailscale` | ✓ | ✓ |
+| `luci-app-zerotier` | ✓ | |
+| `luci-app-homeproxy` | ✓ | ✓ |
 
 </td>
 <td width="50%">
 
 | Package | Full | Lite |
 |---------|:----:|:----:|
-| `luci-app-zerotier` | ✓ | |
-| `luci-app-homeproxy` | ✓ | ✓ |
 | `luci-app-ramfree` | ✓ | ✓ |
 | `luci-app-sqm` | ✓ | ✓ |
 | `luci-app-cpufreq` | ✓ | ✓ |
