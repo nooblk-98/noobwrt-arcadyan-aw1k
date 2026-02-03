@@ -158,7 +158,6 @@ Choose the firmware variant based on your available overlay space.
 
 | Package | Full | Lite |
 |---------|:----:|:----:|
-| **Base System** | | |
 | `luci` | ✓ | ✓ |
 | `htop` | ✓ | ✓ |
 | `autocore` | ✓ | ✓ |
@@ -174,13 +173,11 @@ Choose the firmware variant based on your available overlay space.
 | `resolveip` | ✓ | ✓ |
 | `tcping` | ✓ | ✓ |
 | `unzip` | ✓ | ✓ |
-| **Network & Firewall** | | |
 | `dnsmasq-full` | ✓ | ✓ |
 | `firewall4` | ✓ | ✓ |
 | `nftables` | ✓ | ✓ |
 | `kmod-nft-core` | ✓ | ✓ |
 | `iptables-nft` | ✓ | ✓ |
-| **Modem Support** | | |
 | `luci-app-qmodem` | ✓ | ✓ |
 | `luci-app-sms-tool-js` | ✓ | ✓ |
 | `luci-app-qmodem-ttl` | ✓ | ✓ |
@@ -188,7 +185,6 @@ Choose the firmware variant based on your available overlay space.
 | `tom_modem` | ✓ | ✓ |
 | `luci-app-modemdata` | ✓ | ✓ |
 | `comgt` | ✓ | ✓ |
-| **VPN & Proxy** | | |
 | `luci-app-passwall` | ✓ | |
 | `luci-app-passwall2` | ✓ | |
 | `haproxy` | ✓ | |
@@ -209,10 +205,8 @@ Choose the firmware variant based on your available overlay space.
 
 | Package | Full | Lite |
 |---------|:----:|:----:|
-| **VPN & Proxy** (cont.) | | |
 | `luci-app-zerotier` | ✓ | |
 | `luci-app-homeproxy` | ✓ | ✓ |
-| **System Management** | | |
 | `luci-app-ramfree` | ✓ | ✓ |
 | `luci-app-sqm` | ✓ | ✓ |
 | `luci-app-cpufreq` | ✓ | ✓ |
@@ -220,7 +214,6 @@ Choose the firmware variant based on your available overlay space.
 | `luci-app-mwan3` | ✓ | |
 | `luci-app-netstat` | ✓ | ✓ |
 | `luci-app-nft-ttl` | ✓ | ✓ |
-| **USB Support** | | |
 | `usbutils` | ✓ | ✓ |
 | `kmod-usb-serial` | ✓ | ✓ |
 | `kmod-usb-serial-option` | ✓ | ✓ |
@@ -236,10 +229,8 @@ Choose the firmware variant based on your available overlay space.
 | `kmod-usb-ohci` | ✓ | ✓ |
 | `kmod-usb-storage` | ✓ | ✓ |
 | `usb-modeswitch` | ✓ | ✓ |
-| **Themes** | | |
 | `luci-theme-argon` | ✓ | ✓ |
 | `luci-app-argon-config` | ✓ | ✓ |
-| **Applications** | | |
 | `luci-app-smartdns` | ✓ | ✓ |
 | `luci-app-cloudflared` | ✓ | |
 | `luci-app-nlbwmon` | ✓ | ✓ |
