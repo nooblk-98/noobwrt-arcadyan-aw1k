@@ -2,13 +2,13 @@
 
 # NoobWRT for Arcadyan AW1000
 
-High-performance ImmortalWRT/OpenWrt firmware for the Arcadyan AW1000
+High-performance OpenWrt firmware for the Arcadyan AW1000
 
 [![Release](https://img.shields.io/github/v/release/nooblk-98/arcadyan-aw1000-mod-firmware?sort=semver&style=for-the-badge)](https://github.com/nooblk-98/arcadyan-aw1000-mod-firmware/releases)
 [![Build Status](https://img.shields.io/badge/Build-Jenkins-blue?style=for-the-badge&logo=jenkins)](https://jenkins.itsnooblk.com/blue/organizations/jenkins/noobwrt-aw1k/activity)
 [![Issues](https://img.shields.io/github/issues/nooblk-98/noobwrt-arcadyan-aw1k?style=for-the-badge)](https://github.com/nooblk-98/noobwrt-arcadyan-aw1k/issues)
 [![Target](https://img.shields.io/badge/target-Arcadyan%20AW1000-blue?style=for-the-badge)](https://github.com/nooblk-98/noobwrt-arcadyan-aw1k)
-[![Base](https://img.shields.io/badge/base-ImmortalWRT-green?style=for-the-badge)](https://github.com/nooblk-98/noobwrt-arcadyan-aw1k)
+[![Base](https://img.shields.io/badge/base-OpenWRT-green?style=for-the-badge)](https://github.com/nooblk-98/noobwrt-arcadyan-aw1k)
 [![Status](https://img.shields.io/badge/status-stable-brightgreen?style=for-the-badge)](https://github.com/nooblk-98/noobwrt-arcadyan-aw1k)
 
 
@@ -26,7 +26,7 @@ High-performance ImmortalWRT/OpenWrt firmware for the Arcadyan AW1000
 
 ## Overview
 
-NoobWRT transforms the Arcadyan AW1000 into a fast, secure, and highly customizable router. Built on the ImmortalWRT/OpenWrt foundation, it is tuned for:
+NoobWRT transforms the Arcadyan AW1000 into a fast, secure, and highly customizable router. Built on the OpenWRT foundation, it is tuned for:
 
 - Performance: wire-speed routing with minimal latency
 - Security: hardened firewall and regular security updates
@@ -37,7 +37,7 @@ NoobWRT transforms the Arcadyan AW1000 into a fast, secure, and highly customiza
 
 NoobWRT provides automated monthly builds powered by Jenkins CI/CD, ensuring access to:
 
-- Latest package updates from upstream ImmortalWRT/OpenWrt
+- Latest package updates from upstream OpenWRT
 - Security patches applied automatically
 - Bug fixes integrated as soon as they are available
 - Transparent build process: [view build status and history](https://jk.itsnooblk.com/job/aw1k-builder/)
@@ -116,8 +116,8 @@ Choose the firmware variant based on your available overlay space.
 ## Specifications
 
 **Device:** Arcadyan AW1000 (qualcommax/ipq807x)  
-**Firmware Version:** Latest ImmortalWRT  
-**Kernel:** Latest ImmortalWRT  
+**Firmware Version:** Latest OpenWRT  
+**Kernel:** Latest OpenWRT  
 **CPU:** 1.4 GHz Quad-Core ARM Cortex  
 **RAM:** 1 GB DDR4  
 **Storage:** 256 MB NAND Flash  
@@ -373,7 +373,7 @@ You can expand NoobWRT functionality by installing additional packages from the 
 <details>
 <summary><b>What is NoobWRT?</b></summary>
 
-NoobWRT is a performance-tuned ImmortalWRT/OpenWrt firmware build optimized for the Arcadyan AW1000. It features enhanced stability, curated applications, and sensible default configurations.
+NoobWRT is a performance-tuned OpenWRT firmware build optimized for the Arcadyan AW1000. It features enhanced stability, curated applications, and sensible default configurations.
 
 </details>
 
@@ -480,7 +480,7 @@ Your contributions help shape the future of NoobWRT.
 
 ## License
 
-This firmware is based on [ImmortalWRT](https://github.com/immortalwrt/immortalwrt) and [OpenWrt](https://openwrt.org/), which are licensed under the GPL-2.0 license.
+This firmware is based on [OpenWRT](https://github.com/OpenWRT) and [OpenWrt](https://openwrt.org/), which are licensed under the GPL-2.0 license.
 
 ---
 
