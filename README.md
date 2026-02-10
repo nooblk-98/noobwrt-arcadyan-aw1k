@@ -115,9 +115,7 @@ Choose the firmware variant based on your available overlay space.
 
 ## Specifications
 
-**Device:** Arcadyan AW1000 (qualcommax/ipq807x)  
-**Firmware Version:** Latest OpenWRT  
-**Kernel:** Latest OpenWRT  
+**Device:** Arcadyan AW1000 (qualcommax/ipq807x)   
 **CPU:** 1.4 GHz Quad-Core ARM Cortex  
 **RAM:** 1 GB DDR4  
 **Storage:** 256 MB NAND Flash  
