@@ -147,6 +147,11 @@ Choose the firmware variant based on your available overlay space.
 
 ---
 
+![feed](/images/feed.png)
+
+You can Install other Custom Packges Via Noobwrt feed from router  all packges are added to and install ready !
+
+
 ## Packages
 
 <div align="center">
