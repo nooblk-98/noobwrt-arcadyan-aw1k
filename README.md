@@ -75,7 +75,7 @@ Current releases provide:
 
 <div align="center">
 
-### UI
+### User Interface
 
 ![Dashboard](/images/dash.png)
 
