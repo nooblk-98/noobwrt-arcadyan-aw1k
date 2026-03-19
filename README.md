@@ -79,9 +79,9 @@ Current releases provide:
 
 ![Dashboard](/images/dash.png)
 
-![toolset](/images/toolset.png)
+<!-- ![toolset](/images/toolset.png)
 
-![theme](/images/theme.png)
+![theme](/images/theme.png) -->
 
 </div>
 
