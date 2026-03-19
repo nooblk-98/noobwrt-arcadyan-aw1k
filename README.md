@@ -87,17 +87,6 @@ Current releases provide:
 
 ---
 
-## Specifications
-
-**Device:** Arcadyan AW1000 (qualcommax/ipq807x)   
-**CPU:** 1.4 GHz Quad-Core ARM Cortex  
-**RAM:** 1 GB DDR4  
-**Storage:** 256 MB NAND Flash  
-**Wireless:** Dual-band 802.11ac Wi-Fi  
-**Ports:** Multiple Gigabit Ethernet and USB
-
----
-
 ## Indicators and Defaults
 
 ### LED Indicators
