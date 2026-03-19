@@ -48,37 +48,19 @@ Every release is automatically built, tested, and published to ensure reliabilit
 
 ---
 
-## Important: Choose the Correct Firmware Version
+## Lite Firmware Discontinuation Notice
 
-Each release includes two firmware variants. Using the wrong version can brick your device.
+Lite firmware releases are discontinued.
 
-<div align="center">
+- There are no new lite firmware builds in current releases.
+- Existing lite users can continue using older lite releases.
+- If there is enough demand and I get requests to release lite firmware again, I will resume lite releases.
 
-| Firmware File | Overlay Size | Device Compatibility | Use Case |
-|---------------|--------------|----------------------|----------|
-| `lite-squashfs-sysupgrade.bin` | ~12 MB | Devices with limited storage | Essential packages only |
-| `full-squashfs-sysupgrade.bin` | ~100+ MB | Devices with ample storage (256MB+ NAND) | Full package set included |
+## Firmware Availability
 
-</div>
+Current releases provide:
 
-### Critical Warning
-
-> Do not flash the wrong firmware variant.
->
-> - If you have a device with limited overlay space (< 50MB), use `lite-squashfs-sysupgrade.bin`
-> - If you have a device with 100MB+ overlay space, use `full-squashfs-sysupgrade.bin`
-> - Flashing the full version on a limited storage device will brick it
-> - Check your current overlay size: System -> Software -> Available space
-
-### How to Check Your Device
-
-Before flashing, SSH into your router or check via LuCI:
-
-```bash
-df -h | grep overlay
-```
-
-Choose the firmware variant based on your available overlay space.
+- `full-squashfs-sysupgrade.bin`
 
 ---
 
@@ -86,7 +68,8 @@ Choose the firmware variant based on your available overlay space.
 
 - [Overview](#overview)
 - [Automated Monthly Builds](#automated-monthly-builds)
-- [Important: Choose the Correct Firmware Version](#important-choose-the-correct-firmware-version)
+- [Lite Firmware Discontinuation Notice](#lite-firmware-discontinuation-notice)
+- [Firmware Availability](#firmware-availability)
 - [Screenshots](#screenshots)
 - [Specifications](#specifications)
 - [Packages](#packages)
@@ -159,100 +142,100 @@ Choose the firmware variant based on your available overlay space.
 <tr>
 <td width="50%">
 
-| Package | Full | Lite |
-|---------|:----:|:----:|
-| `luci` | ✓ | ✓ |
-| `htop` | ✓ | ✓ |
-| `autocore` | ✓ | ✓ |
-| `bash` | ✓ | ✓ |
-| `block-mount` | ✓ | ✓ |
-| `ds-lite` | ✓ | ✓ |
-| `ethtool-full` | ✓ | ✓ |
-| `coreutils` | ✓ | ✓ |
-| `coreutils-base64` | ✓ | ✓ |
-| `coreutils-nohup` | ✓ | ✓ |
-| `curl` | ✓ | ✓ |
-| `openssh-sftp-server` | ✓ | |
-| `resolveip` | ✓ | ✓ |
-| `tcping` | ✓ | ✓ |
-| `unzip` | ✓ | ✓ |
-| `dnsmasq-full` | ✓ | ✓ |
-| `firewall4` | ✓ | ✓ |
-| `nftables` | ✓ | ✓ |
-| `kmod-nft-core` | ✓ | ✓ |
-| `iptables-nft` | ✓ | ✓ |
-| `luci-app-qmodem` | ✓ | ✓ |
-| `luci-app-sms-tool-js` | ✓ | ✓ |
-| `luci-app-qmodem-ttl` | ✓ | ✓ |
-| `quectel-CM-5G-M` | ✓ | ✓ |
-| `tom_modem` | ✓ | ✓ |
-| `luci-app-modemdata` | ✓ | ✓ |
-| `comgt` | ✓ | ✓ |
-| `luci-app-passwall` | ✓ | |
-| `luci-app-passwall2` | ✓ | |
-| `haproxy` | ✓ | |
-| `xray-core` | ✓ | |
-| `chinadns-ng` | ✓ | |
-| `dns2socks` | ✓ | |
-| `dns2tcp` | ✓ | |
-| `microsocks` | ✓ | |
-| `kmod-wireguard` | ✓ | ✓ |
-| `wireguard-tools` | ✓ | ✓ |
-| `luci-proto-wireguard` | ✓ | ✓ |
-| `luci-proto-amneziawg` | ✓ | |
-| `luci-app-openvpn` | ✓ | ✓ |
-| `luci-app-tailscale` | ✓ | ✓ |
-| `luci-app-zerotier` | ✓ | |
-| `luci-app-homeproxy` | ✓ | ✓ |
+| Package | Included |
+|---------|:--------:|
+| `luci` | ✓ |
+| `htop` | ✓ |
+| `autocore` | ✓ |
+| `bash` | ✓ |
+| `block-mount` | ✓ |
+| `ds-lite` | ✓ |
+| `ethtool-full` | ✓ |
+| `coreutils` | ✓ |
+| `coreutils-base64` | ✓ |
+| `coreutils-nohup` | ✓ |
+| `curl` | ✓ |
+| `openssh-sftp-server` | ✓ |
+| `resolveip` | ✓ |
+| `tcping` | ✓ |
+| `unzip` | ✓ |
+| `dnsmasq-full` | ✓ |
+| `firewall4` | ✓ |
+| `nftables` | ✓ |
+| `kmod-nft-core` | ✓ |
+| `iptables-nft` | ✓ |
+| `luci-app-qmodem` | ✓ |
+| `luci-app-sms-tool-js` | ✓ |
+| `luci-app-qmodem-ttl` | ✓ |
+| `quectel-CM-5G-M` | ✓ |
+| `tom_modem` | ✓ |
+| `luci-app-modemdata` | ✓ |
+| `comgt` | ✓ |
+| `luci-app-passwall` | ✓ |
+| `luci-app-passwall2` | ✓ |
+| `haproxy` | ✓ |
+| `xray-core` | ✓ |
+| `chinadns-ng` | ✓ |
+| `dns2socks` | ✓ |
+| `dns2tcp` | ✓ |
+| `microsocks` | ✓ |
+| `kmod-wireguard` | ✓ |
+| `wireguard-tools` | ✓ |
+| `luci-proto-wireguard` | ✓ |
+| `luci-proto-amneziawg` | ✓ |
+| `luci-app-openvpn` | ✓ |
+| `luci-app-tailscale` | ✓ |
+| `luci-app-zerotier` | ✓ |
+| `luci-app-homeproxy` | ✓ |
 
 </td>
 <td width="50%">
 
-| Package | Full | Lite |
-|---------|:----:|:----:|
-| `luci-app-ramfree` | ✓ | ✓ |
-| `luci-app-sqm` | ✓ | ✓ |
-| `luci-app-cpufreq` | ✓ | ✓ |
-| `luci-app-ttyd` | ✓ | ✓ |
-| `luci-app-mwan3` | ✓ | |
-| `luci-app-netstat` | ✓ | ✓ |
-| `luci-app-nft-ttl` | ✓ | ✓ |
-| `usbutils` | ✓ | ✓ |
-| `kmod-usb-serial` | ✓ | ✓ |
-| `kmod-usb-serial-option` | ✓ | ✓ |
-| `kmod-usb-serial-wwan` | ✓ | ✓ |
-| `kmod-usb-net` | ✓ | ✓ |
-| `kmod-usb-net-asix-ax88179` | ✓ | ✓ |
-| `kmod-usb-net-cdc-ether` | ✓ | ✓ |
-| `kmod-usb-net-cdc-ncm` | ✓ | ✓ |
-| `kmod-usb-net-huawei-cdc-ncm` | ✓ | ✓ |
-| `kmod-usb-net-ipheth` | ✓ | ✓ |
-| `kmod-usb-net-qmi-wwan` | ✓ | ✓ |
-| `kmod-usb-net-rndis` | ✓ | ✓ |
-| `kmod-usb-ohci` | ✓ | ✓ |
-| `kmod-usb-storage` | ✓ | ✓ |
-| `usb-modeswitch` | ✓ | ✓ |
-| `luci-theme-argon` | ✓ | ✓ |
-| `luci-app-argon-config` | ✓ | ✓ |
-| `luci-app-smartdns` | ✓ | ✓ |
-| `luci-app-cloudflared` | ✓ | |
-| `luci-app-nlbwmon` | ✓ | ✓ |
-| `luci-app-internet-detector` | ✓ | ✓ |
-| `luci-app-autoreboot` | ✓ | |
-| `luci-app-filemanager` | ✓ | ✓ |
-| `luci-app-statistics` | ✓ | |
-| `luci-app-banip` | ✓ | |
-| `luci-app-samba4` | ✓ | ✓ |
-| `luci-app-package-manager` | ✓ | |
-| `luci-app-diskman` | ✓ | ✓ |
-| `luci-app-eqos` | ✓ | ✓ |
-| `luci-app-frpc` | ✓ | ✓ |
-| `luci-app-hd-idle` | ✓ | ✓ |
-| `luci-app-qbittorrent` | ✓ | |
-| `luci-app-wifischedule` | ✓ | ✓ |
-| `luci-app-wol` | ✓ | |
-| `luci-app-wrtbwmon` | ✓ | |
-| `luci-app-adguardhome` | ✓ | |
+| Package | Included |
+|---------|:--------:|
+| `luci-app-ramfree` | ✓ |
+| `luci-app-sqm` | ✓ |
+| `luci-app-cpufreq` | ✓ |
+| `luci-app-ttyd` | ✓ |
+| `luci-app-mwan3` | ✓ |
+| `luci-app-netstat` | ✓ |
+| `luci-app-nft-ttl` | ✓ |
+| `usbutils` | ✓ |
+| `kmod-usb-serial` | ✓ |
+| `kmod-usb-serial-option` | ✓ |
+| `kmod-usb-serial-wwan` | ✓ |
+| `kmod-usb-net` | ✓ |
+| `kmod-usb-net-asix-ax88179` | ✓ |
+| `kmod-usb-net-cdc-ether` | ✓ |
+| `kmod-usb-net-cdc-ncm` | ✓ |
+| `kmod-usb-net-huawei-cdc-ncm` | ✓ |
+| `kmod-usb-net-ipheth` | ✓ |
+| `kmod-usb-net-qmi-wwan` | ✓ |
+| `kmod-usb-net-rndis` | ✓ |
+| `kmod-usb-ohci` | ✓ |
+| `kmod-usb-storage` | ✓ |
+| `usb-modeswitch` | ✓ |
+| `luci-theme-argon` | ✓ |
+| `luci-app-argon-config` | ✓ |
+| `luci-app-smartdns` | ✓ |
+| `luci-app-cloudflared` | ✓ |
+| `luci-app-nlbwmon` | ✓ |
+| `luci-app-internet-detector` | ✓ |
+| `luci-app-autoreboot` | ✓ |
+| `luci-app-filemanager` | ✓ |
+| `luci-app-statistics` | ✓ |
+| `luci-app-banip` | ✓ |
+| `luci-app-samba4` | ✓ |
+| `luci-app-package-manager` | ✓ |
+| `luci-app-diskman` | ✓ |
+| `luci-app-eqos` | ✓ |
+| `luci-app-frpc` | ✓ |
+| `luci-app-hd-idle` | ✓ |
+| `luci-app-qbittorrent` | ✓ |
+| `luci-app-wifischedule` | ✓ |
+| `luci-app-wol` | ✓ |
+| `luci-app-wrtbwmon` | ✓ |
+| `luci-app-adguardhome` | ✓ |
 
 </td>
 </tr>
@@ -383,21 +366,20 @@ NoobWRT is a performance-tuned OpenWRT firmware build optimized for the Arcadyan
 <details>
 <summary><b>Which firmware file should I download?</b></summary>
 
-Choosing the wrong firmware can brick your device.
+Current releases provide `full-squashfs-sysupgrade.bin`.
 
-- `lite-squashfs-sysupgrade.bin` for devices with ~12MB overlay (limited storage)
-- `full-squashfs-sysupgrade.bin` for devices with 100MB+ overlay (standard AW1000 with 256MB NAND)
+- Lite firmware releases are discontinued.
+- If you are already using lite firmware, continue using older lite releases.
+- If lite firmware is requested again, lite releases can be resumed.
 
-How to check: Run `df -h | grep overlay` via SSH or check System -> Software in LuCI.
-
-If unsure, use the lite version. It is safer and can be upgraded to full later if you have space.
+Use the latest full release for new installs.
 
 </details>
 
 <details>
 <summary><b>Is it safe to flash this firmware?</b></summary>
 
-Flashing firmware always carries some risk. If you follow the installation steps carefully, choose the correct firmware variant, and ensure stable power during the process, it should be safe. The device has U-Boot recovery available as a fallback option.
+Flashing firmware always carries some risk. If you follow the installation steps carefully and ensure stable power during the process, it should be safe. The device has U-Boot recovery available as a fallback option.
 
 </details>
 
@@ -456,7 +438,7 @@ We welcome contributions from the community. Feedback and ideas help make NoobWR
 2. If not, [create a new issue](https://github.com/nooblk-98/noobwrt-arcadyan-aw1k/issues/new)
 3. Include:
    - Firmware version you are using
-   - Device variant (lite or full)
+   - Device model
    - Steps to reproduce the bug
    - Expected vs actual behavior
    - Logs or screenshots if applicable
