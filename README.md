@@ -67,20 +67,6 @@ Use the official documentation site:
 
 [https://aw1k-docs.itsnooblk.com/](https://aw1k-docs.itsnooblk.com/)
 
-## Firmware Releases
-
-Always download the latest updated build from:
-
-[https://github.com/nooblk-98/openwrt-sdk-runner/releases/](https://github.com/nooblk-98/openwrt-sdk-runner/releases/)
-
-## Lite Firmware Notice
-
-Arcadyan-AW1000-Lite is discontinued in current builds.
-
-If you need Lite, use the last old release:
-
-[https://github.com/nooblk-98/noobwrt-arcadyan-aw1k/releases/tag/v2026-02-12-15-17-16](https://github.com/nooblk-98/noobwrt-arcadyan-aw1k/releases/tag/v2026-02-12-15-17-16)
-
 ## License
 
 Based on OpenWrt and distributed under GPL-2.0.
