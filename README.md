@@ -43,8 +43,6 @@ NoobWRT transforms the Arcadyan AW1000 into a fast, secure, and highly customiza
 
 <div align="center">
 
-### User Interface
-
 ![Dashboard](/images/dash.png)
 
 </div>
