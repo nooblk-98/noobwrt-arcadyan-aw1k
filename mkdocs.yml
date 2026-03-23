@@ -1,0 +1,28 @@
+site_name: NoobWRT for Arcadyan AW1000
+site_description: Project documentation for NoobWRT on Arcadyan AW1000
+repo_name: nooblk-98/noobwrt-arcadyan-aw1k
+repo_url: https://github.com/nooblk-98/noobwrt-arcadyan-aw1k
+site_url: !ENV [MKDOCS_SITE_URL, http://127.0.0.1:8001/]
+
+nav:
+  - Home: index.md
+  - Getting Started: getting-started.md
+  - Firmware Releases: builds.md
+  - Installation: installation.md
+  - Recovery: recovery.md
+  - Modem Firmware: modem-firmware.md
+  - Packages: packages.md
+  - Additional Packages: additional-packages.md
+  - Hardware: hardware.md
+  - FAQ: faq.md
+  - Contributing: contributing.md
+  - License: license.md
+
+theme:
+  name: readthedocs
+
+markdown_extensions:
+  - admonition
+  - toc:
+      permalink: true
+  - tables
