@@ -1,4 +1,4 @@
-<div align="center">
+﻿<div align="center">
 
 # NoobWRT for Arcadyan AW1000
 
@@ -39,38 +39,6 @@ NoobWRT transforms the Arcadyan AW1000 into a fast, secure, and highly customiza
 
 ---
 
-## Lite Firmware Discontinuation Notice
-
-Lite firmware releases are discontinued.
-
-- There are no new lite firmware builds in current releases.
-- Existing lite users can continue using older lite releases.
-- If there is enough demand and I get requests to release lite firmware again, I will resume lite releases.
-
-## Firmware Availability
-
-Current releases provide:
-
-- `full-squashfs-sysupgrade.bin`
-
----
-
-## Table of Contents
-
-- [Overview](#overview)
-- [Automated Monthly Builds](#automated-monthly-builds)
-- [Lite Firmware Discontinuation Notice](#lite-firmware-discontinuation-notice)
-- [Firmware Availability](#firmware-availability)
-- [Screenshots](#screenshots)
-- [Specifications](#specifications)
-- [Packages](#packages)
-- [Indicators and Defaults](#indicators-and-defaults)
-- [FAQ](#faq)
-- [Contributing](#contributing)
-- [License](#license)
-
----
-
 ## Screenshots
 
 <div align="center">
@@ -79,384 +47,40 @@ Current releases provide:
 
 ![Dashboard](/images/dash.png)
 
-<!-- ![toolset](/images/toolset.png)
-
-![theme](/images/theme.png) -->
-
 </div>
 
 ---
 
-## Indicators and Defaults
+## Lite Firmware Discontinuation Notice
 
-### LED Indicators
+Lite firmware releases are discontinued.
 
-**Power Light:** Device is powered on and ready  
-**5G Indicator:** Active 5G mobile connection status  
-**Internet Status:** Confirms active internet connection  
-**Signal Strength:** Cellular signal quality level  
-**New SMS:** Unread SMS messages on the SIM card
-
-### Default Settings
-
-**Wi-Fi SSID (2.4GHz):** `NoobWRT 2GHz`  
-**Wi-Fi SSID (5GHz):** `NoobWRT 5GHz`  
-**Wi-Fi Password:** `123456789`  
-**Admin Username:** `root`  
-**Admin Password:** (not set - configure on first login)  
-**LAN IP Address:** `192.168.1.1`
-
-> Important: Change the default admin password and Wi-Fi credentials immediately after first login for security.
+- There are no new lite firmware builds in current releases.
+- Existing lite users can continue using older lite releases.
+- If there is enough demand and I get requests to release lite firmware again, I will resume lite releases.
 
 ---
 
-![feed](/images/feed.png)
+## Documentation
 
-> You can Install other Custom Packges Via Noobwrt feed from router  all packges are added to and install ready !
+Use the official documentation site:
 
+[https://aw1k-docs.itsnooblk.com/](https://aw1k-docs.itsnooblk.com/)
 
-## Packages
+## Firmware Releases
 
-<div align="center">
-<table>
-<tr>
-<td width="50%">
+Always download the latest updated build from:
 
-| Package | Included |
-|---------|:--------:|
-| `luci` | ✓ |
-| `htop` | ✓ |
-| `autocore` | ✓ |
-| `bash` | ✓ |
-| `block-mount` | ✓ |
-| `ds-lite` | ✓ |
-| `ethtool-full` | ✓ |
-| `coreutils` | ✓ |
-| `coreutils-base64` | ✓ |
-| `coreutils-nohup` | ✓ |
-| `curl` | ✓ |
-| `openssh-sftp-server` | ✓ |
-| `resolveip` | ✓ |
-| `tcping` | ✓ |
-| `unzip` | ✓ |
-| `dnsmasq-full` | ✓ |
-| `firewall4` | ✓ |
-| `nftables` | ✓ |
-| `kmod-nft-core` | ✓ |
-| `iptables-nft` | ✓ |
-| `luci-app-qmodem` | ✓ |
-| `luci-app-sms-tool-js` | ✓ |
-| `luci-app-qmodem-ttl` | ✓ |
-| `quectel-CM-5G-M` | ✓ |
-| `tom_modem` | ✓ |
-| `luci-app-modemdata` | ✓ |
-| `comgt` | ✓ |
-| `luci-app-passwall` | ✓ |
-| `luci-app-passwall2` | ✓ |
-| `haproxy` | ✓ |
-| `xray-core` | ✓ |
-| `chinadns-ng` | ✓ |
-| `dns2socks` | ✓ |
-| `dns2tcp` | ✓ |
-| `microsocks` | ✓ |
-| `kmod-wireguard` | ✓ |
-| `wireguard-tools` | ✓ |
-| `luci-proto-wireguard` | ✓ |
-| `luci-proto-amneziawg` | ✓ |
-| `luci-app-openvpn` | ✓ |
-| `luci-app-tailscale` | ✓ |
-| `luci-app-zerotier` | ✓ |
-| `luci-app-homeproxy` | ✓ |
+[https://github.com/nooblk-98/openwrt-sdk-runner/releases/](https://github.com/nooblk-98/openwrt-sdk-runner/releases/)
 
-</td>
-<td width="50%">
+## Lite Firmware Notice
 
-| Package | Included |
-|---------|:--------:|
-| `luci-app-ramfree` | ✓ |
-| `luci-app-sqm` | ✓ |
-| `luci-app-cpufreq` | ✓ |
-| `luci-app-ttyd` | ✓ |
-| `luci-app-mwan3` | ✓ |
-| `luci-app-netstat` | ✓ |
-| `luci-app-nft-ttl` | ✓ |
-| `usbutils` | ✓ |
-| `kmod-usb-serial` | ✓ |
-| `kmod-usb-serial-option` | ✓ |
-| `kmod-usb-serial-wwan` | ✓ |
-| `kmod-usb-net` | ✓ |
-| `kmod-usb-net-asix-ax88179` | ✓ |
-| `kmod-usb-net-cdc-ether` | ✓ |
-| `kmod-usb-net-cdc-ncm` | ✓ |
-| `kmod-usb-net-huawei-cdc-ncm` | ✓ |
-| `kmod-usb-net-ipheth` | ✓ |
-| `kmod-usb-net-qmi-wwan` | ✓ |
-| `kmod-usb-net-rndis` | ✓ |
-| `kmod-usb-ohci` | ✓ |
-| `kmod-usb-storage` | ✓ |
-| `usb-modeswitch` | ✓ |
-| `luci-theme-argon` | ✓ |
-| `luci-app-argon-config` | ✓ |
-| `luci-app-smartdns` | ✓ |
-| `luci-app-cloudflared` | ✓ |
-| `luci-app-nlbwmon` | ✓ |
-| `luci-app-internet-detector` | ✓ |
-| `luci-app-autoreboot` | ✓ |
-| `luci-app-filemanager` | ✓ |
-| `luci-app-statistics` | ✓ |
-| `luci-app-banip` | ✓ |
-| `luci-app-samba4` | ✓ |
-| `luci-app-package-manager` | ✓ |
-| `luci-app-diskman` | ✓ |
-| `luci-app-eqos` | ✓ |
-| `luci-app-frpc` | ✓ |
-| `luci-app-hd-idle` | ✓ |
-| `luci-app-qbittorrent` | ✓ |
-| `luci-app-wifischedule` | ✓ |
-| `luci-app-wol` | ✓ |
-| `luci-app-wrtbwmon` | ✓ |
-| `luci-app-adguardhome` | ✓ |
+Arcadyan-AW1000-Lite is discontinued in current builds.
 
-</td>
-</tr>
-</table>
-</div>
+If you need Lite, use the last old release:
 
----
-
-## Modem Firmware Upgrade Guide (RG500Q-EA)
-
-### ⚠️ Important Notes
-
-- **China Version Warning:** If your firmware version ends with `ACY` (e.g., `RG500QEAAAR11A07M4G_ACY`), it's a China-customized version and may not work properly. Upgrade to the latest version.
-- **Risk Warning:** Performing a firmware upgrade carries some risk. You may not be able to downgrade afterward. Ensure stable power during the process.
-
-### Quick Upgrade Steps
-1. **Download Latest Firmware**
-   - Download version: **R13 01.200**
-   - Download link: [Google Drive](https://drive.google.com/file/d/1SnuogB48SNOrdLDLh3NhIpyy_drIWhFS/view?usp=sharing)
-
-2. **Extract and Upload**
-   - Extract the firmware file
-   - Upload it to your router
-
-3. **Flash the Firmware**
-   - Use QFirehose tool to install the firmware:
-   ```bash
-   QFirehose /path/to/firmware/
-   ```
-
-4. **Verify the Upgrade**
-   - Check the new firmware version using AT commands:
-   ```bash
-   ATI
-   ```
-
----
-
-## Recovery Instructions
-
-If something goes wrong during the upgrade (power cut, interrupted upload, firmware mismatch, or unexpected reboot), don't panic. Try these recovery methods:
-
-### 1. **Failsafe Mode** (Recommended for beginners)
-- **What it does:** Lets you access the router without loading the full system
-- **How to use:**
-  1. Power off your router
-  2. Press and hold the reset button
-  3. Power on while holding reset (keep holding for 10+ seconds)
-  4. Access the router via SSH or TFTP to re-upload a valid firmware
-
-### 2. **Serial Console Access** (Advanced)
-- **What it does:** Direct low-level access to the router for debugging and recovery
-- **How to use:**
-  1. Connect to the router's serial/UART console
-  2. Use debug commands for recovery
-
-### 3. **USB Boot Option** (Best Prevention)
-- **What it does:** Allows you to boot from USB instead of internal storage, preventing permanent bricking
-- **When to use:** Set this up BEFORE you have problems
-
-#### USB Boot Setup Guide
-
-1. **Get the USB Boot Files**
-   - Download the official OpenWrt kernel image
-   - Rename it to `initramfs.bin`
-
-2. **Prepare Your USB Drive**
-   - Get a USB drive (1GB or larger)
-   - Download and use [Win32 Disk Imager](https://sourceforge.net/projects/win32diskimager/)
-   - Write `initramfs.bin` to the USB drive
-   - ⚠️ Warning: The USB drive will be completely formatted
-
-3. **Boot from USB**
-   - Power off your router
-   - Insert the USB drive
-   - Power on the router
-   - The router should boot from USB
-
-4. **Flash Safe Firmware**
-   - Download the official OpenWrt sysupgrade image
-   - Access the Web UI
-   - Flash it through the Web UI
-
----
-
-## Installing Additional Packages
-
-You can expand NoobWRT functionality by installing additional packages from the custom feeds
-
-### Steps to Install Additional Packages
-
-1. **Download Package from Custom Feed**
-   - Visit https://feeds.itsnooblk.com/
-   - Download the desired `.ipk` package file to your computer
-
-2. **Upload to Router**
-   - Access http://192.168.1.1 in your browser
-   - Go to **System → File Manager**
-   - Navigate to `/tmp` directory
-   - Click **Upload** and select your downloaded `.ipk` file
-
-3. **Install via SSH or LuCI**
-   - **Option A (SSH - Recommended):**
-     ```bash
-     ssh root@192.168.1.1
-     opkg install /tmp/package-name.ipk
-     ```
-   - **Option B (Web UI):**
-     - Go to **System → Software**
-     - Click **Upload Package**
-     - Select your uploaded `.ipk` file
-     - Click **Install**
-
-4. **Verify Installation**
-   - Check **System → Software** to confirm the package appears in the installed list
-
----
-
-## FAQ
-
-<details>
-<summary><b>What is NoobWRT?</b></summary>
-
-NoobWRT is a performance-tuned OpenWRT firmware build optimized for the Arcadyan AW1000. It features enhanced stability, curated applications, and sensible default configurations.
-
-</details>
-
-<details>
-<summary><b>Which firmware file should I download?</b></summary>
-
-Current releases provide `full-squashfs-sysupgrade.bin`.
-
-- Lite firmware releases are discontinued.
-- If you are already using lite firmware, continue using older lite releases.
-- If lite firmware is requested again, lite releases can be resumed.
-
-Use the latest full release for new installs.
-
-</details>
-
-<details>
-<summary><b>Is it safe to flash this firmware?</b></summary>
-
-Flashing firmware always carries some risk. If you follow the installation steps carefully and ensure stable power during the process, it should be safe. The device has U-Boot recovery available as a fallback option.
-
-</details>
-
-<details>
-<summary><b>Can I revert to stock firmware?</b></summary>
-
-Yes. Access the U-Boot recovery page and upload the stock or factory firmware image.
-
-</details>
-
-<details>
-<summary><b>How do I lock specific LTE/5G bands?</b></summary>
-
-Navigate to: Modem -> qModem -> Advanced Modem Settings -> Lock Band
-
-Select your desired bands and click Apply.
-
-</details>
-
-<details>
-<summary><b>How do I lock to a specific cell tower?</b></summary>
-
-1. Go to Modem -> qModem -> Advanced Modem Settings -> Neighbor Cell
-2. Click Run Scan to discover nearby towers
-3. Choose your preferred cell tower
-4. Enter the PCI and ARFCN values
-5. Click Submit
-
-</details>
-
-<details>
-<summary><b>How do I change the UI theme?</b></summary>
-
-Navigate to: System -> System -> Language and Style -> Design
-
-Select your preferred theme from the dropdown and click Apply.
-
-</details>
-
-<details>
-<summary><b>Where can I get support?</b></summary>
-
-For support and inquiries, contact via [WhatsApp](https://wa.me/94716172860) or check the [Setup Video](https://youtu.be/6eYihpGg7Sw) for detailed instructions.
-
-</details>
-
----
-
-## Contributing
-
-We welcome contributions from the community. Feedback and ideas help make NoobWRT better for everyone.
-
-### Report Bugs
-
-1. Check if the issue already exists in the [Issue Tracker](https://github.com/nooblk-98/noobwrt-arcadyan-aw1k/issues)
-2. If not, [create a new issue](https://github.com/nooblk-98/noobwrt-arcadyan-aw1k/issues/new)
-3. Include:
-   - Firmware version you are using
-   - Device model
-   - Steps to reproduce the bug
-   - Expected vs actual behavior
-   - Logs or screenshots if applicable
-
-### Suggest Improvements
-
-1. [Open an issue](https://github.com/nooblk-98/noobwrt-arcadyan-aw1k/issues/new) with the "enhancement" label
-2. Describe:
-   - What feature you would like to see
-   - Why it would be useful to the community
-   - How it might work (if you have ideas)
-
-### Issue Guidelines
-
-When creating an issue, please:
-- Use a clear and descriptive title
-- Provide as much detail as possible
-- Be respectful and constructive
-- Check for duplicates before posting
-
-Your contributions help shape the future of NoobWRT.
-
----
+[https://github.com/nooblk-98/noobwrt-arcadyan-aw1k/releases/tag/v2026-02-12-15-17-16](https://github.com/nooblk-98/noobwrt-arcadyan-aw1k/releases/tag/v2026-02-12-15-17-16)
 
 ## License
 
-This firmware is based on [OpenWRT](https://github.com/OpenWRT) and [OpenWrt](https://openwrt.org/), which are licensed under the GPL-2.0 license.
-
----
-
-<div align="center">
-
-NoobWRT - Firmware maintained by [NoobLK](https://github.com/nooblk-98)
-
-Copyright 2025 NoobWRT
-
-[![GitHub](https://img.shields.io/badge/GitHub-nooblk--98-181717?style=flat&logo=github)](https://github.com/nooblk-98)
-[![WhatsApp](https://img.shields.io/badge/WhatsApp-Contact-25D366?style=flat&logo=whatsapp)](https://wa.me/94716172860)
-[![YouTube](https://img.shields.io/badge/YouTube-Watch-FF0000?style=flat&logo=youtube)](https://youtu.be/6eYihpGg7Sw)
-
-</div>
+Based on OpenWrt and distributed under GPL-2.0.
