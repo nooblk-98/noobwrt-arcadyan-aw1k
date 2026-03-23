@@ -2,6 +2,12 @@
 
 NoobWRT is a performance-tuned OpenWrt firmware build for the Arcadyan AW1000. It focuses on speed, stability, security, and a curated app stack with sensible defaults.
 
+## Announcement
+
+> Arcadyan-AW1000-Lite version is no longer continued in current builds.
+> If you need the Lite version, use the last old release:
+> https://github.com/nooblk-98/noobwrt-arcadyan-aw1k/releases/tag/v2026-02-12-15-17-16
+
 ## Highlights
 
 - Wire-speed routing with low latency
