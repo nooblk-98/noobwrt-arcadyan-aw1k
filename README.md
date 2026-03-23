@@ -26,9 +26,7 @@ High-performance Fully Customized OpenWrt firmware for the Arcadyan AW1000
 
 ## Documentation
 
-For full documentation, visit:
-
-[https://aw1k-docs.itsnooblk.com/](https://aw1k-docs.itsnooblk.com/)
+For full documentation, visit: [https://aw1k-docs.itsnooblk.com/](https://aw1k-docs.itsnooblk.com/)
 
 ---
 
