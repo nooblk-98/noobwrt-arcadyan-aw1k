@@ -10,6 +10,7 @@ nav:
   - Installation: installation.md
   - Getting Started: getting-started.md
   - Recovery: recovery.md
+  - UART Guide: uart-guide.md
   - Modem Firmware: modem-firmware.md
   - Packages: packages.md
   - Additional Packages: additional-packages.md

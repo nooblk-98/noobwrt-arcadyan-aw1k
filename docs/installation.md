@@ -6,6 +6,7 @@
 - Download the correct AW1000 sysupgrade image from [Releases](https://github.com/nooblk-98/openwrt-sdk-runner/releases/)
 - Ensure stable power to avoid bricking.
 
+
 ## Flash via Web UI
 
 1. Log in to the web UI: `http://192.168.1.1`.
