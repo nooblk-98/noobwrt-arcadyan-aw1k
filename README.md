@@ -24,6 +24,14 @@ High-performance Fully Customized OpenWrt firmware for the Arcadyan AW1000
 
 ---
 
+## Documentation
+
+For full documentation, visit:
+
+[https://aw1k-docs.itsnooblk.com/](https://aw1k-docs.itsnooblk.com/)
+
+---
+
 ## Overview
 
 NoobWRT transforms the Arcadyan AW1000 into a fast, secure, and highly customizable router. Built on the OpenWRT foundation, it is tuned for:
@@ -54,14 +62,6 @@ Lite firmware releases are discontinued.
 - There are no new lite firmware builds in current releases.
 - Existing lite users can continue using older lite releases.
 - If there is enough demand and I get requests to release lite firmware again, I will resume lite releases.
-
----
-
-## Documentation
-
-Use the official documentation site:
-
-[https://aw1k-docs.itsnooblk.com/](https://aw1k-docs.itsnooblk.com/)
 
 ## License
 
