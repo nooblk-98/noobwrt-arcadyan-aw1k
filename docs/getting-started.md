@@ -1,12 +1,5 @@
 # Getting Started
 
-## Requirements
-
-- Arcadyan AW1000 device
-- Stable power source
-- Ethernet or Wi-Fi access to the device
-- A browser for the web UI
-
 ## First Boot Checklist
 
 1. Power on the device and wait for the system to boot fully.

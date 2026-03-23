@@ -6,9 +6,9 @@ site_url: !ENV [MKDOCS_SITE_URL, http://127.0.0.1:8001/]
 
 nav:
   - Home: index.md
-  - Getting Started: getting-started.md
   - Firmware Releases: builds.md
   - Installation: installation.md
+  - Getting Started: getting-started.md
   - Recovery: recovery.md
   - Modem Firmware: modem-firmware.md
   - Packages: packages.md

@@ -1,17 +1,10 @@
 # Firmware Releases
 
-## Release Artifacts
+Always download the latest updated version for flashing from:
 
-Current releases provide the following image:
+[OpenWrt SDK Runner Releases](https://github.com/nooblk-98/openwrt-sdk-runner/releases/)
 
-- `full-squashfs-sysupgrade.bin`
+## Notes
 
-Lite firmware releases are discontinued.
-
-## Where to Download
-
-Use the GitHub Releases page for the latest builds and checksums.
-
-## Automated Monthly Builds
-
-Releases are produced on a monthly cadence via CI. If you need a specific build, check the release notes and the build history for the exact version and date.
+- Use `sysupgrade.bin` files for flashing.
+- Lite firmware releases are discontinued.
