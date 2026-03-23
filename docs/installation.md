@@ -1,9 +1,9 @@
 # Installation
 
-## Before You Flash
+!!! note "Before You Flash"
 
 - Back up your current configuration.
-- Download the correct AW1000 sysupgrade image.
+- Download the correct AW1000 sysupgrade image from [Releases](https://github.com/nooblk-98/openwrt-sdk-runner/releases/)
 - Ensure stable power to avoid bricking.
 
 ## Flash via Web UI

@@ -2,7 +2,7 @@
 
 Always download the latest updated version for flashing from:
 
-[OpenWrt SDK Runner Releases](https://github.com/nooblk-98/openwrt-sdk-runner/releases/)
+[NoobWRT Releases](https://github.com/nooblk-98/openwrt-sdk-runner/releases/)
 
 ## Notes
 

@@ -6,7 +6,7 @@ site_url: !ENV [MKDOCS_SITE_URL, http://127.0.0.1:8001/]
 
 nav:
   - Home: index.md
-  - Firmware Releases: builds.md
+  - Releases: builds.md
   - Installation: installation.md
   - Getting Started: getting-started.md
   - Recovery: recovery.md
