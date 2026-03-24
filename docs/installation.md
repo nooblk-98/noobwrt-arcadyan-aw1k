@@ -3,7 +3,7 @@
 !!! note "Before You Flash"
 
 - Back up your current configuration.
-- Download the correct AW1000 sysupgrade image from [Releases](https://github.com/nooblk-98/openwrt-sdk-runner/releases/)
+- Download the correct AW1000 sysupgrade image from [Releases](https://github.com/nooblk-98/noobwrt-arcadyan-aw1k/releases)
 - Ensure stable power to avoid bricking.
 
 
