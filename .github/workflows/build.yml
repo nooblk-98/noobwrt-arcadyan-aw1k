@@ -1,0 +1,37 @@
+name: Trigger OpenWrt Builds
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "30 22 * * 6"
+
+jobs:
+  build_1:
+    name: Trigger Build openwrt 24.10.5
+    runs-on: ubuntu-latest
+    steps:
+      - name: trigger Job with parameters
+        uses: appleboy/jenkins-action@v1
+        with:
+          url: https://jk.itsnooblk.com
+          user: lahiru
+          token: ${{ secrets.TOKEN }}
+          job: openwrt-sdk-runner
+          parameters: |
+            VERSION=24.10.5
+            PREBUILT_IPK_URL=https://jk.itsnooblk.com/job/openwrt-sdk-runner/lastSuccessfulBuild/artifact/artifacts/noobwrt-packages-24.10.5.tar.gz
+
+  build_2:
+    name: Trigger Build openwrt 25.12.1
+    runs-on: ubuntu-latest
+    steps:
+      - name: trigger Job with parameters
+        uses: appleboy/jenkins-action@v1
+        with:
+          url: https://jk.itsnooblk.com
+          user: lahiru
+          token: ${{ secrets.TOKEN }}
+          job: openwrt-sdk-runner
+          parameters: |
+            VERSION=25.12.1
+            PREBUILT_IPK_URL=https://jk.itsnooblk.com/job/openwrt-sdk-runner/lastSuccessfulBuild/artifact/artifacts/noobwrt-packages-25.12.1.tar.gz
