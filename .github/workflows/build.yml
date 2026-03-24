@@ -16,7 +16,7 @@ jobs:
           url: https://jk.itsnooblk.com
           user: lahiru
           token: ${{ secrets.TOKEN }}
-          job: openwrt-sdk-runner
+          job: aw1k-builder
           parameters: |
             VERSION=24.10.5
             PREBUILT_IPK_URL=https://jk.itsnooblk.com/job/openwrt-sdk-runner/lastSuccessfulBuild/artifact/artifacts/noobwrt-packages-24.10.5.tar.gz
@@ -31,7 +31,7 @@ jobs:
           url: https://jk.itsnooblk.com
           user: lahiru
           token: ${{ secrets.TOKEN }}
-          job: openwrt-sdk-runner
+          job: aw1k-builder
           parameters: |
             VERSION=25.12.1
             PREBUILT_IPK_URL=https://jk.itsnooblk.com/job/openwrt-sdk-runner/lastSuccessfulBuild/artifact/artifacts/noobwrt-packages-25.12.1.tar.gz
