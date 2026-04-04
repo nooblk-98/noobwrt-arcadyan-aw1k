@@ -23,7 +23,7 @@ High-performance Fully Customized OpenWrt firmware for the Arcadyan AW1000
 
 ---
 
-## Preview
+## Preview ( click to play in youtube)
 
 [![Watch on YouTube](https://img.youtube.com/vi/pxMpUKWQ3nU/maxresdefault.jpg)](https://www.youtube.com/watch?v=pxMpUKWQ3nU)
 
