@@ -17,6 +17,9 @@ jobs:
       contents: write
 
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
       - name: Set build date
         id: date
         run: |
