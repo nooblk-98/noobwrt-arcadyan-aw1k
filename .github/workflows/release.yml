@@ -103,8 +103,8 @@ jobs:
           TAG: ${{ steps.date.outputs.tag }}
         run: |
           BADGE="![Downloads](https://img.shields.io/github/downloads/${{ github.repository }}/${TAG}/total?style=flat-square&label=release%20downloads&labelColor=24292f&color=238636)"
-          # Strip any existing badge lines from release.md to avoid duplicates
-          grep -v 'shields.io/github/downloads' release_body.md > release_stripped.md
+          # Strip any existing badge/download lines from release.md to avoid duplicates
+          grep -v 'shields.io/github/downloads' release_body.md | grep -v '^!\[Downloads\]' > release_stripped.md
           echo "$BADGE" > release_full.md
           echo "" >> release_full.md
           cat release_stripped.md >> release_full.md
