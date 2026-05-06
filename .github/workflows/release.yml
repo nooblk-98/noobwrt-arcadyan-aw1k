@@ -32,17 +32,23 @@ jobs:
           echo "tag=v$DATE" >> $GITHUB_OUTPUT
 
       - name: Fetch build.json from Jenkins
+        env:
+          JENKINS_USER: ${{ secrets.JENKINS_USER }}
+          JENKINS_TOKEN: ${{ secrets.JENKINS_TOKEN }}
         run: |
           curl -fsSL \
-            --user "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_TOKEN }}" \
+            --user "${JENKINS_USER}:${JENKINS_TOKEN}" \
             "https://jk.itsnooblk.com/job/noobwrt-builder/lastSuccessfulBuild/artifact/build.json" \
             -o build.json
           cat build.json
 
       - name: Fetch release.md from Jenkins
+        env:
+          JENKINS_USER: ${{ secrets.JENKINS_USER }}
+          JENKINS_TOKEN: ${{ secrets.JENKINS_TOKEN }}
         run: |
           curl -fsSL \
-            --user "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_TOKEN }}" \
+            --user "${JENKINS_USER}:${JENKINS_TOKEN}" \
             "https://jk.itsnooblk.com/job/noobwrt-builder/lastSuccessfulBuild/artifact/release.md" \
             -o release_body.md
 
@@ -74,18 +80,21 @@ jobs:
         env:
           DATE: ${{ steps.date.outputs.date }}
           VERSIONS: ${{ steps.versions.outputs.versions }}
+          JENKINS_USER: ${{ secrets.JENKINS_USER }}
+          JENKINS_TOKEN: ${{ secrets.JENKINS_TOKEN }}
         run: |
           mkdir -p artifacts
           BASE_URL="https://jk.itsnooblk.com/job/noobwrt-builder/lastSuccessfulBuild/artifact"
-          AUTH="--user ${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_TOKEN }}"
 
           # Download .bin (sysupgrade)
-          curl -fsSL $AUTH \
+          curl -fsSL \
+            --user "${JENKINS_USER}:${JENKINS_TOKEN}" \
             "$BASE_URL/openwrt-qualcommax-ipq807x-arcadyan_aw1000-squashfs-sysupgrade.bin" \
             -o "artifacts/sysupgrade.bin"
 
           # Download .ubi (factory)
-          curl -fsSL $AUTH \
+          curl -fsSL \
+            --user "${JENKINS_USER}:${JENKINS_TOKEN}" \
             "$BASE_URL/openwrt-qualcommax-ipq807x-arcadyan_aw1000-squashfs-factory.ubi" \
             -o "artifacts/factory.ubi"
 
