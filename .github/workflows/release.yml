@@ -77,52 +77,24 @@ jobs:
           echo "=== build.json ==="
           cat build.json
 
-      - name: Parse OpenWrt versions from build.json
-        id: versions
-        run: |
-          VERSIONS=$(python3 -c "
-          import json
-          with open('build.json') as f:
-              data = json.load(f)
-          if isinstance(data, list):
-              builds = data
-          elif isinstance(data, dict):
-              builds = data.get('builds', data.get('versions', [data]))
-          versions = []
-          for b in builds:
-              v = b.get('openwrt_version') or b.get('version') or b.get('openwrt')
-              if v and v not in versions:
-                  versions.append(v)
-          print(','.join(versions))
-          ")
-          echo "versions=$VERSIONS" >> $GITHUB_OUTPUT
-          echo "Detected versions: $VERSIONS"
-
       - name: Download firmware artifacts from Jenkins
         env:
-          DATE: ${{ steps.date.outputs.date }}
-          VERSIONS: ${{ steps.versions.outputs.versions }}
           JENKINS_USER: ${{ secrets.JENKINS_USER }}
           JENKINS_TOKEN: ${{ secrets.JENKINS_TOKEN }}
         run: |
           mkdir -p artifacts
           BASE="https://jk.itsnooblk.com/job/noobwrt-builder/lastSuccessfulBuild"
 
-          # bin and ubi paths were loaded into env by previous step
-          curl -fsSL --user "${JENKINS_USER}:${JENKINS_TOKEN}" \
-            "${BASE}/artifact/${bin}" -o "artifacts/sysupgrade.bin"
+          # bin and ubi paths were loaded into env by the fetch step
+          BIN_NAME=$(basename "$bin")
+          UBI_NAME=$(basename "$ubi")
 
           curl -fsSL --user "${JENKINS_USER}:${JENKINS_TOKEN}" \
-            "${BASE}/artifact/${ubi}" -o "artifacts/factory.ubi"
+            "${BASE}/artifact/${bin}" -o "artifacts/${BIN_NAME}"
 
-          # Rename per OpenWrt version
-          IFS=',' read -ra VER_LIST <<< "$VERSIONS"
-          for VER in "${VER_LIST[@]}"; do
-            cp "artifacts/sysupgrade.bin" "artifacts/Arcadyan-AW1000-Pro-${VER}-${DATE}.bin"
-            cp "artifacts/factory.ubi"    "artifacts/Arcadyan-AW1000-Pro-${VER}-${DATE}.ubi"
-          done
+          curl -fsSL --user "${JENKINS_USER}:${JENKINS_TOKEN}" \
+            "${BASE}/artifact/${ubi}" -o "artifacts/${UBI_NAME}"
 
-          rm artifacts/sysupgrade.bin artifacts/factory.ubi
           ls -lh artifacts/
 
       - name: Build release body
