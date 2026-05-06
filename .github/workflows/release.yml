@@ -1,0 +1,152 @@
+name: Create Release from Jenkins Build
+
+on:
+  workflow_dispatch:
+    inputs:
+      build_date:
+        description: 'Build date (YYYY-MM-DD), leave empty to use today'
+        required: false
+        type: string
+  repository_dispatch:
+    types: [jenkins-build-complete]
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Set build date
+        id: date
+        run: |
+          if [ "${{ github.event_name }}" = "repository_dispatch" ]; then
+            DATE="${{ github.event.client_payload.build_date }}"
+          else
+            DATE="${{ inputs.build_date }}"
+          fi
+          if [ -z "$DATE" ]; then
+            DATE=$(date -u +%Y-%m-%d)
+          fi
+          echo "date=$DATE" >> $GITHUB_OUTPUT
+          echo "tag=v$DATE" >> $GITHUB_OUTPUT
+
+      - name: Fetch build.json from Jenkins
+        run: |
+          curl -fsSL \
+            --user "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_TOKEN }}" \
+            "https://jk.itsnooblk.com/job/noobwrt-builder/lastSuccessfulBuild/artifact/build.json" \
+            -o build.json
+          cat build.json
+
+      - name: Fetch release.md from Jenkins
+        run: |
+          curl -fsSL \
+            --user "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_TOKEN }}" \
+            "https://jk.itsnooblk.com/job/noobwrt-builder/lastSuccessfulBuild/artifact/release.md" \
+            -o release_body.md
+
+      - name: Parse OpenWrt versions from build.json
+        id: versions
+        run: |
+          # Extract all openwrt_version values from build.json
+          # build.json may be an array of builds or an object with a versions array
+          VERSIONS=$(python3 -c "
+          import json, sys
+          with open('build.json') as f:
+              data = json.load(f)
+          # Support: array of build objects, or {builds: [...]} or {versions: [...]}
+          if isinstance(data, list):
+              builds = data
+          elif isinstance(data, dict):
+              builds = data.get('builds', data.get('versions', [data]))
+          versions = []
+          for b in builds:
+              v = b.get('openwrt_version') or b.get('version') or b.get('openwrt')
+              if v and v not in versions:
+                  versions.append(v)
+          print(','.join(versions))
+          ")
+          echo "versions=$VERSIONS" >> $GITHUB_OUTPUT
+          echo "Detected versions: $VERSIONS"
+
+      - name: Download firmware artifacts from Jenkins
+        env:
+          DATE: ${{ steps.date.outputs.date }}
+          VERSIONS: ${{ steps.versions.outputs.versions }}
+        run: |
+          mkdir -p artifacts
+          BASE_URL="https://jk.itsnooblk.com/job/noobwrt-builder/lastSuccessfulBuild/artifact"
+          AUTH="--user ${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_TOKEN }}"
+
+          # Download .bin (sysupgrade)
+          curl -fsSL $AUTH \
+            "$BASE_URL/openwrt-qualcommax-ipq807x-arcadyan_aw1000-squashfs-sysupgrade.bin" \
+            -o "artifacts/sysupgrade.bin"
+
+          # Download .ubi (factory)
+          curl -fsSL $AUTH \
+            "$BASE_URL/openwrt-qualcommax-ipq807x-arcadyan_aw1000-squashfs-factory.ubi" \
+            -o "artifacts/factory.ubi"
+
+          # Rename artifacts per version
+          IFS=',' read -ra VER_LIST <<< "$VERSIONS"
+          for VER in "${VER_LIST[@]}"; do
+            cp "artifacts/sysupgrade.bin" "artifacts/Arcadyan-AW1000-Pro-${VER}-${DATE}.bin"
+            cp "artifacts/factory.ubi"    "artifacts/Arcadyan-AW1000-Pro-${VER}-${DATE}.ubi"
+          done
+
+          # Remove temp files
+          rm artifacts/sysupgrade.bin artifacts/factory.ubi
+          ls -lh artifacts/
+
+      - name: Build release body
+        id: body
+        env:
+          TAG: ${{ steps.date.outputs.tag }}
+          DATE: ${{ steps.date.outputs.date }}
+        run: |
+          BADGE="![Downloads](https://img.shields.io/github/downloads/nooblk-98/noobwrt-arcadyan-aw1k/${TAG}/total?style=flat-square&label=release%20downloads&labelColor=24292f&color=238636)"
+          echo "$BADGE" > release_full.md
+          echo "" >> release_full.md
+          cat release_body.md >> release_full.md
+
+      - name: Check if release already exists
+        id: check
+        env:
+          GH_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+          TAG: ${{ steps.date.outputs.tag }}
+        run: |
+          if gh release view "$TAG" --repo nooblk-98/noobwrt-arcadyan-aw1k > /dev/null 2>&1; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create GitHub Release
+        if: steps.check.outputs.exists == 'false'
+        env:
+          GH_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+          TAG: ${{ steps.date.outputs.tag }}
+          DATE: ${{ steps.date.outputs.date }}
+        run: |
+          gh release create "$TAG" \
+            --repo nooblk-98/noobwrt-arcadyan-aw1k \
+            --title "NoobWRT ${TAG} for arcadyan-aw1000 5G" \
+            --notes-file release_full.md \
+            --latest \
+            artifacts/*
+
+      - name: Update existing release assets
+        if: steps.check.outputs.exists == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+          TAG: ${{ steps.date.outputs.tag }}
+          DATE: ${{ steps.date.outputs.date }}
+        run: |
+          echo "Release $TAG already exists — uploading/replacing assets only"
+          for f in artifacts/*; do
+            gh release upload "$TAG" "$f" \
+              --repo nooblk-98/noobwrt-arcadyan-aw1k \
+              --clobber
+          done
