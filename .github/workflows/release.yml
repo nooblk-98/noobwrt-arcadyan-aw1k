@@ -128,7 +128,7 @@ jobs:
           TAG: ${{ steps.date.outputs.tag }}
           DATE: ${{ steps.date.outputs.date }}
         run: |
-          BADGE="![Downloads](https://img.shields.io/github/downloads/nooblk-98/noobwrt-arcadyan-aw1k/${TAG}/total?style=flat-square&label=release%20downloads&labelColor=24292f&color=238636)"
+          BADGE="![Downloads](https://img.shields.io/github/downloads/${{ github.repository }}/${TAG}/total?style=flat-square&label=release%20downloads&labelColor=24292f&color=238636)"
           echo "$BADGE" > release_full.md
           echo "" >> release_full.md
           cat release_body.md >> release_full.md
@@ -136,10 +136,10 @@ jobs:
       - name: Check if release already exists
         id: check
         env:
-          GH_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+          GH_TOKEN: ${{ github.token }}
           TAG: ${{ steps.date.outputs.tag }}
         run: |
-          if gh release view "$TAG" --repo nooblk-98/noobwrt-arcadyan-aw1k > /dev/null 2>&1; then
+          if gh release view "$TAG" > /dev/null 2>&1; then
             echo "exists=true" >> $GITHUB_OUTPUT
           else
             echo "exists=false" >> $GITHUB_OUTPUT
@@ -148,12 +148,11 @@ jobs:
       - name: Create GitHub Release
         if: steps.check.outputs.exists == 'false'
         env:
-          GH_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+          GH_TOKEN: ${{ github.token }}
           TAG: ${{ steps.date.outputs.tag }}
           DATE: ${{ steps.date.outputs.date }}
         run: |
           gh release create "$TAG" \
-            --repo nooblk-98/noobwrt-arcadyan-aw1k \
             --title "NoobWRT ${TAG} for arcadyan-aw1000 5G" \
             --notes-file release_full.md \
             --latest \
@@ -162,13 +161,11 @@ jobs:
       - name: Update existing release assets
         if: steps.check.outputs.exists == 'true'
         env:
-          GH_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+          GH_TOKEN: ${{ github.token }}
           TAG: ${{ steps.date.outputs.tag }}
           DATE: ${{ steps.date.outputs.date }}
         run: |
           echo "Release $TAG already exists — uploading/replacing assets only"
           for f in artifacts/*; do
-            gh release upload "$TAG" "$f" \
-              --repo nooblk-98/noobwrt-arcadyan-aw1k \
-              --clobber
+            gh release upload "$TAG" "$f" --clobber
           done
