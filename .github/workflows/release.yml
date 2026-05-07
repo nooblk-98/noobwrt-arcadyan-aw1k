@@ -40,18 +40,20 @@ jobs:
             "${BASE}/api/json" -o build.json
 
           python3 >> $GITHUB_ENV << 'EOF'
-          import json
+          import json, re
           with open('build.json') as f:
               data = json.load(f)
-          paths = {}
           for a in data.get('artifacts', []):
               n = a['fileName']
               r = a['relativePath']
-              if n == 'release.md':          paths['release_md'] = r
-              if n.endswith('-sysupgrade.bin'): paths['bin'] = r
-              if n.endswith('-factory.ubi'):    paths['ubi'] = r
-          for k, v in paths.items():
-              print(f"{k}={v}")
+              if n == 'release.md':
+                  print(f"release_md={r}")
+              elif n.endswith('-sysupgrade.bin'):
+                  print(f"bin_path={r}")
+                  m = re.match(r'openwrt-([^-]+)', n)
+                  print(f"owrt_ver={m.group(1) if m else 'unknown'}")
+              elif n.endswith('-factory.ubi'):
+                  print(f"ubi_path={r}")
           EOF
 
       - name: Download release notes
@@ -63,27 +65,37 @@ jobs:
           curl -fsSL --user "${JENKINS_USER}:${JENKINS_TOKEN}" \
             "${BASE}/artifact/${release_md}" -o release.md
 
-      - name: Download firmware
+      - name: Download and rename firmware
         env:
           JENKINS_USER: ${{ secrets.JENKINS_USER }}
           JENKINS_TOKEN: ${{ secrets.JENKINS_TOKEN }}
+          TAG: ${{ steps.date.outputs.tag }}
         run: |
-          mkdir -p artifacts
           BASE="https://jk.itsnooblk.com/job/noobwrt-builder/lastSuccessfulBuild"
+          mkdir -p artifacts
+
+          BIN_NAME="NoobWRT-AW1000-${owrt_ver}-${TAG}.bin"
+          UBI_NAME="NoobWRT-AW1000-${owrt_ver}-${TAG}.ubi"
+
           curl -fsSL --user "${JENKINS_USER}:${JENKINS_TOKEN}" \
-            "${BASE}/artifact/${bin}" -o "artifacts/$(basename "$bin")"
+            "${BASE}/artifact/${bin_path}" -o "artifacts/${BIN_NAME}"
           curl -fsSL --user "${JENKINS_USER}:${JENKINS_TOKEN}" \
-            "${BASE}/artifact/${ubi}" -o "artifacts/$(basename "$ubi")"
+            "${BASE}/artifact/${ubi_path}" -o "artifacts/${UBI_NAME}"
+
+          echo "bin_name=${BIN_NAME}" >> $GITHUB_OUTPUT
+          echo "ubi_name=${UBI_NAME}" >> $GITHUB_OUTPUT
 
       - name: Create GitHub Release
         env:
           GH_TOKEN: ${{ github.token }}
           TAG: ${{ steps.date.outputs.tag }}
         run: |
-          if gh release view "$TAG" > /dev/null 2>&1; then
-            for f in artifacts/*; do gh release upload "$TAG" "$f" --clobber; done
+          REPO="${{ github.repository }}"
+          if gh release view "$TAG" -R "$REPO" > /dev/null 2>&1; then
+            for f in artifacts/*; do gh release upload "$TAG" "$f" -R "$REPO" --clobber; done
           else
             gh release create "$TAG" \
+              -R "$REPO" \
               --title "NoobWRT ${TAG} for arcadyan-aw1000 5G" \
               --notes-file release.md \
               --latest \
