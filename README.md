@@ -14,7 +14,7 @@ High-performance Fully Customized OpenWrt firmware for the Arcadyan AW1000
 ![NoobWRT Dashboard](/images/logo.png)
 
 <p align="center">
-   <img src="https://img.shields.io/github/downloads/nooblk-98/noobwrt-arcadyan-aw1k/total?style=for-the-badge&logo=openwrt&labelColor=blue" alt="GitHub Downloads (all assets, all releases)">
+   <img src="https://img.shields.io/github/downloads/nooblk-98/noobwrt-arcadyan-aw1k/total?style=for-the-badge&logo=openwrt" alt="GitHub Downloads (all assets, all releases)">
 </p>
 
 </div>
