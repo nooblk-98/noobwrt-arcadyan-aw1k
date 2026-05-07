@@ -68,7 +68,7 @@ Lite firmware releases are discontinued.
 
 ## Acknowledgement
 
-This firmware is compiled by **Lahiru Sandaruwan (NoobLK)** — [LinkedIn](https://www.linkedin.com/in/lahiru-sandaruwan-liyanage/)
+This firmware is compiled by **Lahiru Sandaruwan ([NoobLK](https://www.linkedin.com/in/lahiru-sandaruwan-liyanage/))**
 
 It is provided **free of charge** and is **open source**. You are **not permitted to sell** this firmware or any derivative of it. It was built for the community and must remain free.
 
