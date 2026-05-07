@@ -66,6 +66,12 @@ Lite firmware releases are discontinued.
 - Existing lite users can continue using older lite releases.
 - If there is enough demand and I get requests to release lite firmware again, I will resume lite releases.
 
+## Acknowledgement
+
+This firmware is compiled by **Lahiru Sandaruwan (NoobLK)** — [LinkedIn](https://www.linkedin.com/in/lahiru-sandaruwan-liyanage/)
+
+It is provided **free of charge** and is **open source**. You are **not permitted to sell** this firmware or any derivative of it. It was built for the community and must remain free.
+
 ## License
 
 Based on OpenWrt and distributed under GPL-2.0.
