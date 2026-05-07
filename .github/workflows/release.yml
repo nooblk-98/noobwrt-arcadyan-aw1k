@@ -40,9 +40,10 @@ jobs:
             "${BASE}/api/json" -o build.json
 
           python3 >> $GITHUB_ENV << 'EOF'
-          import json, re
+          import json
           with open('build.json') as f:
               data = json.load(f)
+          print("owrt_ver=OPENWRT-25.12")
           for a in data.get('artifacts', []):
               n = a['fileName']
               r = a['relativePath']
@@ -50,8 +51,6 @@ jobs:
                   print(f"release_md={r}")
               elif n.endswith('-sysupgrade.bin'):
                   print(f"bin_path={r}")
-                  m = re.match(r'openwrt-([^-]+)', n)
-                  print(f"owrt_ver={m.group(1) if m else 'unknown'}")
               elif n.endswith('-factory.ubi'):
                   print(f"ubi_path={r}")
           EOF
