@@ -4,7 +4,7 @@
 
 High-performance Fully Customized OpenWrt firmware for the Arcadyan AW1000
 
-[![Release](https://img.shields.io/github/v/release/nooblk-98/arcadyan-aw1000-mod-firmware?sort=semver&style=for-the-badge)](https://github.com/nooblk-98/arcadyan-aw1000-mod-firmware/releases)
+[![Release](https://img.shields.io/github/v/release/nooblk-98/noobwrt-arcadyan-aw1k?sort=semver&style=for-the-badge)](https://github.com/nooblk-98/noobwrt-arcadyan-aw1k/releases)
 [![Issues](https://img.shields.io/github/issues/nooblk-98/noobwrt-arcadyan-aw1k?style=for-the-badge)](https://github.com/nooblk-98/noobwrt-arcadyan-aw1k/issues)
 [![Target](https://img.shields.io/badge/target-Arcadyan%20AW1000-blue?style=for-the-badge)](https://github.com/nooblk-98/noobwrt-arcadyan-aw1k)
 [![Base](https://img.shields.io/badge/base-OpenWRT-green?style=for-the-badge)](https://github.com/nooblk-98/noobwrt-arcadyan-aw1k)
