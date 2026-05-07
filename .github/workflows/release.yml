@@ -17,9 +17,6 @@ jobs:
       contents: write
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
       - name: Set build date
         id: date
         run: |
@@ -28,120 +25,67 @@ jobs:
           else
             DATE="${{ inputs.build_date }}"
           fi
-          if [ -z "$DATE" ]; then
-            DATE=$(date -u +%Y-%m-%d)
-          fi
+          [ -z "$DATE" ] && DATE=$(date -u +%Y-%m-%d)
           echo "date=$DATE" >> $GITHUB_OUTPUT
           echo "tag=v$DATE" >> $GITHUB_OUTPUT
 
-      - name: Discover and fetch Jenkins artifacts
+      - name: Fetch artifacts from Jenkins
         id: fetch
         env:
           JENKINS_USER: ${{ secrets.JENKINS_USER }}
           JENKINS_TOKEN: ${{ secrets.JENKINS_TOKEN }}
         run: |
           BASE="https://jk.itsnooblk.com/job/noobwrt-builder/lastSuccessfulBuild"
-
-          # Get artifact list from Jenkins API
           curl -fsSL --user "${JENKINS_USER}:${JENKINS_TOKEN}" \
-            "${BASE}/api/json" -o jenkins_build.json
+            "${BASE}/api/json" -o build.json
 
-          # Extract relative paths for the files we need
-          python3 - <<'EOF'
-          import json, os
-          with open('jenkins_build.json') as f:
+          python3 << 'EOF'
+          import json
+          with open('build.json') as f:
               data = json.load(f)
-          artifacts = {a['fileName']: a['relativePath'] for a in data.get('artifacts', [])}
           paths = {}
-          for fname, rpath in artifacts.items():
-              if fname == 'build.json':            paths['build_json'] = rpath
-              elif fname == 'release.md':           paths['release_md'] = rpath
-              elif fname.endswith('-sysupgrade.bin'): paths['bin'] = rpath
-              elif fname.endswith('-factory.ubi'):    paths['ubi'] = rpath
-          with open('artifact_paths.env', 'w') as f:
-              for k, v in paths.items():
-                  f.write(f'{k}={v}\n')
-          print("Found:", paths)
-          EOF
+          for a in data.get('artifacts', []):
+              n = a['fileName']
+              r = a['relativePath']
+              if n == 'release.md':          paths['release_md'] = r
+              if n.endswith('-sysupgrade.bin'): paths['bin'] = r
+              if n.endswith('-factory.ubi'):    paths['ubi'] = r
+          for k, v in paths.items():
+              print(f"{k}={v}")
+          EOF >> $GITHUB_ENV
 
-          # Load paths into env
-          cat artifact_paths.env >> $GITHUB_ENV
-
-          # Fetch build.json and release.md
-          source artifact_paths.env
+      - name: Download release notes
+        env:
+          JENKINS_USER: ${{ secrets.JENKINS_USER }}
+          JENKINS_TOKEN: ${{ secrets.JENKINS_TOKEN }}
+        run: |
+          BASE="https://jk.itsnooblk.com/job/noobwrt-builder/lastSuccessfulBuild"
           curl -fsSL --user "${JENKINS_USER}:${JENKINS_TOKEN}" \
-            "${BASE}/artifact/${build_json}" -o build.json
-          curl -fsSL --user "${JENKINS_USER}:${JENKINS_TOKEN}" \
-            "${BASE}/artifact/${release_md}" -o release_body.md
+            "${BASE}/artifact/${release_md}" -o release.md
 
-          echo "=== build.json ==="
-          cat build.json
-
-      - name: Download firmware artifacts from Jenkins
+      - name: Download firmware
         env:
           JENKINS_USER: ${{ secrets.JENKINS_USER }}
           JENKINS_TOKEN: ${{ secrets.JENKINS_TOKEN }}
         run: |
           mkdir -p artifacts
           BASE="https://jk.itsnooblk.com/job/noobwrt-builder/lastSuccessfulBuild"
-
-          # bin and ubi paths were loaded into env by the fetch step
-          BIN_NAME=$(basename "$bin")
-          UBI_NAME=$(basename "$ubi")
-
           curl -fsSL --user "${JENKINS_USER}:${JENKINS_TOKEN}" \
-            "${BASE}/artifact/${bin}" -o "artifacts/${BIN_NAME}"
-
+            "${BASE}/artifact/${bin}" -o "artifacts/$(basename "$bin")"
           curl -fsSL --user "${JENKINS_USER}:${JENKINS_TOKEN}" \
-            "${BASE}/artifact/${ubi}" -o "artifacts/${UBI_NAME}"
+            "${BASE}/artifact/${ubi}" -o "artifacts/$(basename "$ubi")"
 
-          ls -lh artifacts/
-
-      - name: Build release body
-        id: body
-        env:
-          TAG: ${{ steps.date.outputs.tag }}
-        run: |
-          BADGE="![Downloads](https://img.shields.io/github/downloads/${{ github.repository }}/${TAG}/total?style=flat-square&label=release%20downloads&labelColor=24292f&color=238636)"
-          # Strip any existing badge/download lines from release.md to avoid duplicates
-          grep -v 'shields.io/github/downloads' release_body.md | grep -v '^!\[Downloads\]' > release_stripped.md
-          echo "$BADGE" > release_full.md
-          echo "" >> release_full.md
-          cat release_stripped.md >> release_full.md
-
-      - name: Check if release already exists
-        id: check
+      - name: Create GitHub Release
         env:
           GH_TOKEN: ${{ github.token }}
           TAG: ${{ steps.date.outputs.tag }}
         run: |
           if gh release view "$TAG" > /dev/null 2>&1; then
-            echo "exists=true" >> $GITHUB_OUTPUT
+            for f in artifacts/*; do gh release upload "$TAG" "$f" --clobber; done
           else
-            echo "exists=false" >> $GITHUB_OUTPUT
+            gh release create "$TAG" \
+              --title "NoobWRT ${TAG} for arcadyan-aw1000 5G" \
+              --notes-file release.md \
+              --latest \
+              artifacts/*
           fi
-
-      - name: Create GitHub Release
-        if: steps.check.outputs.exists == 'false'
-        env:
-          GH_TOKEN: ${{ github.token }}
-          TAG: ${{ steps.date.outputs.tag }}
-          DATE: ${{ steps.date.outputs.date }}
-        run: |
-          gh release create "$TAG" \
-            --title "NoobWRT ${TAG} for arcadyan-aw1000 5G" \
-            --notes-file release_full.md \
-            --latest \
-            artifacts/*
-
-      - name: Update existing release assets
-        if: steps.check.outputs.exists == 'true'
-        env:
-          GH_TOKEN: ${{ github.token }}
-          TAG: ${{ steps.date.outputs.tag }}
-          DATE: ${{ steps.date.outputs.date }}
-        run: |
-          echo "Release $TAG already exists — uploading/replacing assets only"
-          for f in artifacts/*; do
-            gh release upload "$TAG" "$f" --clobber
-          done
