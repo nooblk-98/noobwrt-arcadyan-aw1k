@@ -39,7 +39,7 @@ jobs:
           curl -fsSL --user "${JENKINS_USER}:${JENKINS_TOKEN}" \
             "${BASE}/api/json" -o build.json
 
-          python3 << 'EOF'
+          python3 >> $GITHUB_ENV << 'EOF'
           import json
           with open('build.json') as f:
               data = json.load(f)
@@ -52,7 +52,7 @@ jobs:
               if n.endswith('-factory.ubi'):    paths['ubi'] = r
           for k, v in paths.items():
               print(f"{k}={v}")
-          EOF >> $GITHUB_ENV
+          EOF
 
       - name: Download release notes
         env:
