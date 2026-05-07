@@ -72,6 +72,8 @@ This firmware is compiled by **Lahiru Sandaruwan ([NoobLK](https://www.linkedin.
 
 It is provided **free of charge** and is **open source**. You are **not permitted to sell** this firmware or any derivative of it. It was built for the community and must remain free.
 
+If you find this project useful, don't forget to [star this project](https://github.com/nooblk-98/noobwrt-arcadyan-aw1k) on GitHub!
+
 ## License
 
 Based on OpenWrt and distributed under GPL-2.0.
