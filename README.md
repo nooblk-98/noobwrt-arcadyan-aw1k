@@ -46,7 +46,7 @@ NoobWRT transforms the Arcadyan AW1000 into a fast, secure, and highly customiza
 - Latest package updates from upstream OpenWRT
 - Security patches applied automatically
 - Bug fixes integrated as soon as they are available
-- Transparent build process: [view build status and history](https://jk.itsnooblk.com/job/aw1k-builder/)
+- Transparent build process: [view build status and history](https://jk.itsnooblk.com/job/noobwrt-builder/)
 
 ---
 
