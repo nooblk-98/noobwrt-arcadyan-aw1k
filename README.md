@@ -58,6 +58,26 @@ NoobWRT transforms the Arcadyan AW1000 into a fast, secure, and highly customiza
 
 ---
 
+## Screenshots
+
+<div align="center">
+
+| Login | Dashboard |
+| :---: | :---: |
+| ![Login](/images/01-login.png) | ![Dashboard](/images/02-dashboard.png) |
+
+| Passwall | Network Status |
+| :---: | :---: |
+| ![Passwall](/images/03-passwall.png) | ![Network Status](/images/04-netstat.png) |
+
+| Bandix | Theme |
+| :---: | :---: |
+| ![Bandix](/images/05-bandix.png) | ![Theme](/images/06-theme.png) |
+
+</div>
+
+---
+
 ## Lite Firmware Discontinuation Notice
 
 Lite firmware releases are discontinued.
