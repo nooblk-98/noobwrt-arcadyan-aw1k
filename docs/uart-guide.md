@@ -63,7 +63,7 @@ GND RX  TX VCC(3.3V)
 
 ## TTL USB Reference Image
 
-![TTL USB Reference](images/ttl-usb.svg)
+![TTL USB Reference](images/PL2303-UART-Module.png)
 
 Use the diagram above as a quick reference for connecting your USB-to-TTL adapter to the AW1000 UART pins (TX, RX, GND). Do NOT connect VCC from the adapter to the device.
 
