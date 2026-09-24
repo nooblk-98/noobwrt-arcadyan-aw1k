@@ -13,7 +13,7 @@
 
 ![NoobWRT](/images/logo.png)
 
-[Download](#-download) · [Features](#-features) · [Firmware Variants](#-firmware-variants) · [Install](#-quick-install) · [Screenshots](#-screenshots) · [Documentation](#-documentation) · [Support](#-support)
+[Download](#-download) · [Features](#-features) · [Install](#-quick-install) · [Screenshots](#-screenshots) · [Documentation](#-documentation) · [Support](#-support)
 
 </div>
 
@@ -41,18 +41,6 @@
 - **Modern UI** with the Argon theme and the APK package manager
 
 See the full [package list](https://aw1k-docs.itsnooblk.com/packages/).
-
----
-
-## 🧩 Firmware Variants
-
-| Variant | Choose this if… |
-|---|---|
-| **PassWall 1** | You need the **Allow Insecure** option (e.g. V2Ray configs with self-signed TLS certificates). |
-| **PassWall 2** | Your V2Ray configs are **secure only** and work without Allow Insecure. |
-
-> [!WARNING]
-> **Do not upgrade Xray-core yourself.** The bundled version is tested with these PassWall builds; upgrading it can break your configuration.
 
 ---
 
