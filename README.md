@@ -23,6 +23,17 @@ High-performance Fully Customized OpenWrt firmware for the Arcadyan AW1000
 
 ---
 
+## 📥 Download
+
+**Download the current stable firmware release from here:**
+
+[![Download v2026-09-24](https://img.shields.io/badge/Download-v2026--09--24-success?style=for-the-badge&logo=github)](https://github.com/nooblk-98/noobwrt-arcadyan-aw1k/releases/tag/v2026-09-24)
+
+> [!NOTE]
+> Please read the release notes before upgrading, including the **Known Issue** section.
+
+---
+
 ## Preview ( click to play in youtube)
 
 [![Watch on YouTube](https://img.youtube.com/vi/pxMpUKWQ3nU/maxresdefault.jpg)](https://www.youtube.com/watch?v=pxMpUKWQ3nU)
