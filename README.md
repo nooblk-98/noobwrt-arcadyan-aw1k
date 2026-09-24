@@ -1,25 +1,21 @@
-﻿<div align="center">
+<div align="center">
 
 # NoobWRT for Arcadyan AW1000
 
-High-performance Fully Customized OpenWrt firmware for the Arcadyan AW1000
+**High-performance, fully customized OpenWrt firmware for the Arcadyan AW1000**
 
-[![Release](https://img.shields.io/github/v/release/nooblk-98/noobwrt-arcadyan-aw1k?style=for-the-badge)](https://github.com/nooblk-98/noobwrt-arcadyan-aw1k/releases)
+[![Release](https://img.shields.io/github/v/release/nooblk-98/noobwrt-arcadyan-aw1k?style=for-the-badge)](https://github.com/nooblk-98/noobwrt-arcadyan-aw1k/releases/latest)
+[![Downloads](https://img.shields.io/github/downloads/nooblk-98/noobwrt-arcadyan-aw1k/total?style=for-the-badge&logo=openwrt)](https://github.com/nooblk-98/noobwrt-arcadyan-aw1k/releases)
 [![Issues](https://img.shields.io/github/issues/nooblk-98/noobwrt-arcadyan-aw1k?style=for-the-badge)](https://github.com/nooblk-98/noobwrt-arcadyan-aw1k/issues)
-[![Target](https://img.shields.io/badge/target-Arcadyan%20AW1000-blue?style=for-the-badge)](https://github.com/nooblk-98/noobwrt-arcadyan-aw1k)
-[![Base](https://img.shields.io/badge/base-OpenWRT-green?style=for-the-badge)](https://github.com/nooblk-98/noobwrt-arcadyan-aw1k)
+[![Target](https://img.shields.io/badge/target-Arcadyan%20AW1000-blue?style=for-the-badge)](https://aw1k-docs.itsnooblk.com/hardware/)
+[![Base](https://img.shields.io/badge/base-OpenWrt-green?style=for-the-badge)](https://openwrt.org)
+[![License](https://img.shields.io/badge/license-GPL--2.0-orange?style=for-the-badge)](#license)
 
+![NoobWRT](/images/logo.png)
 
-
-![NoobWRT Dashboard](/images/logo.png)
-
-<p align="center">
-   <img src="https://img.shields.io/github/downloads/nooblk-98/noobwrt-arcadyan-aw1k/total?style=for-the-badge&logo=openwrt" alt="GitHub Downloads (all assets, all releases)">
-</p>
+[Download](#-download) · [Features](#-features) · [Firmware Variants](#-firmware-variants) · [Install](#-quick-install) · [Screenshots](#-screenshots) · [Documentation](#-documentation) · [Support](#-support)
 
 </div>
-
-
 
 ---
 
@@ -27,84 +23,128 @@ High-performance Fully Customized OpenWrt firmware for the Arcadyan AW1000
 
 **Download the current stable firmware release from here:**
 
-[![Download v2026-09-24](https://img.shields.io/badge/Download-v2026--09--24-success?style=for-the-badge&logo=github)](https://github.com/nooblk-98/noobwrt-arcadyan-aw1k/releases/tag/v2026-09-24)
+[![Download Latest Release](https://img.shields.io/badge/Download-Latest%20Release-success?style=for-the-badge&logo=github)](https://github.com/nooblk-98/noobwrt-arcadyan-aw1k/releases/latest)
 
-> [!NOTE]
-> Please read the release notes before upgrading, including the **Known Issue** section.
-
----
-
-## Preview ( click to play in youtube)
-
-[![Watch on YouTube](https://img.youtube.com/vi/pxMpUKWQ3nU/maxresdefault.jpg)](https://www.youtube.com/watch?v=pxMpUKWQ3nU)
+> [!IMPORTANT]
+> Read the release notes before upgrading. Each release lists its build info, image variants and any **known issues** with workarounds.
 
 ---
 
-## Documentation
+## ✨ Features
 
-For full documentation, visit: [https://aw1k-docs.itsnooblk.com](https://aw1k-docs.itsnooblk.com)
+- **Up-to-date OpenWrt base** with the latest upstream packages, security patches and bug fixes
+- **PassWall 1 / PassWall 2** with a tested, bundled Xray-core
+- **Cellular modem management** via QModem, modem data, SMS tool and TTL tools
+- **Networking extras:** SQM, mwan3, banIP, AdGuard Home, SmartDNS, HomeProxy
+- **VPN & remote access:** Tailscale, ZeroTier, OpenVPN, Cloudflared, FRP client
+- **Monitoring:** network status, bandwidth monitoring (nlbwmon, wrtbwmon), statistics
+- **Modern UI** with the Argon theme and the APK package manager
+- **Transparent builds:** [view build status and history](https://jk.itsnooblk.com/job/noobwrt-builder/)
+
+See the full [package list](https://aw1k-docs.itsnooblk.com/packages/).
+
+---
+
+## 🧩 Firmware Variants
+
+| Variant | Choose this if… |
+|---|---|
+| **PassWall 1** | You need the **Allow Insecure** option (e.g. V2Ray configs with self-signed TLS certificates). |
+| **PassWall 2** | Your V2Ray configs are **secure only** and work without Allow Insecure. |
+
+> [!WARNING]
+> **Do not upgrade Xray-core yourself.** The bundled version is tested with these PassWall builds; upgrading it can break your configuration.
 
 ---
 
-## Overview
+## 🚀 Quick Install
 
-NoobWRT transforms the Arcadyan AW1000 into a fast, secure, and highly customizable router. Built on the OpenWRT foundation, it is tuned for:
+Upgrading from an existing OpenWrt / NoobWRT installation, use the **sysupgrade** image (`.bin`):
 
-- Performance: wire-speed routing with minimal latency
-- Security: hardened firewall and regular security updates
-- Stability: tested configuration for 24/7 reliability
-- Flexibility: curated app ecosystem with sensible defaults
-- Latest package updates from upstream OpenWRT
-- Security patches applied automatically
-- Bug fixes integrated as soon as they are available
-- Transparent build process: [view build status and history](https://jk.itsnooblk.com/job/noobwrt-builder/)
+1. Open `http://192.168.1.1` and go to **System → Backup / Flash Firmware**.
+2. Create a backup of your current settings.
+3. Upload the `sysupgrade.bin` image and confirm.
+4. Wait for the router to reboot, then log in again at `http://192.168.1.1`.
+
+For first-time installation, CLI flashing and recovery, follow the [Installation guide](https://aw1k-docs.itsnooblk.com/installation/).
+
+> [!CAUTION]
+> Flashing third-party firmware may void your warranty and can brick your device if interrupted. Ensure stable power and proceed at your own risk. If something goes wrong, see the [Recovery guide](https://aw1k-docs.itsnooblk.com/recovery/).
 
 ---
+
+## 📸 Screenshots
 
 <div align="center">
 
 ![Dashboard](/images/dash.png)
 
-</div>
-
----
-
-## Screenshots
-
-<div align="center">
-
-| Login | Dashboard |
+| Login | Passwall |
 | :---: | :---: |
-| ![Login](/images/01-login.png) | ![Dashboard](/images/02-dashboard.png) |
+| ![Login](/images/01-login.png) | ![Passwall](/images/03-passwall.png) |
 
-| Passwall | Network Status |
+| Network Status | Bandix |
 | :---: | :---: |
-| ![Passwall](/images/03-passwall.png) | ![Network Status](/images/04-netstat.png) |
+| ![Network Status](/images/04-netstat.png) | ![Bandix](/images/05-bandix.png) |
 
-| Bandix | Theme |
-| :---: | :---: |
-| ![Bandix](/images/05-bandix.png) | ![Theme](/images/06-theme.png) |
+| Theme |
+| :---: |
+| ![Theme](/images/06-theme.png) |
 
 </div>
 
+### 🎬 Demo Video
+
+[![Watch on YouTube](https://img.youtube.com/vi/pxMpUKWQ3nU/maxresdefault.jpg)](https://www.youtube.com/watch?v=pxMpUKWQ3nU)
+
+*Click the image to watch on YouTube.*
+
 ---
 
-## Lite Firmware Discontinuation Notice
+## 📚 Documentation
 
-Lite firmware releases are discontinued.
+Full documentation: **[aw1k-docs.itsnooblk.com](https://aw1k-docs.itsnooblk.com)**
 
-- There are no new lite firmware builds in current releases.
-- Existing lite users can continue using older lite releases.
-- If there is enough demand and I get requests to release lite firmware again, I will resume lite releases.
+| Guide | Description |
+|---|---|
+| [Getting Started](https://aw1k-docs.itsnooblk.com/getting-started/) | First steps after flashing |
+| [Installation](https://aw1k-docs.itsnooblk.com/installation/) | Flash via web UI or CLI |
+| [Recovery](https://aw1k-docs.itsnooblk.com/recovery/) | Unbrick and restore your router |
+| [UART Guide](https://aw1k-docs.itsnooblk.com/uart-guide/) | Serial console access |
+| [Modem Firmware](https://aw1k-docs.itsnooblk.com/modem-firmware/) | Modem firmware information |
+| [Hardware](https://aw1k-docs.itsnooblk.com/hardware/) | AW1000 hardware specifications |
+| [Packages](https://aw1k-docs.itsnooblk.com/packages/) | Included packages |
+| [FAQ](https://aw1k-docs.itsnooblk.com/faq/) | Common questions and fixes |
 
-## Acknowledgement
+---
 
-This firmware is compiled by **Lahiru Sandaruwan ([NoobLK](https://www.linkedin.com/in/lahiru-sandaruwan-liyanage/))**
+## 📢 Notices
 
-It is provided **free of charge** and is **open source**. You are **not permitted to sell** this firmware or any derivative of it. It was built for the community and must remain free.
+> [!NOTE]
+> **Lite firmware is discontinued.** No new Lite builds are released. Existing Lite users can keep using the [last Lite release](https://github.com/nooblk-98/noobwrt-arcadyan-aw1k/releases/tag/v2026-02-12-15-17-16). Lite builds may return if there is enough demand.
 
-If you find this project useful, don't forget to [star this project](https://github.com/nooblk-98/noobwrt-arcadyan-aw1k) on GitHub!
+---
+
+## 🛟 Support
+
+Found a bug or need help? [Open an issue](https://github.com/nooblk-98/noobwrt-arcadyan-aw1k/issues) and include:
+
+- Firmware release tag (e.g. `v2026-09-24`) and variant (PassWall 1 / PassWall 2)
+- What you expected vs. what happened
+- Relevant logs (**Status → System Log** / **Kernel Log**) and screenshots
+
+Before opening an issue, check the [FAQ](https://aw1k-docs.itsnooblk.com/faq/) and the known issues in the latest release notes.
+
+---
+
+## 🙏 Credits
+
+This firmware is compiled and maintained by **Lahiru Sandaruwan ([NoobLK](https://www.linkedin.com/in/lahiru-sandaruwan-liyanage/))**.
+
+NoobWRT is **free and open source**, built for the community. Please do not sell this firmware or any derivative of it; it should remain free for everyone.
+
+If you find this project useful, please ⭐ [star the repository](https://github.com/nooblk-98/noobwrt-arcadyan-aw1k)!
 
 ## License
 
-Based on OpenWrt and distributed under GPL-2.0.
+Based on [OpenWrt](https://openwrt.org) and distributed under the [GPL-2.0](https://aw1k-docs.itsnooblk.com/license/) license.
