@@ -39,7 +39,6 @@
 - **VPN & remote access:** Tailscale, ZeroTier, OpenVPN, Cloudflared, FRP client
 - **Monitoring:** network status, bandwidth monitoring (nlbwmon, wrtbwmon), statistics
 - **Modern UI** with the Argon theme and the APK package manager
-- **Transparent builds:** [view build status and history](https://jk.itsnooblk.com/job/noobwrt-builder/)
 
 See the full [package list](https://aw1k-docs.itsnooblk.com/packages/).
 
