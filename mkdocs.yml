@@ -9,6 +9,7 @@ nav:
   - Releases: builds.md
   - Installation: installation.md
   - Getting Started: getting-started.md
+  - Phone (RJ11): phone.md
   - Recovery: recovery.md
   - UART Guide: uart-guide.md
   - Modem Firmware: modem-firmware.md

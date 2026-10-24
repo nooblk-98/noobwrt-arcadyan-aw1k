@@ -131,6 +131,7 @@ Full documentation: **[aw1k-docs.itsnooblk.com](https://aw1k-docs.itsnooblk.com)
 |---|---|
 | [Getting Started](https://aw1k-docs.itsnooblk.com/getting-started/) | First steps after flashing |
 | [Installation](https://aw1k-docs.itsnooblk.com/installation/) | Flash via web UI or CLI |
+| [Phone (RJ11)](https://aw1k-docs.itsnooblk.com/phone/) | Set up the RJ11 phone port |
 | [Recovery](https://aw1k-docs.itsnooblk.com/recovery/) | Unbrick and restore your router |
 | [UART Guide](https://aw1k-docs.itsnooblk.com/uart-guide/) | Serial console access |
 | [Modem Firmware](https://aw1k-docs.itsnooblk.com/modem-firmware/) | Modem firmware information |

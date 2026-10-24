@@ -1,6 +1,8 @@
 # Packages
 
-This build ships with a curated set of packages for performance, security, and usability. The list below matches the current default image.
+This build ships with a curated set of packages for performance, security, and usability. The list below matches the current default images.
+
+Each image includes only one PassWall version: the PassWall 1 image includes `luci-app-passwall`, and the PassWall 2 image includes `luci-app-passwall2`. See [Releases](builds.md).
 
 ## Included Packages
 
@@ -33,8 +35,8 @@ This build ships with a curated set of packages for performance, security, and u
 | `tom_modem` | yes |
 | `luci-app-modemdata` | yes |
 | `comgt` | yes |
-| `luci-app-passwall` | yes |
-| `luci-app-passwall2` | yes |
+| `luci-app-passwall` | PassWall 1 image |
+| `luci-app-passwall2` | PassWall 2 image |
 | `haproxy` | yes |
 | `xray-core` | yes |
 | `chinadns-ng` | yes |
@@ -92,3 +94,13 @@ This build ships with a curated set of packages for performance, security, and u
 | `luci-app-wol` | yes |
 | `luci-app-wrtbwmon` | yes |
 | `luci-app-adguardhome` | yes |
+
+## Phone (RJ11) Packages
+
+These packages from [openwrt-aw1000-phone](https://github.com/Perz3us/openwrt-aw1000-phone) run the RJ11 phone port. See [Phone (RJ11)](phone.md).
+
+| Package | Purpose |
+|---------|---------|
+| `kmod-aw1000-fxs` | Kernel driver for the SLIC chip and the PCM audio bus |
+| `fxsd` | Phone line service: ringing, dial tone, digits and modem calls |
+| `luci-app-fxs` | LuCI pages for status, settings, speed dial and blocked numbers |

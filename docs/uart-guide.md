@@ -80,18 +80,13 @@ Use the diagram above as a quick reference for connecting your USB-to-TTL adapte
 
 ## Boot Process Output
 
+When the device powers on, the terminal shows U-Boot boot messages. The exact version and memory lines depend on your unit's bootloader. Watch for this line:
+
 ```text
-U-Boot 2012.07-g5e66bd4-dirty (Aug 15 2022 - 14:32:10)
-DRAM: 512 MiB
-NAND: 128 MiB
-In: serial
-Out: serial
-Err: serial
-Net: eth0, eth1
-Hit any key to stop autoboot: 3
+Hit any key to stop autoboot
 ```
 
-Tip: During boot, you have 3 seconds to press any key to enter U-Boot console.
+Tip: Press any key (or keep tapping the space bar) as soon as the router powers on to stop autoboot and enter the U-Boot console.
 
 ## Common UART Commands
 
