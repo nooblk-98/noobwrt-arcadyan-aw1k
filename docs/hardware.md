@@ -10,9 +10,8 @@
 
 ## Default Settings
 
-- Wi-Fi SSID (2.4GHz): `NoobWRT 2GHz`
-- Wi-Fi SSID (5GHz): `NoobWRT 5GHz`
-- Wi-Fi password: `123456789`
-- Admin username: `root`
-- Admin password: not set on first login
-- LAN IP address: `192.168.1.1`
+Default Wi-Fi names, password, admin login and LAN IP are listed in [Getting Started](getting-started.md#default-access).
+
+## Phone Port
+
+The RJ11 phone port works with the NoobWRT `rj11` images. See [Phone (RJ11)](phone.md).

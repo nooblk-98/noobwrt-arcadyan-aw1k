@@ -6,7 +6,14 @@ NoobWRT is a performance-tuned OpenWrt firmware build optimized for the Arcadyan
 
 ## Which firmware file should I download?
 
-Use the latest full release and download `full-squashfs-sysupgrade.bin`.
+Use the [latest release](builds.md) and download one of the sysupgrade images:
+
+- `arcadyan_aw1000-rj11-passwall1-sysupgrade.bin` if you need PassWall's **Allow Insecure** option.
+- `arcadyan_aw1000-rj11-passwall2-sysupgrade.bin` if your V2Ray configs are secure only.
+
+## How do I use the RJ11 phone port?
+
+See [Phone (RJ11)](phone.md).
 
 ## Is it safe to flash this firmware?
 
