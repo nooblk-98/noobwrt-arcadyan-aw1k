@@ -56,6 +56,27 @@ RJ11 phone port working with [openwrt-aw1000-phone](https://github.com/Perz3us/o
 
 Install steps are in the [project README](https://github.com/Perz3us/openwrt-aw1000-phone#install).
 
+#### Voice call problems
+
+These are modem settings, not firmware problems. They are saved in the modem, so flashing NoobWRT again does not change them.
+
+**Every call fails at once with `NO CARRIER`.** Some modems have `call_control` set to `1,1`, which blocks all voice calls. Set it to `0,0`:
+
+```
+ubus call at-daemon sendat '{"at_port":"/dev/ttyUSB2","at_cmd":"AT+QCFG=\"call_control\"","timeout":3}'
+ubus call at-daemon sendat '{"at_port":"/dev/ttyUSB2","at_cmd":"AT+QCFG=\"call_control\",0,0","timeout":3}'
+```
+
+**VoLTE never registers** (`AT+QCFG="ims"` shows `1,0`) even though the SIM does VoLTE in a phone. Some units have `sms_only` set to `01`, so the modem asks the network for data and SMS only. Set it to `00` and restart the modem:
+
+```
+ubus call at-daemon sendat '{"at_port":"/dev/ttyUSB2","at_cmd":"AT+QNVFR=\"/nv/item_files/modem/mmode/sms_only\"","timeout":3}'
+ubus call at-daemon sendat '{"at_port":"/dev/ttyUSB2","at_cmd":"AT+QNVFW=\"/nv/item_files/modem/mmode/sms_only\",00","timeout":3}'
+ubus call at-daemon sendat '{"at_port":"/dev/ttyUSB2","at_cmd":"AT+CFUN=1,1","timeout":3}'
+```
+
+Reboot the router after the modem restart. `AT+QCFG="ims"` should then show `1,1`.
+
 ---
 
 ## 🚀 Quick Install
