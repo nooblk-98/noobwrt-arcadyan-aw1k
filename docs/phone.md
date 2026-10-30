@@ -8,9 +8,11 @@ The AW1000 RJ11 phone port works on NoobWRT with [openwrt-aw1000-phone](https://
 - HD calling (16 kHz wideband audio), switched on in Settings
 - Caller ID on phones with a display (FSK Bellcore, FSK ETSI or DTMF, before or after the first ring)
 - Hold with the FLASH button, speed dial and blocked numbers
+- Ring patterns: standard, short, double (UK and Australia) or custom
 - The phone LED follows the line: ready, ringing and off hook
 - Call history with search, filters, CSV export and optional auto delete
 - LuCI pages for status, settings and a line test
+- SIP calling through QModem voice (experimental, off by default). It needs QModem voice packages that are not in NoobWRT images; see [SIP calling](https://github.com/Perz3us/openwrt-aw1000-phone#sip-calling-experimental)
 
 ## Requirements
 
@@ -48,9 +50,9 @@ Turn the port on in LuCI under `Services` then `Phone (RJ11)`, or run:
 /etc/init.d/fxsd start
 ```
 
-## Enable Modem Slave Mode
+## Modem Slave Mode
 
-The modem audio interface must be in **slave mode**. The phone service normally sets this on first start and restarts the modem, so the internet drops for about a minute, once.
+The modem audio interface must be in **slave mode**. From release `v2026-10-30` this is automatic: the phone service checks it every time it starts and sets it if needed. The first time, it restarts the modem, so the internet drops for about a minute, once. The modem remembers the setting. It also finds the modem AT port by itself, so nothing needs to be set up.
 
 If the phone does not ring, or LuCI shows **"Modem audio not set to slave mode"**, set it by hand:
 
@@ -63,8 +65,8 @@ The second command restarts the modem. The modem remembers the setting after tha
 
 To go back to the factory setting, run `AT+QDAI=x,0,0,4,0,0,1,1` the same way, then restart the modem again with `AT+CFUN=1,1`.
 
-!!! tip "Temporary manual step"
-    In the next release, slave mode will be handled automatically, so you won't need to run these commands.
+!!! tip "Older releases"
+    On `v2026-10-24` and older images the phone service may not set slave mode by itself. Run the commands above once, or upgrade to the latest release.
 
 ## Settings
 
