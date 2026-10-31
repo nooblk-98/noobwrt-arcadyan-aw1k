@@ -12,7 +12,7 @@ The AW1000 RJ11 phone port works on NoobWRT with [openwrt-aw1000-phone](https://
 - The phone LED follows the line: ready, ringing and off hook
 - Call history with search, filters, CSV export and optional auto delete
 - LuCI pages for status, settings and a line test
-- SIP calling through QModem voice (experimental, off by default). It needs QModem voice packages that are not in NoobWRT images; see [SIP calling](https://github.com/Perz3us/openwrt-aw1000-phone#sip-calling-experimental)
+- SIP calling through QModem voice (experimental, off by default). From release `v2026-10-30-2` the QModem voice packages are included; turn it on in LuCI under `Modem` then `QModem` then `SIP Service`. See [SIP calling](https://github.com/Perz3us/openwrt-aw1000-phone#sip-calling-experimental)
 
 ## Requirements
 
