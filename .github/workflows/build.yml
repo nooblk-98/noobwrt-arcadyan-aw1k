@@ -1,0 +1,87 @@
+name: Build Firmware
+on:
+  workflow_dispatch:
+    inputs:
+      device:
+        description: Device definition ID
+        type: string
+        default: arcadyan-aw1000
+        required: true
+      variant:
+        description: Variant definition ID
+        type: string
+        default: passwall2
+        required: true
+      validate_only:
+        description: Validate dispatch roundtrip without compiling
+        type: boolean
+        default: true
+      clean:
+        description: Clean selected isolated build tree
+        type: boolean
+        default: false
+      verbose:
+        description: Detailed compilation logs
+        type: boolean
+        default: false
+      release_tag:
+        description: Optional new tag for a DRAFT release (full builds only)
+        type: string
+        default: ''
+permissions:
+  contents: read
+concurrency:
+  group: firmware-request-${{ github.repository }}
+  cancel-in-progress: false
+jobs:
+  request:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 275
+    outputs:
+      request_id: ${{ steps.build.outputs.request_id }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Request build and verify exact result
+        id: build
+        env:
+          BUILDER_TOKEN: ${{ secrets.TOKEN }}
+          DEVICE: ${{ inputs.device }}
+          VARIANT: ${{ inputs.variant }}
+          VALIDATE_ONLY: ${{ inputs.validate_only }}
+          CLEAN: ${{ inputs.clean }}
+          VERBOSE: ${{ inputs.verbose }}
+        run: python3 scripts/dispatch_build.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: verified-firmware-${{ steps.build.outputs.request_id }}
+          path: verified-result/
+          if-no-files-found: error
+          retention-days: 14
+  draft-release:
+    needs: request
+    if: inputs.release_tag != '' && !inputs.validate_only
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: verified-firmware-${{ needs.request.outputs.request_id }}
+          path: verified-result
+      - name: Create a new draft release without overwriting existing tags
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ inputs.release_tag }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          if ! [[ "$RELEASE_TAG" =~ ^v[0-9]+[.][0-9]+[.][0-9]+(-[a-zA-Z0-9.-]+)?$ ]]; then
+            echo 'release_tag must look like v1.2.3 or v1.2.3-rc.1' >&2; exit 1
+          fi
+          notes=(--notes "Verified external build; provenance and checksums attached.")
+          if [ -f verified-result/metadata/release.md ]; then notes=(--notes-file verified-result/metadata/release.md); fi
+          gh release create "$RELEASE_TAG" --draft --target "$GITHUB_SHA" --title "NoobWRT $RELEASE_TAG" "${notes[@]}" verified-result/images/* verified-result/SHA256SUMS verified-result/result.json
