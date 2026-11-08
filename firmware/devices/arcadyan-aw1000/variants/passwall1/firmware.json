@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "device": "arcadyan-aw1000",
+  "variant": "passwall1",
+  "target": "qualcommax",
+  "subtarget": "ipq807x",
+  "profile": "arcadyan_aw1000",
+  "version": "25.12.5",
+  "source": {
+    "url": "https://github.com/openwrt/openwrt.git",
+    "commit": "f0a60eee2fe051741c643ea6118718aae1ef17fb"
+  },
+  "feeds": {
+    "packages": {
+      "url": "https://git.openwrt.org/feed/packages.git",
+      "commit": "5caa62e0bc9f7fb9b0c12a23267bceb7724214dd"
+    },
+    "luci": {
+      "url": "https://git.openwrt.org/project/luci.git",
+      "commit": "128a7812f4be233c5dd7f7466f534fd888785caf"
+    },
+    "routing": {
+      "url": "https://git.openwrt.org/feed/routing.git",
+      "commit": "3d7d0dc7fa43d3eb09498417407e95a6552e5312"
+    },
+    "telephony": {
+      "url": "https://git.openwrt.org/feed/telephony.git",
+      "commit": "2618106d5846a4a542fdf5809f0d3ed228ce439b"
+    },
+    "video": {
+      "url": "https://github.com/openwrt/video.git",
+      "commit": "094bf58da6682f895255a35a84349a79dab4bf95"
+    },
+    "noobwrt": {
+      "url": "https://github.com/nooblk-98/noobwrt-custom-feeds.git",
+      "commit": "25537af1b2e5dd94d4a8e4936d547cda1933f31e"
+    }
+  },
+  "packages": "firmware/devices/arcadyan-aw1000/variants/passwall1/packages.json",
+  "kconfig": "firmware/devices/arcadyan-aw1000/variants/passwall1/kconfig",
+  "overlays": [
+    "firmware/devices/arcadyan-aw1000/variants/passwall1/files"
+  ],
+  "hooks": {
+    "prepare": "firmware/devices/arcadyan-aw1000/variants/passwall1/hooks/prepare.sh",
+    "configure": "firmware/devices/arcadyan-aw1000/variants/passwall1/hooks/configure.sh",
+    "overlay": "firmware/devices/arcadyan-aw1000/variants/passwall1/hooks/overlay.sh",
+    "release": "firmware/devices/arcadyan-aw1000/variants/passwall1/hooks/release.sh"
+  },
+  "allowed_missing_packages": [
+    "kmod-spidev",
+    "nftables"
+  ]
+}

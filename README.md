@@ -34,7 +34,7 @@
 
 Firmware definitions, package selections, filesystem overlays and device-specific hooks are maintained in [`firmware/`](firmware/). Propose firmware changes here, not in the builder repository. See [CONTRIBUTING.md](CONTRIBUTING.md).
 
-The separate [NoobWRT builder](https://github.com/NoobWRT/arcadyan-aw1000-builder) provides the build engine and runner. Maintainers request builds from this repository’s **Actions → Build Firmware** workflow; results are tied to exact firmware and builder commits. See [build dispatch and verification](docs/build-dispatch.md). The first migrated configuration is **Arcadyan AW1000 / PassWall2**; existing PassWall1 releases remain available while its separate definition is reviewed.
+The separate [NoobWRT builder](https://github.com/NoobWRT/noobwrt-builder) provides the build engine and runner. Maintainers request builds from this repository’s **Actions → Build Firmware** workflow; results are tied to exact firmware and builder commits. See [build dispatch and verification](docs/build-dispatch.md). Both **Arcadyan AW1000 / PassWall1** and **PassWall2** have independent definitions. Select the variant in the Build Firmware Action.
 
 RJ11 driver, daemon and LuCI application come from the package feed. Device-specific private SLIC data is not part of the generic builder or public source tree.
 

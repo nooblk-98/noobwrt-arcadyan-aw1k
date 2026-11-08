@@ -8,8 +8,11 @@ on:
         default: arcadyan-aw1000
         required: true
       variant:
-        description: Variant definition ID
-        type: string
+        description: Firmware variant
+        type: choice
+        options:
+          - passwall2
+          - passwall1
         default: passwall2
         required: true
       validate_only:

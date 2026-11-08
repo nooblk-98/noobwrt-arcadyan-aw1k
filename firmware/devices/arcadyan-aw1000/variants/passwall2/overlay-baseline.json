@@ -1,5 +1,5 @@
 {
-  "source_repository": "NoobWRT/arcadyan-aw1000-builder",
+  "source_repository": "NoobWRT/noobwrt-builder",
   "source_commit": "8bd5548270418c7d8fa93e2a0cdd73bcadfe1634",
   "files": {
     "etc/banner": {

@@ -1,0 +1,6 @@
+#!/bin/sh
+
+uci delete watchcat.@watchcat[0] 2>/dev/null
+uci commit watchcat
+
+exit 0

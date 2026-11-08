@@ -1,0 +1,43 @@
+config system
+	option hostname 'NoobWRT'
+	option zonename 'Asia/Colombo'
+	option timezone '<+0530>-5:30'
+	option ttylogin '0'
+	option log_size '128'
+	option urandom_seed '1'
+	option log_proto 'udp'
+	option conloglevel '6'
+	option cronloglevel '9'
+
+config timeserver 'ntp'
+	list server '0.openwrt.pool.ntp.org'
+	list server '1.openwrt.pool.ntp.org'
+	list server '2.openwrt.pool.ntp.org'
+	list server '3.openwrt.pool.ntp.org'
+
+# All LEDs disabled (default OFF)
+
+config led 'led_wan'
+	option name 'WAN'
+	option sysfs 'green:internet'
+	option trigger 'none'
+
+config led 'led_wan_port_link'
+	option name 'WAN-PORT-LINK'
+	option sysfs '90000.mdio-1:1c:green:wan'
+	option trigger 'none'
+
+config led 'led_phone'
+	option name 'Phone'
+	option sysfs 'green:phone'
+	option trigger 'none'
+
+config led 'led_wifi'
+	option name 'Wi-Fi'
+	option sysfs 'green:wifi'
+	option trigger 'none'
+
+config led 'nipq__led9'
+	option name '4-1_net_indicator'
+	option sysfs 'ipq::led9'
+	option trigger 'none'

@@ -1,0 +1,19 @@
+#!/bin/sh
+#=================================================
+# Copyright (c) 2026 Lahiru S Liyanage (NoobLK) <liyanagelsofficial@gmail.com>
+# GitHub: https://github.com/nooblk-98/wrt-builder-aw1000
+# Telegram: @itsme_nooblk
+# License: All rights reserved
+#=================================================
+
+# Remove iptables-nft at first boot.
+# It gets pulled in as a dependency despite being excluded at build time.
+# Removing it prevents legacy iptables rules from mixing with nftables (fw4).
+
+if command -v apk > /dev/null 2>&1; then
+    apk del --force iptables-nft 2>/dev/null || true
+else
+    opkg remove --force-depends iptables-nft 2>/dev/null || true
+fi
+
+exit 0

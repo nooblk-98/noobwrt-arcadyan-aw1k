@@ -1,0 +1,20 @@
+#=================================================
+# Copyright (c) 2026 Lahiru S Liyanage (NoobLK) <liyanagelsofficial@gmail.com>
+# GitHub: https://github.com/nooblk-98/wrt-builder-aw1000
+# Telegram: @itsme_nooblk
+# License: All rights reserved
+#=================================================
+
+# The generic in-kernel qmi_wwan driver defaults to 802.3 framing, but the modem
+# data session needs raw-IP; without it quectel-CM's data call fails (QMUXError 0xe).
+if [ "$ACTION" = add ]; then
+	case "$DEVICENAME" in
+	wwan*)
+		f="/sys/class/net/$DEVICENAME/qmi/raw_ip"
+		if [ -w "$f" ] && [ "$(cat "$f")" != Y ]; then
+			ip link set "$DEVICENAME" down
+			echo Y > "$f"
+		fi
+		;;
+	esac
+fi

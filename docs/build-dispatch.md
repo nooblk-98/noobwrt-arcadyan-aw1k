@@ -3,13 +3,13 @@
 ## Ownership
 
 The firmware repository, nooblk-98/noobwrt-arcadyan-aw1k, owns firmware
-definitions, overlays, packages, source pins and AW1000 hooks. NoobWRT/arcadyan-aw1000-builder owns the build engine and its
+definitions, overlays, packages, source pins and AW1000 hooks. NoobWRT/noobwrt-builder owns the build engine and its
 self-hosted runner. Generated images are Release assets, not tracked source.
 
 ## Run a build
 
 On the firmware repository's main branch open **Actions → Build Firmware → Run workflow**.
-Choose device arcadyan-aw1000 and variant passwall2. Start with validate_only=true:
+Choose device arcadyan-aw1000 and variant passwall1 or passwall2. Start with validate_only=true:
 this proves request, reviewed-commit validation, result upload/download, provenance
 and checksums without compiling or executing device hooks. Public PR validation
 is fully self-contained and never needs access to the private builder repository.
@@ -23,7 +23,7 @@ until the migrated full-build path has been proved.
 ## Authentication (no new copied credentials)
 
 The existing repository secret TOKEN is used only by the hosted request job.
-It must have access to NoobWRT/arcadyan-aw1000-builder with **Actions: read and
+It must have access to NoobWRT/noobwrt-builder with **Actions: read and
 write** (dispatch workflow, inspect runs, download artifacts), **Contents: read**
 (resolve the exact builder commit), and Metadata: read.
 For a classic PAT, private repository access may require repo; prefer a scoped
@@ -50,19 +50,22 @@ device, variant, validate_only, clean and verbose. Only the allowlisted firmware
 repository and canonical SHA/identifier/boolean values are accepted.
 
 The builder checks its own SHA and that the firmware commit is an ancestor of
-origin/main, and that builder SHA is on origin/passwall2+stable. Validation runs
+origin/main, and that builder SHA is on origin/main. Validation runs
 on the existing self-hosted runner using only approved builder code, without
 executing firmware hooks. This avoids GitHub-hosted minutes in the private
 builder repository. Public contribution checks run separately on disposable
 GitHub-hosted runners in the public firmware repository. Only reviewed full
 builds execute device hooks.
 The compile job also uses the firmware-build deployment environment, whose
-server-side branch policy permits only passwall2+stable. Keep this policy in
-place; workflow ancestry checks alone are not an independent trust boundary.
+server-side branch policy permits main. Keep this policy in place; workflow
+ancestry checks alone are not an independent trust boundary. The historical
+passwall2+stable policy may remain temporarily while an already-started legacy
+run finishes; it is not the branch for new build requests.
 Repository administrators and anyone able to modify workflows must be trusted
 as build-host administrators: a repository-scoped runner cannot isolate itself
-from malicious repository writers. Legacy workflows remain maintainer-only
-rollback paths and are not safe entry points for untrusted contributions.
+from malicious repository writers. Historical AW1000 implementations are
+preserved in rollback tags/history, not in the common builder’s active main
+tree, and are not safe entry points for untrusted contributions.
 
 A unique run-name external-<request_id> binds the caller to the builder run.
 The caller accepts only that exact workflow-dispatch run with matching head_sha

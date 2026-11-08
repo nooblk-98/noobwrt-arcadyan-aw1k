@@ -1,12 +1,12 @@
 # Firmware definitions
 
-`devices/arcadyan-aw1000/variants/passwall2/firmware.json` is the canonical build recipe. Package selection is `packages.json`; additional configuration is `kconfig`; router defaults are under `files/`; reviewed device policy is in `hooks/`. Edit these files here, not in the builder.
+Each `devices/arcadyan-aw1000/variants/<variant>/firmware.json` is its variant’s canonical build recipe. Package selection is `packages.json`; additional configuration is `kconfig`; router defaults are under `files/`; reviewed device policy is in `hooks/`. Edit these files here, not in the builder.
 
 The source and all feeds are locked to full commits. The Go toolchain override and PassWall2 override also use immutable commits; Xray and Tailscale source versions have SHA-256 pins in the device hook. Host compiler/container dependencies and package downloads are not claimed bit-reproducible. The selected OpenWrt baseline is v25.12.5, matching the previous GitHub workflow default.
 
 ## Migration baseline
 
-All 48 overlay files are copied byte-for-byte with original modes from builder commit `8bd5548270418c7d8fa93e2a0cdd73bcadfe1634`. `overlay-baseline.json` proves initial migration parity. It is a historical baseline, not a restriction against future firmware changes: update migration-only tests deliberately when modifying overlays. The original src/compile.conf, src/packages.conf and release template are retained as migration reference; they are not sourced by the new engine. Active settings are the JSON manifest, packages.json, kconfig and hooks.
+PassWall2: all 48 overlay files are copied byte-for-byte with original modes from builder commit `8bd5548270418c7d8fa93e2a0cdd73bcadfe1634`. PassWall1: all 49 files are preserved from `5316950f953eb7a3ee46b46efd059e30403585ff`, including its PassWall defaults and fragment fix. `overlay-baseline.json` proves initial migration parity. It is a historical baseline, not a restriction against future firmware changes: update migration-only tests deliberately when modifying overlays. The original src/compile.conf, src/packages.conf and release template are retained as migration reference; they are not sourced by the new engine. Active settings are the JSON manifest, packages.json, kconfig and hooks.
 
 ## RJ11 / FXS
 
@@ -17,3 +17,10 @@ Never commit the private header or generated patch to this repository. Mount the
 ## Adding another router
 
 Add a device/variant descriptor with its real OpenWrt target/subtarget/profile, compatible packages, locked sources and necessary defaults. Avoid copying AW1000 hooks into unrelated routers. The builder discovers output images from profiles.json, not AW1000-specific filenames. Only reviewed approved commits should execute on the self-hosted runner; PR validation is data-only.
+
+## Supported AW1000 variants
+
+- `passwall1`: luci-app-passwall 26.1.1-1 (commit `0d24d8fc24d9eb508a4df599a0a4d673c8a35cc7`), Xray-core 25.12.8 with the original SHA-256 pin. No PassWall2 Go or Tailscale override is applied.
+- `passwall2`: luci-app-passwall2 26.9.16-1, Xray-core 26.9.9 and its existing Go/Tailscale overrides.
+
+Both use locked OpenWrt v25.12.5 and feed revisions, retain their complete 142-package baseline plus feed-provided FXS, and keep separate overlays and device hooks. Definition validation is not a full compile or hardware flash test.
