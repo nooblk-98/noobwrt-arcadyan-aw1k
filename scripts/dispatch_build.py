@@ -7,6 +7,7 @@ import os
 from pathlib import Path
 import time
 import urllib.request
+import urllib.error
 from urllib.parse import quote
 from dispatch_protocol import BUILDER_REPO, FIRMWARE_REPO, WORKFLOW, validate_request, safe_extract, verify_result
 
@@ -95,4 +96,9 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except urllib.error.HTTPError as error:
+        if error.code in (401, 403, 404):
+            raise SystemExit("Builder API authentication/access failed (HTTP " + str(error.code) + "). Check repository secret TOKEN: valid builder-scoped token with Actions read/write and Contents read; org approval/SSO may also be required.") from None
+        raise
