@@ -11,7 +11,7 @@ import subprocess
 import zipfile
 
 FIRMWARE_REPO = "nooblk-98/noobwrt-arcadyan-aw1k"
-BUILDER_REPO = "NoobWRT/arcadyan-aw1000-builder"
+BUILDER_REPO = "NoobWRT/noobwrt-builder"
 WORKFLOW = "external-build.yml"
 SHA = re.compile(r"^[0-9a-f]{40}$")
 ID = re.compile(r"^[a-z0-9][a-z0-9_-]{0,79}$")

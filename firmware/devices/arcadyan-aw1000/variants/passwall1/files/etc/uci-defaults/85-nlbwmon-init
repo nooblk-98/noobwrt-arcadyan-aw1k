@@ -1,0 +1,33 @@
+#!/bin/sh
+#=================================================
+# Copyright (c) 2026 Lahiru S Liyanage (NoobLK) <liyanagelsofficial@gmail.com>
+# GitHub: https://github.com/nooblk-98/wrt-builder-aw1000
+# Telegram: @itsme_nooblk
+# License: All rights reserved
+#
+# Purpose: Init setup for nlbwmon on OpenWrt
+#=================================================
+
+# Create data directory if not exists
+mkdir -p /etc/nlbwmon
+chmod 755 /etc/nlbwmon
+
+# Ensure nlbwmon config section exists
+if ! uci show nlbwmon >/dev/null 2>&1; then
+    echo "[INFO] Creating /etc/config/nlbwmon"
+    uci set nlbwmon.@nlbwmon[-1]=nlbwmon
+fi
+
+# Apply settings safely
+uci set nlbwmon.@nlbwmon[0].database_directory="/etc/nlbwmon"
+uci set nlbwmon.@nlbwmon[0].commit_interval="3h"
+uci set nlbwmon.@nlbwmon[0].refresh_interval="30s"
+uci set nlbwmon.@nlbwmon[0].database_limit="10000"
+uci commit nlbwmon
+
+# Restart service if available
+if [ -f "/etc/init.d/nlbwmon" ]; then
+    /etc/init.d/nlbwmon enable
+    /etc/init.d/nlbwmon restart
+    echo "[INFO] nlbwmon configured and restarted"
+fi

@@ -1,0 +1,3 @@
+CONFIG_SPI_QUP=y
+CONFIG_SPI_SPIDEV=y
+CONFIG_PACKAGE_luci-app-qmodem_INCLUDE_generic-qmi-wwan=y

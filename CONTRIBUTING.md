@@ -1,7 +1,7 @@
 # Contributing firmware changes
 
 Firmware source definitions live under firmware/devices/<device>/variants/<variant>/.
-Start with arcadyan-aw1000/variants/passwall2. Edit files/ for filesystem defaults,
+Choose arcadyan-aw1000/variants/passwall1 or passwall2. Edit files/ for filesystem defaults,
 packages.json for package selection, kconfig for configuration and firmware.json
 for pinned sources/feeds. Device hooks are reviewed executable code, not arbitrary
 workflow inputs. Do not duplicate feed-owned packages in the builder repository.
@@ -23,8 +23,8 @@ separately, including factory/sysupgrade image type and recovery method.
 To add another router, create a new device definition with its own target,
 subtarget, profile, compatible package set and overlays. To add another variant,
 create a separate variant definition; do not copy a build workflow or change the
-generic engine. PassWall1 is not yet migrated; its branch differs in more than
-package names and requires a deliberate comparison.
+generic engine. Preserve each variant’s own startup defaults and tested package
+pins; PassWall1 and PassWall2 are not interchangeable package-name switches.
 
 License terms are unchanged by this migration. Do not remove or relicense
 third-party code; discuss project licensing with the maintainer where needed.

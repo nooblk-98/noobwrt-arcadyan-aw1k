@@ -1,0 +1,21 @@
+#!/bin/sh
+#=================================================
+# Copyright (c) 2026 Lahiru S Liyanage (NoobLK) <liyanagelsofficial@gmail.com>
+# GitHub: https://github.com/nooblk-98/wrt-builder-aw1000
+# Telegram: @itsme_nooblk
+# License: All rights reserved
+#=================================================
+
+# Also disable fragmentation in configurations retained from older builds.
+# This replaces the previous workaround that populated fragment parameters.
+
+uci -q get passwall.@global_xray[0] >/dev/null 2>&1 &&
+    uci -q set passwall.@global_xray[0].fragment='0'
+if uci -q get passwall.@global_singbox[0] >/dev/null 2>&1; then
+    uci -q set passwall.@global_singbox[0].fragment='0'
+    uci -q set passwall.@global_singbox[0].record_fragment='0'
+fi
+
+uci -q commit passwall
+
+exit 0

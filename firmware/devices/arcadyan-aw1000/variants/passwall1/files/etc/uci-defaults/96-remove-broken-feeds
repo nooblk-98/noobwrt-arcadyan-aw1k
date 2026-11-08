@@ -1,0 +1,36 @@
+#!/bin/sh
+#=================================================
+# Copyright (c) 2026 Lahiru S Liyanage (NoobLK) <liyanagelsofficial@gmail.com>
+# GitHub: https://github.com/nooblk-98/wrt-builder-aw1000
+# Telegram: @itsme_nooblk
+# License: All rights reserved
+#=================================================
+
+#=================================================
+# Remove broken custom-feed repository entries on first boot.
+#
+# The "noobwrt" feed (see src/compile.conf) is a build-time src-git feed:
+# its packages are compiled into the image, but OpenWrt's image builder also
+# writes a per-feed repository line into the on-device package feed list that
+# points at https://downloads.openwrt.org/.../noobwrt/packages.adb — a URL that
+# does NOT exist on the public mirror. That makes `apk update` (and opkg update)
+# fail with wget error 8 / "unexpected end of file".
+#
+# Those packages are already installed, so we just drop the dead feed line.
+#=================================================
+
+CUSTOM_FEED="noobwrt"
+
+# apk-based images (OpenWrt 24.10+/snapshot)
+for f in /etc/apk/repositories.d/*.list /etc/apk/repositories; do
+	[ -f "$f" ] || continue
+	sed -i "\#/${CUSTOM_FEED}/#d" "$f"
+done
+
+# opkg-based images (older branches)
+for f in /etc/opkg/distfeeds.conf /etc/opkg/customfeeds.conf; do
+	[ -f "$f" ] || continue
+	sed -i "/[ /]${CUSTOM_FEED}[ /]/d" "$f"
+done
+
+exit 0
