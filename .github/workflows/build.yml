@@ -84,4 +84,5 @@ jobs:
           fi
           notes=(--notes "Verified external build; provenance and checksums attached.")
           if [ -f verified-result/metadata/release.md ]; then notes=(--notes-file verified-result/metadata/release.md); fi
-          gh release create "$RELEASE_TAG" --draft --target "$GITHUB_SHA" --title "NoobWRT $RELEASE_TAG" "${notes[@]}" verified-result/images/* verified-result/SHA256SUMS verified-result/result.json
+          tar -czf firmware-bundle.tar.gz -C verified-result .
+          gh release create "$RELEASE_TAG" --draft --target "$GITHUB_SHA" --title "NoobWRT $RELEASE_TAG" "${notes[@]}" firmware-bundle.tar.gz verified-result/images/* verified-result/SHA256SUMS verified-result/result.json

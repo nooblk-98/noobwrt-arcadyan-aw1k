@@ -42,6 +42,6 @@ jobs:
           if not manifests:
               raise ValueError('no firmware definitions')
           for manifest in manifests:
-              device, variant = manifest.parts[-5], manifest.parts[-2]
+              device, variant = manifest.parts[-4], manifest.parts[-2]
               subprocess.run(['bash', 'builder/scripts/build-firmware.sh', '--firmware-dir', str(Path('firmware').resolve()), '--device', device, '--variant', variant, '--validate-only'], check=True)
           PY
