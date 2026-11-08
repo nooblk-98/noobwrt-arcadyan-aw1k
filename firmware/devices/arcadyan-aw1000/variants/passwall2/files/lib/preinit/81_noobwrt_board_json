@@ -1,0 +1,18 @@
+# A power cut during boot can leave /etc/board.json empty or truncated on
+# the overlay. 82_config_generate only rebuilds it when the file is missing,
+# so Wi-Fi then fails on every boot ("Failed to parse JSON string: unexpected
+# end of data", "PHY is undefined"). Remove a broken file here so
+# 82_config_generate regenerates it on this boot (openwrt/openwrt#25940).
+
+BOARD_JSON="${BOARD_JSON:-/etc/board.json}"
+
+do_noobwrt_board_json() {
+	[ -f "$BOARD_JSON" ] || return 0
+	[ "$(jsonfilter -i "$BOARD_JSON" -t '@' 2>/dev/null)" = "object" ] && return 0
+
+	echo "- $BOARD_JSON is empty or broken, regenerating -"
+	rm -f "$BOARD_JSON"
+}
+
+boot_hook_add preinit_main do_noobwrt_board_json
+boot_hook_add initramfs do_noobwrt_board_json

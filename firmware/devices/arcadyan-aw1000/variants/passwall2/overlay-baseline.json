@@ -1,0 +1,198 @@
+{
+  "source_repository": "NoobWRT/arcadyan-aw1000-builder",
+  "source_commit": "8bd5548270418c7d8fa93e2a0cdd73bcadfe1634",
+  "files": {
+    "etc/banner": {
+      "sha256": "40327a51c75d3df3e787b89175ef29b4bd9a72cd745ab50c4199ff9ed6f8baae",
+      "mode": 436
+    },
+    "etc/config/defmodems": {
+      "sha256": "a9e131128531fd95cab4fcd7de93aa243c1b5f2379b888a8e046b2af38a37c38",
+      "mode": 436
+    },
+    "etc/config/firewall": {
+      "sha256": "e6195ed5e91f7cb49f56f53b442a33338e1857f9bccbf281e7fd38921c8bc595",
+      "mode": 436
+    },
+    "etc/config/ipinfo": {
+      "sha256": "037deb9fa3d30b58b5d1ecb8f9e6654cf92b7146ab7bdee5493dc22dc2a494a2",
+      "mode": 436
+    },
+    "etc/config/system": {
+      "sha256": "918f50a7a45b156fd5f1cc2f2e4e622bedba7459e0496fe48f40d334013d7fac",
+      "mode": 436
+    },
+    "etc/config/vnstat": {
+      "sha256": "c0afe5d117e372578490248ab3c064cae67cdebd6de0ef515755d59075484e71",
+      "mode": 436
+    },
+    "etc/config/wireless": {
+      "sha256": "8cc62ff66f873bddbb3697444d5d36abe12bcfe0a1eea2557bf58e435270e477",
+      "mode": 436
+    },
+    "etc/hotplug.d/net/10-qmi-raw-ip": {
+      "sha256": "eddff58b25606b24a416be8e45d30e6915ff0e0776f148c911b0552b4b6c3cce",
+      "mode": 436
+    },
+    "etc/init.d/vnstat_backup": {
+      "sha256": "3accf87c5f00ce2074dc63315e7f645babe411e7ebbdbbd40476b522af5953e0",
+      "mode": 436
+    },
+    "etc/sysctl.d/99-noobwrt-tuning.conf": {
+      "sha256": "7755a2a8cfb731ae72695dc7077a16262b0010fd9e5dc17f0adfa88da3253bf4",
+      "mode": 436
+    },
+    "etc/uci-defaults/00_uhttpd_ubus": {
+      "sha256": "4cae1c943a1efc41449c377db3e2b5338b36cbcb815f388fea6d86c972b3927d",
+      "mode": 436
+    },
+    "etc/uci-defaults/10-fstab": {
+      "sha256": "663247e760bbc135ddff2f15e14555d09bc119b931b8ce6eba16259012906885",
+      "mode": 436
+    },
+    "etc/uci-defaults/10_migrate-shadow": {
+      "sha256": "2e15b0ec33535a6576e847de7185535aa8233b1f24b3ea2039c8cf2876b7db10",
+      "mode": 436
+    },
+    "etc/uci-defaults/11-anonmount": {
+      "sha256": "0c1189ecd9e30e48a532f8b263b799c8452a95d333e47203e121488c11d79c1d",
+      "mode": 436
+    },
+    "etc/uci-defaults/11_network-migrate-bridges": {
+      "sha256": "4b1630f0e50dd5c036a34eba0da519c466debddc0b4ff467470546ed23db37b4",
+      "mode": 436
+    },
+    "etc/uci-defaults/12_network-generate-ula": {
+      "sha256": "417f4a86d125e1c0814da711f6f7217b3dd450e275b5d03da20db5dbdc242cd5",
+      "mode": 436
+    },
+    "etc/uci-defaults/13_fix-group-user": {
+      "sha256": "a3e0ab9bc3de6d4b08211862624eb1cc76ac0c75713d9ac7220696e176cdf147",
+      "mode": 436
+    },
+    "etc/uci-defaults/14_migrate-dhcp-release": {
+      "sha256": "214613d601d01ed5dd33124890a6b6ff645d59c5d07ce8f080c24dcf18098cd1",
+      "mode": 436
+    },
+    "etc/uci-defaults/15_odhcpd": {
+      "sha256": "78385cae620260132c20aa5d3c61f40d05a61aaf671abb261056da7999bcb380",
+      "mode": 436
+    },
+    "etc/uci-defaults/15_smp_affinity": {
+      "sha256": "c1dd784f4a5b39c0d86cefc27057eaeb34b699d5e9387ea1f3f570f64ff9a522",
+      "mode": 436
+    },
+    "etc/uci-defaults/30_luci-theme-noobwrt": {
+      "sha256": "fdab8015b54d9af4b7e0698192b6e2975d9ab2acd406f39f931cfadcc57a67a1",
+      "mode": 509
+    },
+    "etc/uci-defaults/30_uboot-envtools": {
+      "sha256": "14254ca04784790c5f3243c27558c64bb558adc2a1a3d9bbda71cfed147710fc",
+      "mode": 436
+    },
+    "etc/uci-defaults/50-dnsmasq-migrate-ipset.sh": {
+      "sha256": "6affb223dd5a143f9d7f2a5b1284e16a851731d706b71e5dd016f2c010a702f2",
+      "mode": 436
+    },
+    "etc/uci-defaults/50-dnsmasq-migrate-resolv-conf-auto.sh": {
+      "sha256": "6a2133d6c26f6afaae34db3c000df803cb657dccb3e1e11672060da872554202",
+      "mode": 436
+    },
+    "etc/uci-defaults/50-dropbear": {
+      "sha256": "4f8f948fba8fef0af18dbd3c18c8efdf668c45884c6a4839622458069e69653a",
+      "mode": 436
+    },
+    "etc/uci-defaults/50-migrate-rpcd-ubus-sock.sh": {
+      "sha256": "6649018dc746c571c558685b06ec7a2b3bfab721b96d46a40e0ff54865e81b7e",
+      "mode": 436
+    },
+    "etc/uci-defaults/50_luci-mod-admin-full": {
+      "sha256": "7f331ebd9f2a9f5fa0bdc799ee7058d0c627df35fa02e6a6691ab18064834783",
+      "mode": 436
+    },
+    "etc/uci-defaults/60-autocore-reload-rpcd": {
+      "sha256": "973e141a09a1d43c7d81616c60a3dc7020760c607e94a828d88e91dd490d3327",
+      "mode": 436
+    },
+    "etc/uci-defaults/80-zt-migration": {
+      "sha256": "0e9604d14caf194b88d5e9089ed93f21f36c98c0f010705e7667525618b71492",
+      "mode": 436
+    },
+    "etc/uci-defaults/81-zt-firewall": {
+      "sha256": "38e12890a8597061e24e0358cc70f8c703d2f9751e0e4116cc6c325e22f25da4",
+      "mode": 436
+    },
+    "etc/uci-defaults/84-luci-passwall2": {
+      "sha256": "45842e7e3eaf2dbda8e50a0812ba20310e23ba2191ffd60f05ec823fc8ace032",
+      "mode": 509
+    },
+    "etc/uci-defaults/85-nlbwmon-init": {
+      "sha256": "e37e63aaf2857955fe1be54ae012012e62f3de3babd213243cb635be2e09fd3b",
+      "mode": 436
+    },
+    "etc/uci-defaults/85-watchcat-init": {
+      "sha256": "f922d9d860caad8facd532c812c4f0adba29b9f61b037bf0012f8174eb227737",
+      "mode": 436
+    },
+    "etc/uci-defaults/86-vnstat": {
+      "sha256": "e7be84c6606d97fcf303165468ab270c823307946ed0b44615f70c686f372fd6",
+      "mode": 436
+    },
+    "etc/uci-defaults/87-ussd-codes": {
+      "sha256": "0de6b73da104d8c1ae1b501e0397f795e0038f4c85de924645a2217b320536b5",
+      "mode": 436
+    },
+    "etc/uci-defaults/88-bandix-init": {
+      "sha256": "b1ed5807a02fbf175b503fbf03ea0c25db091df94a490a67b3258aa6a446547f",
+      "mode": 436
+    },
+    "etc/uci-defaults/90-ipt-ttl-init": {
+      "sha256": "64bd784876c41936f98ed333dcceaedd92e11dd46f883ade5f1d6e6823eead17",
+      "mode": 436
+    },
+    "etc/uci-defaults/95-remove-iptables-nft": {
+      "sha256": "2a5933081a81feb4357c150da2f737c20edf2b72870e4acdf84a48ce970d478b",
+      "mode": 436
+    },
+    "etc/uci-defaults/96-remove-broken-feeds": {
+      "sha256": "742b5b77251d8ec48bac3742af1b6eef818f7b04278141de815044b2de020132",
+      "mode": 436
+    },
+    "etc/uci-defaults/99-default-settings": {
+      "sha256": "9544defaad5e71ec52d6d2795b36fdf25e9a10ef339e8e68e3ec95de3c0f07a9",
+      "mode": 436
+    },
+    "etc/uci-defaults/99-default-settings-chinese": {
+      "sha256": "c94a9f25d9258c8bf099ed006496d905e80323fbd48bf1a7ccbc76b32a7042bb",
+      "mode": 436
+    },
+    "etc/uci-defaults/99-init-settings": {
+      "sha256": "ae1b5a786ac096da9f61dd4486aa11eaf3a1803fc661b9375798bef4da167df6",
+      "mode": 436
+    },
+    "etc/uci-defaults/99-zzz-modem-firstboot-redial": {
+      "sha256": "7125ee88dd96277889ee4170fda778d5ab651d5ccb49d1a14957237bce34d983",
+      "mode": 509
+    },
+    "etc/uci-defaults/99_firewall_nikki": {
+      "sha256": "47a7743bb370b14d41b26bbf7e938065e03c9d6535c8c6da1de88f8564550fc8",
+      "mode": 436
+    },
+    "etc/uci-defaults/99_init_nikki": {
+      "sha256": "f019c721a708632adae550d9868315327e7b1505eb2ac721b37aa08eef2dc0b2",
+      "mode": 436
+    },
+    "etc/uci-defaults/99_migrate_nikki": {
+      "sha256": "dd2d2cd9b4bba18696453830b3f2c114bab452318383b002d4a2a4da36d06ded",
+      "mode": 436
+    },
+    "etc/uci-defaults/setup_sms_tool_js.sh": {
+      "sha256": "fcbffee4e5be719d71fc18300fcaa142005f12b9dc0e616abbac884f943730b0",
+      "mode": 436
+    },
+    "lib/preinit/81_noobwrt_board_json": {
+      "sha256": "3e0fcb0d20de1b3768819d38b91a499c607b5457b8bff4e28308806874fb6bb4",
+      "mode": 436
+    }
+  }
+}

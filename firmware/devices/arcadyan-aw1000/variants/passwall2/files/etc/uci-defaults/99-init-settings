@@ -1,0 +1,392 @@
+#!/bin/bash
+#=================================================
+# Copyright (c) 2026 Lahiru S Liyanage (NoobLK) <liyanagelsofficial@gmail.com>
+# GitHub: https://github.com/nooblk-98/wrt-builder-aw1000
+# Telegram: @itsme_nooblk
+# License: All rights reserved
+#
+# File name: 99-init-settings.sh
+# Description: This script will be executed during the first boot
+#=================================================
+
+# Disable opkg signature check
+sed -i 's/option check_signature/# option check_signature/g' /etc/opkg.conf
+
+# Set Hostname
+uci set system.@system[0].hostname='NoobWRT'
+
+# Set Timezone to Sri Lanka (+05:30). Set the zone name too: it takes
+# precedence over 'timezone', and a leftover Asia/Shanghai kept the router on
+# China time.
+uci set system.@system[0].zonename='Asia/Colombo'
+uci set system.@system[0].timezone='<+0530>-5:30'
+#uci set system.@system[0].cronloglevel="9"
+#uci set system.@system[0].conloglevel='4'
+#uci set system.@system[0].log_level='error'
+uci commit system
+
+# set english interface
+uci set luci.main.lang='en'
+uci commit luci
+#-----------------------------------------------------------------------------
+# Ethernet WAN port: repurpose as an extra LAN port.
+# This is a cellular-modem-first router (uplink is wwan0), so the physical 'wan'
+# Ethernet port is unused as an uplink. Previously the wan/wan6 interfaces were
+# deleted but the port was never re-homed, so a device plugged into the WAN port
+# got no IP and no internet. Delete the upstream wan interfaces and instead add
+# the 'wan' port into the br-lan bridge (done below) so a connected device gets a
+# LAN DHCP lease and rides the cellular internet, exactly like lan1-lan4.
+uci -q delete network.wan
+uci -q delete network.wan6
+#uci set network.globals.packet_steering='0'
+
+# The modem uplink interface (4_1 / 4_1v6) is created and managed by qmodem.
+# Do not define a second DHCP interface on wwan0 here: two udhcpc clients on one
+# device fight each other.
+uci commit network
+
+# openvpn interface
+uci set network.openvpn=interface
+uci set network.openvpn.proto='none'
+uci set network.openvpn.device='tun0'
+uci commit network
+
+# setup firewall - openvpn in WAN zone (qmodem adds its own interfaces itself)
+uci add_list firewall.@zone[1].network='openvpn'
+
+uci commit firewall
+/etc/init.d/firewall restart
+
+#-----------------------------------------------------------------------------
+# set auto /dev/ttyusb
+# Wait for the Quectel modem to finish enumerating its AT serial port.
+# On a cold flash the modem attaches ttyUSB0..3 around ~24s after boot, but
+# uci-defaults run from S10boot much earlier — without this wait set_tty comes
+# back empty and sms/modemband get a bad port (works only after reboot).
+i=0
+while [ ! -e /dev/ttyUSB3 ] && [ "$i" -lt 45 ]; do
+	sleep 1
+	i=$((i + 1))
+done
+set_tty=$(ls /dev/ttyUSB* 2>/dev/null | sort -V | tail -n 1)
+
+# lock band
+uci set modemband.@modemband[0].iface='wwan0'
+uci set modemband.@modemband[0].set_port=$set_tty
+uci commit modemband
+
+# sms messages
+uci set sms_tool_js.@sms_tool_js[0].readport=$set_tty
+uci set sms_tool_js.@sms_tool_js[0].pnumber='6'
+uci set sms_tool_js.@sms_tool_js[0].sendport=$set_tty
+uci set sms_tool_js.@sms_tool_js[0].ussdport=$set_tty
+uci set sms_tool_js.@sms_tool_js[0].atport=$set_tty
+uci set sms_tool_js.@sms_tool_js[0].lednotify='1'
+uci set sms_tool_js.@sms_tool_js[0].smsled='green:phone'
+uci commit sms_tool_js
+
+#remove qmodem overview
+rm -r /www/luci-static/resources/view/status/include/11_modem.js
+
+# Bridge lan1-lan4 plus the (unused-as-uplink) wan port into br-lan, so the
+# physical WAN port works as a 5th LAN port and serves internet to a connected
+# device via the cellular uplink.
+uci set network.@device[0].ports='lan1 lan2 lan3 lan4 wan'
+uci commit network
+#-----------------------------------------------------------------------------
+# wifi enable
+uci delete wireless.radio0.disabled='1'
+uci delete wireless.radio1.disabled='1'
+uci commit wireless
+
+# modemdata: QModem 3.4 names the modem's logical interface after its config
+# section (4_1, device wwan0_1); there is no "wwan0" interface any more, so
+# modemdata showed the modem as disconnected and hid the band table. Also
+# migrates upgrades that kept the old value.
+if [ "$(uci -q get defmodems.@defmodems[0].network)" = "wwan0" ]; then
+	uci set defmodems.@defmodems[0].network='4_1'
+	uci commit defmodems
+fi
+
+#Qmodem preset
+uci set qmodem.4_1.apn='internet'
+uci set qmodem.4_1.at_port='/dev/ttyUSB3'
+uci set qmodem.4_1.sms_at_port='/dev/ttyUSB3'
+
+# Dual-stack dial: QModem creates the 4_1v6 DHCPv6 interface and extends the
+# carrier's IPv6 prefix to the LAN (needs an IPv6-capable APN)
+uci set qmodem.4_1.pdp_type='ipv4v6'
+uci set qmodem.4_1.extend_prefix='1'
+
+# CRITICAL FIX: Add network binding to prevent qmodem from creating multiple interfaces
+# This ensures qmodem manages ONLY wwan0 and coordinates with netifd properly
+uci set qmodem.4_1.iface='wwan0'
+
+# Set reasonable modem polling timeouts to prevent excessive AT commands
+uci set qmodem.4_1.signal_poll_interval='30'
+uci set qmodem.4_1.status_poll_interval='30'
+
+uci commit qmodem
+uci set qmodem_ttl.main.enable='1'
+uci set qmodem_ttl.main.ttl='64'
+uci commit qmodem_ttl
+
+#-----------------------------------------------------------------------------
+# remove rules passwall2
+>/usr/share/passwall2/rules/proxy_ip
+>/usr/share/passwall2/rules/proxy_host
+>/usr/share/passwall2/rules/domains_excluded
+>/usr/share/passwall2/rules/direct_ip
+>/usr/share/passwall2/rules/direct_host
+>/usr/share/passwall2/rules/block_ip
+>/usr/share/passwall2/rules/block_host
+>/usr/share/passwall2/rules/gfwlist
+>/usr/share/passwall2/rules/chnroute6
+>/usr/share/passwall2/rules/chnroute
+>/usr/share/passwall2/rules/chnlist
+
+# passwall2: default Redir Ports to "All" (1:65535), TCP Proxy Way to TPROXY
+uci set passwall2.@global_forwarding[0].tcp_redir_ports='1:65535'
+uci set passwall2.@global_forwarding[0].udp_redir_ports='1:65535'
+uci set passwall2.@global_forwarding[0].tcp_proxy_way='tproxy'
+uci commit passwall2
+
+# verify custom files 755
+chmod +x /usr/bin/xray
+#chmod +x /usr/bin/xray2
+chmod +x /usr/bin/speedtest
+chmod +x /etc/openclash/core/clash_meta
+
+# brlan 7day expired
+uci set dhcp.lan.leasetime='168h'
+uci commit dhcp
+
+
+# set theme default 
+uci set luci.main.mediaurlbase='/luci-static/noobwrt'
+uci commit luci
+
+# fix vnstat 
+mkdir -p /etc/vnstat/
+sed -i 's|DatabaseDir "/var/lib/vnstat"|DatabaseDir "/etc/vnstat"|g' /etc/vnstat.conf
+/etc/init.d/vnstat restart
+
+# cpu set max performance
+uci set cpufreq.cpufreq.governor0='performance'
+uci commit cpufreq
+
+#others
+
+#-----------------------------------------------------------------------------
+# Atcommands sms
+rm -r /etc/modem/atcmmds.user;cat << 'EOF' >> /etc/modem/atcmmds.user
+Show Attention Identify ;ATI
+Show IMSI ;AT+CIMI
+Change IMEI ;AT+EGMR=1,7,"IMEI NUMBER"
+ ;
+Show current preferred mode ;AT+QNWPREFCFG="mode_pref"
+Set 4G preferred mode ;AT+QNWPREFCFG="mode_pref",LTE
+Set 5G/4G preferred mode ;AT+QNWPREFCFG="mode_pref",NR5G:LTE
+Set AUTO preferred mode ;AT+QNWPREFCFG="mode_pref",AUTO
+ ;
+Show Commands Lock PCI ;AT+QNWLOCK=?
+====Temporary/Reset after Reboot==== ;
+Lock 4G PCI ;AT+QNWLOCK="common/4g",(0-10),<freq>,<pci>
+Disable 4G PCI ;AT+QNWLOCK="common/4g",0
+====Temporary/Reset after Reboot==== ;
+Lock 5G/SA PCI ;AT+QNWLOCK="common/5g",<pci>,<earfcn>,<scs>,<band>
+Disable 5G/SA PCI ;AT+QNWLOCK="common/5g",0
+====Permanently after Reboot==== ;
+Save PCI lock permanently ;AT+QNWLOCK="save_ctrl",1,1
+Reset PCI lock ;AT+QNWLOCK="save_ctrl",1,0
+ ;
+Show Protocol using ;AT+QCFG="usbnet"
+Use QMI Protocol (0) ;AT+QCFG="usbnet",0
+Use MBIM (2) ;AT+QCFG="usbnet",2
+ ;
+Show neighbour cell ;AT+QENG="neighbourcell"
+Show CA Status ;AT+QCAINFO
+ ;
+Switch off modem ;AT+CFUN=0
+Switch on modem ;AT+CFUN=1
+Airplane mode modem ;AT+CFUN=4
+EOF
+sleep 1
+
+#Custom overview
+rm -r /www/luci-static/resources/view/status/include/10_system.js
+
+cat << 'EOF' >> /www/luci-static/resources/view/status/include/10_system.js
+'use strict';
+
+'require baseclass';
+'require fs';
+'require rpc';
+
+var callLuciVersion = rpc.declare({
+    object: 'luci',
+    method: 'getVersion'
+});
+
+var callSystemBoard = rpc.declare({
+    object: 'system',
+    method: 'board'
+});
+
+var callSystemInfo = rpc.declare({
+    object: 'system',
+    method: 'info'
+});
+
+var callCPUBench = rpc.declare({
+    object: 'luci',
+    method: 'getCPUBench'
+});
+
+var callCPUInfo = rpc.declare({
+    object: 'luci',
+    method: 'getCPUInfo'
+});
+
+var callCPUUsage = rpc.declare({
+    object: 'luci',
+    method: 'getCPUUsage'
+});
+
+var callTempInfo = rpc.declare({
+    object: 'luci',
+    method: 'getTempInfo'
+});
+
+return baseclass.extend({
+    title: _('System'),
+
+    load: function () {
+        return Promise.all([
+            L.resolveDefault(callSystemBoard(), {}),
+            L.resolveDefault(callSystemInfo(), {}),
+            L.resolveDefault(callCPUBench(), {}),
+            L.resolveDefault(callCPUInfo(), {}),
+            L.resolveDefault(callCPUUsage(), {}),
+            L.resolveDefault(callTempInfo(), {}),
+            L.resolveDefault(callLuciVersion(), {
+                revision: _('unknown version'),
+                branch: 'LuCI'
+            })
+        ]);
+    },
+
+    render: function (data) {
+        var boardinfo   = data[0],
+            systeminfo  = data[1],
+            cpubench    = data[2],
+            cpuinfo     = data[3],
+            cpuusage    = data[4],
+            tempinfo    = data[5],
+            luciversion = data[6];
+
+        // Set custom firmware version
+        var customFirmwareVersion = 'NoobWRT 24.10.1 — LK Pro Edition v2025.09.23'; 
+
+        var datestr = null;
+        if (systeminfo.localtime) {
+            var date = new Date(systeminfo.localtime * 1000);
+            datestr = '%04d-%02d-%02d %02d:%02d:%02d'.format(
+                date.getUTCFullYear(),
+                date.getUTCMonth() + 1,
+                date.getUTCDate(),
+                date.getUTCHours(),
+                date.getUTCMinutes(),
+                date.getUTCSeconds()
+            );
+        }
+
+        var fields = [
+            _('Hostname'), boardinfo.hostname,
+            _('Model'), boardinfo.model + cpubench.cpubench,
+            _('Architecture'), cpuinfo.cpuinfo || boardinfo.system,
+            _('Target Platform'), L.isObject(boardinfo.release) ? boardinfo.release.target : '',
+            _('Firmware Version'), customFirmwareVersion,
+            _('Kernel Version'), boardinfo.kernel,
+            _('Local Time'), datestr,
+            _('Uptime'), systeminfo.uptime ? '%t'.format(systeminfo.uptime) : null,
+            _('Load Average'), Array.isArray(systeminfo.load) ? 
+                '%.2f, %.2f, %.2f'.format(
+                    systeminfo.load[0] / 65535.0,
+                    systeminfo.load[1] / 65535.0,
+                    systeminfo.load[2] / 65535.0
+                ) : null,
+            _('CPU usage (%)'), cpuusage.cpuusage
+        ];
+
+        if (tempinfo.tempinfo) {
+            fields.splice(6, 0, _('Temperature'));
+            fields.splice(7, 0, tempinfo.tempinfo);
+        }
+
+        var table = E('table', { 'class': 'table' });
+
+        for (var i = 0; i < fields.length; i += 2) {
+            table.appendChild(E('tr', { 'class': 'tr' }, [
+                E('td', { 'class': 'td left', 'width': '33%' }, [fields[i]]),
+                E('td', { 'class': 'td left' }, [(fields[i + 1] != null) ? fields[i + 1] : '?'])
+            ]));
+        }
+
+        return table;
+    }
+});
+EOF
+sleep 1
+
+#-----------------------------------------------------------------------------
+# WG SC
+cat << 'EOF' > /root/restart_wg
+#!/bin/sh
+#Restart WG when DC
+
+# Interface WG
+wgname=$(wg show | grep 'interface' | awk '{print $2}')
+
+# Ping CF DNS server 10 times
+ping -c 10 1.1.1.1
+
+# Check if the last command (ping) was successful
+if [ $? -ne 0 ]; then
+  # Ping failed, restart wireguard interface
+  ifdown $wgname
+  ifup $wgname
+  logger "CustomSC - (WireGuard) Restart after failed ping 10 times"
+fi
+
+EOF
+sleep 1
+echo "#* * * * * sh restart_wg" | tee -a /etc/crontabs/root
+#-----------------------------------------------------------------------------
+# testing preset tailscale nft
+uci set tailscale.settings.fw_mode='nftables'
+uci set tailscale.settings.log_stdout='1'
+uci set tailscale.settings.log_stderr='1'
+uci set tailscale.settings.accept_routes='1'
+uci set tailscale.settings.accept_dns='1'
+uci set tailscale.settings.advertise_exit_node='1'
+uci add_list tailscale.settings.advertise_routes='192.168.1.0/24'
+uci set tailscale.settings.disable_snat_subnet_routes='1'
+uci commit tailscale
+#-----------------------------------------------------------------------------
+#-----------------------------------------------------------------------------
+# packet steering all core rps 256
+uci set network.globals.packet_steering='2'
+#uci set network.globals.steering_flows='256'
+uci commit network
+#-----------------------------------------------------------------------------
+# set ttl for first time
+uci set ipt_ttl.config.proto='both'
+uci add_list ipt_ttl.config.iface='wwan0'
+uci add_list ipt_ttl.config.iface='wwan0_1'
+uci set ipt_ttl.config.ttl='64'
+uci commit ipt_ttl
+uci commit
+sleep 1
+exit 0
+

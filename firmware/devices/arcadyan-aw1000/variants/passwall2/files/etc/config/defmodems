@@ -1,0 +1,11 @@
+config general
+
+config defmodems
+        option modem 'Quectel RG500Q-EA'
+        option modemdata 'serial'
+        option comm_port '/dev/ttyUSB3'
+        option comm_serial '/dev/ttyUSB3'
+        option forced_plmn '0'
+        option forced_plmn_serial '0'
+        option network '4_1'
+        option user_desc 'default'

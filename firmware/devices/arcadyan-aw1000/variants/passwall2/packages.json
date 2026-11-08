@@ -1,0 +1,29 @@
+{
+  "add": [
+    "luci",
+    "luci-app-cpufreq",
+    "luci-app-frpc",
+    "luci-app-hd-idle",
+    "luci-app-mini-diskmanager",
+    "luci-app-modemdata",
+    "luci-app-nlbwmon",
+    "luci-app-openvpn",
+    "openvpn-openssl",
+    "luci-app-fxs"
+  ],
+  "remove": [
+    "dnsmasq",
+    "firewall",
+    "firewall3",
+    "iptables",
+    "iptables-mod-tproxy",
+    "iptables-mod-conntrack-extra",
+    "iptables-mod-ipopt",
+    "kmod-ipt-core",
+    "kmod-ipt-nat",
+    "iptables-nft",
+    "https-dns-proxy",
+    "luci-app-https-dns-proxy",
+    "wpad-basic-mbedtls"
+  ]
+}

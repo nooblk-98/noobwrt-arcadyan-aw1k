@@ -1,0 +1,39 @@
+#!/bin/sh
+#=================================================
+# Copyright (c) 2026 Lahiru S Liyanage (NoobLK) <liyanagelsofficial@gmail.com>
+# GitHub: https://github.com/nooblk-98/wrt-builder-aw1000
+# Telegram: @itsme_nooblk
+# License: All rights reserved
+#
+# Purpose: Init setup for vnStat 2.x on OpenWrt
+#=================================================
+
+# Create data directory if not exists
+mkdir -p /etc/vnstat
+chmod 755 /etc/vnstat
+
+# Ensure correct ownership (adjust if vnstat runs as root)
+if id vnstat >/dev/null 2>&1; then
+    chown vnstat:vnstat /etc/vnstat
+fi
+
+# Backup and patch config
+if [ -f "/etc/vnstat.conf" ]; then
+    cp /etc/vnstat.conf /etc/vnstat.conf.bak
+    sed -i 's#^\(;*\s*DatabaseDir\).*#DatabaseDir "/etc/vnstat"#' /etc/vnstat.conf
+    echo "[INFO] Updated vnstat database directory"
+fi
+
+# Enable + restart vnstat
+if [ -f "/etc/init.d/vnstat" ]; then
+    /etc/init.d/vnstat enable
+    /etc/init.d/vnstat restart
+    echo "[INFO] vnstat service enabled and started"
+fi
+
+# Setup vnstat backup if available
+if [ -f "/etc/init.d/vnstat_backup" ]; then
+    chmod +x /etc/init.d/vnstat_backup
+    /etc/init.d/vnstat_backup enable
+    echo "[INFO] vnstat backup service enabled"
+fi
