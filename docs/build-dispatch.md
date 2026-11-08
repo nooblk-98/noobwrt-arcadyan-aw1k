@@ -24,12 +24,16 @@ until the migrated full-build path has been proved.
 
 The existing repository secret TOKEN is used only by the hosted request job.
 It must have access to NoobWRT/arcadyan-aw1000-builder with **Actions: read and
-write** (dispatch workflow, inspect runs, download artifacts), and Metadata: read.
+write** (dispatch workflow, inspect runs, download artifacts), **Contents: read**
+(resolve the exact builder commit), and Metadata: read.
 For a classic PAT, private repository access may require repo; prefer a scoped
 GitHub App installation token or a fine-grained PAT instead of broad credentials.
 The current implementation does not create tokens, change the secret or assume
 that the existing TOKEN has sufficient access. A 403/404 on dispatch is an
-explicit authentication blocker, not a successful build. An organization may
+explicit authentication blocker, not a successful build. HTTP 401 means the
+existing token is invalid or expired. Replace TOKEN through this repository’s
+Settings → Secrets and variables → Actions; never print it in logs or paste it
+into issues. Keep the new credential scoped to the builder repository. An organization may
 require approving the fine-grained token or enabling SSO.
 
 GITHUB_TOKEN remains contents:read during compilation; the separate draft-release
