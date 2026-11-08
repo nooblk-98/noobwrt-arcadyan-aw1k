@@ -21,7 +21,16 @@
 
 ## 📥 Download
 
-**Download the current stable firmware release from here:**
+**New maintainer builds are delivered privately in Google Drive:**
+
+Select an unused **build_tag** in Actions → Build Firmware. Files are unzipped at
+`ROOT/passwall1/<build-tag>/` (or `passwall2`): open `images/` for individual
+firmware images, `metadata/` for build details, and `logs/` for logs. Checksums,
+result and completion receipt sit in the build-tag folder. Access remains private;
+see [setup and verification](docs/build-dispatch.md). No GitHub Actions artifacts
+or releases are created by this build workflow.
+
+Historical stable releases remain available:
 
 [![Download Latest Release](https://img.shields.io/badge/Download-Latest%20Release-success?style=for-the-badge&logo=github)](https://github.com/nooblk-98/noobwrt-arcadyan-aw1k/releases/latest)
 

@@ -16,24 +16,26 @@ WORKFLOW = "external-build.yml"
 SHA = re.compile(r"^[0-9a-f]{40}$")
 ID = re.compile(r"^[a-z0-9][a-z0-9_-]{0,79}$")
 REQUEST = re.compile(r"^[a-z0-9][a-z0-9-]{0,95}$")
-KEYS = {"schema_version", "firmware_repository", "firmware_sha", "builder_sha", "request_id", "device", "variant", "validate_only", "clean", "verbose"}
+KEYS = {"schema_version", "firmware_repository", "firmware_sha", "builder_sha", "request_id", "device", "variant", "validate_only", "clean", "verbose", "build_tag", "drive_root_id"}
 
 
 def validate_request(value):
     if not isinstance(value, dict) or set(value) != KEYS:
         raise ValueError("request has missing or unknown fields")
-    if value["schema_version"] != 1 or type(value["schema_version"]) is not int:
+    if value["schema_version"] != 2 or type(value["schema_version"]) is not int:
         raise ValueError("unsupported request schema")
     if value["firmware_repository"] != FIRMWARE_REPO:
         raise ValueError("unapproved firmware repository")
     for key in ("firmware_sha", "builder_sha"):
         if not isinstance(value[key], str) or not SHA.fullmatch(value[key]):
             raise ValueError("invalid " + key)
-    for key in ("device", "variant"):
+    for key in ("device", "variant", "build_tag"):
         if not isinstance(value[key], str) or not ID.fullmatch(value[key]):
             raise ValueError("invalid " + key)
     if not isinstance(value["request_id"], str) or not REQUEST.fullmatch(value["request_id"]):
         raise ValueError("invalid request ID")
+    if not isinstance(value["drive_root_id"], str) or not re.fullmatch(r"[A-Za-z0-9_-]{10,128}", value["drive_root_id"]):
+        raise ValueError("invalid Drive root folder ID")
     for key in ("validate_only", "clean", "verbose"):
         if type(value[key]) is not bool:
             raise ValueError("expected boolean " + key)
@@ -131,7 +133,7 @@ def verify_checkout(path, sha, branch):
     subprocess.run(["git", "merge-base", "--is-ancestor", sha, "origin/" + branch], cwd=path, check=True)
 
 
-def package_result(request_path, destination, output, builder_run_id):
+def package_result(request_path, destination, output, builder_run_id, logs=None):
     request = read_request(request_path)
     root = Path(destination)
     root.mkdir(parents=True, exist_ok=False)
@@ -165,6 +167,15 @@ def package_result(request_path, destination, output, builder_run_id):
                 shutil.copyfile(p, metadata / p.name)
     result = {"schema_version": 1, "request": request, "builder_run_id": int(builder_run_id), "status": "validated" if request["validate_only"] else "built"}
     (root / "result.json").write_text(json.dumps(result, indent=2) + chr(10))
+    if logs is not None:
+        source = Path(logs)
+        if source.is_symlink() or any(p.is_symlink() for p in source.rglob("*")):
+            raise ValueError("symlink in logs")
+        (root / "logs").mkdir()
+        for p in sorted(source.glob("*.log")):
+            if not p.is_file():
+                raise ValueError("invalid log file")
+            shutil.copyfile(p, root / "logs" / p.name)
     checksums = checksum_files(root)
     (root / "SHA256SUMS").write_text("".join(d + "  " + n + chr(10) for n, d in checksums.items()))
     verify_result(root, request)
@@ -182,6 +193,7 @@ def main():
     a.add_argument("destination")
     a.add_argument("--output", default="output")
     a.add_argument("--run-id", required=True)
+    a.add_argument("--logs")
     a = sub.add_parser("extract")
     a.add_argument("archive")
     a.add_argument("destination")
@@ -193,7 +205,7 @@ def main():
         verify_checkout(args.firmware_dir, r["firmware_sha"], "main")
         verify_checkout(args.builder_dir, r["builder_sha"], "main")
     elif args.command == "package":
-        package_result(args.request, args.destination, args.output, args.run_id)
+        package_result(args.request, args.destination, args.output, args.run_id, args.logs)
     else:
         safe_extract(args.archive, args.destination)
         result = verify_result(args.destination, read_request(args.request))
