@@ -27,10 +27,10 @@ on:
         description: Detailed compilation logs
         type: boolean
         default: false
-      release_tag:
-        description: Optional new tag for a DRAFT release (full builds only)
+      build_tag:
+        description: Unique unused Drive folder tag (letters, digits, dots, hyphens, underscores; start alphanumeric; max 80)
         type: string
-        default: ''
+        required: true
 permissions:
   contents: read
 concurrency:
@@ -40,7 +40,7 @@ jobs:
   request:
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
-    timeout-minutes: 275
+    timeout-minutes: 315
     outputs:
       request_id: ${{ steps.build.outputs.request_id }}
     steps:
@@ -56,40 +56,6 @@ jobs:
           VALIDATE_ONLY: ${{ inputs.validate_only }}
           CLEAN: ${{ inputs.clean }}
           VERBOSE: ${{ inputs.verbose }}
+          BUILD_TAG: ${{ inputs.build_tag }}
+          DRIVE_ROOT_FOLDER_ID: ${{ vars.DRIVE_ROOT_FOLDER_ID }}
         run: python3 scripts/dispatch_build.py
-      - uses: actions/upload-artifact@v4
-        with:
-          name: verified-firmware-${{ steps.build.outputs.request_id }}
-          path: verified-result/
-          if-no-files-found: error
-          retention-days: 14
-  draft-release:
-    needs: request
-    if: inputs.release_tag != '' && !inputs.validate_only
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    permissions:
-      contents: write
-    steps:
-      - uses: actions/download-artifact@v4
-        with:
-          name: verified-firmware-${{ needs.request.outputs.request_id }}
-          path: verified-result
-      - name: Create a new draft release without overwriting existing tags
-        env:
-          GH_TOKEN: ${{ github.token }}
-          RELEASE_TAG: ${{ inputs.release_tag }}
-          GH_REPO: ${{ github.repository }}
-        run: |
-          set -euo pipefail
-          if ! [[ "$RELEASE_TAG" =~ ^v[0-9]+[.][0-9]+[.][0-9]+(-[a-zA-Z0-9.-]+)?$ ]]; then
-            echo 'release_tag must look like v1.2.3 or v1.2.3-rc.1' >&2; exit 1
-          fi
-          if gh api "repos/$GH_REPO/git/ref/tags/$RELEASE_TAG" > /dev/null 2>&1; then
-            echo "Refusing existing release tag: $RELEASE_TAG" >&2; exit 1
-          fi
-          notes=(--notes "Verified external build; provenance and checksums attached.")
-          if [ -f verified-result/metadata/release.md ]; then notes=(--notes-file verified-result/metadata/release.md); fi
-          tar -czf firmware-bundle.tar.gz -C verified-result .
-          gh api --method POST "repos/$GH_REPO/git/refs" -f "ref=refs/tags/$RELEASE_TAG" -f "sha=$GITHUB_SHA" > /dev/null
-          gh release create "$RELEASE_TAG" --draft --verify-tag --target "$GITHUB_SHA" --title "NoobWRT $RELEASE_TAG" "${notes[@]}" firmware-bundle.tar.gz verified-result/images/* verified-result/SHA256SUMS verified-result/result.json

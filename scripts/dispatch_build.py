@@ -2,6 +2,8 @@
 """Dispatch and collect one exact builder run; never latest-build URLs."""
 import argparse
 import datetime
+import hashlib
+import re
 import json
 import os
 from pathlib import Path
@@ -9,7 +11,7 @@ import time
 import urllib.request
 import urllib.error
 from urllib.parse import quote
-from dispatch_protocol import BUILDER_REPO, FIRMWARE_REPO, WORKFLOW, validate_request, safe_extract, verify_result
+from dispatch_protocol import BUILDER_REPO, FIRMWARE_REPO, WORKFLOW, validate_request
 
 
 def api(path, token, payload=None, raw=False):
@@ -48,20 +50,51 @@ def wait_run(request, created, timeout, token, clock=time.monotonic, sleep=time.
     raise TimeoutError("Timed out awaiting exact builder run; inspect Actions before retrying")
 
 
+def collect_receipt(run, request, token, fetch=api):
+    """Actions job names are authenticated, run/attempt-bound API metadata.
+
+    No Drive credential in caller; no artifact or log scraping. This is a builder
+    readback attestation, NOT an independent caller download or signature.
+    """
+    attempt = run.get('run_attempt')
+    if type(attempt) is not int or attempt <= 0 or type(run.get('id')) is not int:
+        raise ValueError('invalid run/attempt identity')
+    jobs = []
+    for page in range(1, 11):
+        response = fetch('repos/' + BUILDER_REPO + '/actions/runs/' + str(run['id']) +
+                         '/attempts/' + str(attempt) + '/jobs?per_page=100&page=' + str(page), token)
+        jobs.extend(response['jobs'])
+        if len(jobs) >= response['total_count']:
+            break
+    else:
+        raise ValueError('job list exceeds supported bounds')
+    matches = [j for j in jobs if j.get('name', '').startswith('drive-v1:')]
+    if len(matches) != 1:
+        raise ValueError('missing or ambiguous Drive completion attestation')
+    job = matches[0]
+    if job.get('run_id') != run['id'] or job.get('run_attempt', attempt) != attempt or job.get('head_sha') != request['builder_sha'] or job.get('status') != 'completed' or job.get('conclusion') != 'success':
+        raise ValueError('Drive receipt job identity/status mismatch')
+    match = re.fullmatch(r'drive-v1:([0-9a-f]{64}):([0-9a-f]{64}):([0-9a-f]{64}):([A-Za-z0-9_-]{10,128})', job['name'])
+    expected_hash = hashlib.sha256(json.dumps(request, sort_keys=True, separators=(',', ':')).encode()).hexdigest()
+    if not match or match[1] != expected_hash:
+        raise ValueError('Drive completion request checksum mismatch')
+    return dict(folder_id=match[4], checksums_sha256=match[2], completion_sha256=match[3])
+
+
 def request_from_env(builder_sha):
     def flag(key):
         value = os.environ[key]
         if value not in ("true", "false"):
             raise ValueError("invalid boolean " + key)
         return value == "true"
-    return validate_request({"schema_version": 1, "firmware_repository": FIRMWARE_REPO, "firmware_sha": os.environ["GITHUB_SHA"], "builder_sha": builder_sha, "request_id": "fw-" + os.environ["GITHUB_RUN_ID"] + "-" + os.environ["GITHUB_RUN_ATTEMPT"], "device": os.environ["DEVICE"], "variant": os.environ["VARIANT"], "validate_only": flag("VALIDATE_ONLY"), "clean": flag("CLEAN"), "verbose": flag("VERBOSE")})
+    return validate_request({"schema_version": 2, "build_tag": os.environ["BUILD_TAG"], "drive_root_id": os.environ["DRIVE_ROOT_FOLDER_ID"], "firmware_repository": FIRMWARE_REPO, "firmware_sha": os.environ["GITHUB_SHA"], "builder_sha": builder_sha, "request_id": "fw-" + os.environ["GITHUB_RUN_ID"] + "-" + os.environ["GITHUB_RUN_ATTEMPT"], "device": os.environ["DEVICE"], "variant": os.environ["VARIANT"], "validate_only": flag("VALIDATE_ONLY"), "clean": flag("CLEAN"), "verbose": flag("VERBOSE")})
 
 
 def main():
     p = argparse.ArgumentParser()
-    p.add_argument("--timeout", type=int, default=15600)
+    p.add_argument("--timeout", type=int, default=18000)
     args = p.parse_args()
-    if not 60 <= args.timeout <= 16200:
+    if not 60 <= args.timeout <= 18600:
         raise ValueError("timeout outside supported bounds")
     if os.environ.get("GITHUB_REPOSITORY") != FIRMWARE_REPO or os.environ.get("GITHUB_REF") != "refs/heads/main":
         raise ValueError("official requests run only from firmware main")
@@ -77,22 +110,14 @@ def main():
     created = datetime.datetime.now(datetime.timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
     api("repos/" + BUILDER_REPO + "/actions/workflows/" + WORKFLOW + "/dispatches", token, {"ref": ref, "inputs": {"request": json.dumps(request, separators=(",", ":")), "request_id": request["request_id"]}})
     run = wait_run(request, created, args.timeout, token)
-    artifacts = api("repos/" + BUILDER_REPO + "/actions/runs/" + str(run["id"]) + "/artifacts?per_page=100", token)["artifacts"]
-    matches = [a for a in artifacts if a["name"] == "firmware-result-" + request["request_id"] and not a["expired"]]
-    if len(matches) != 1:
-        raise ValueError("missing or ambiguous result artifact")
-    archive = api("repos/" + BUILDER_REPO + "/actions/artifacts/" + str(matches[0]["id"]) + "/zip", token, raw=True)
-    Path("result.zip").write_bytes(archive)
-    safe_extract("result.zip", "verified-result")
-    manifest = verify_result("verified-result", request)
-    if manifest["builder_run_id"] != run["id"]:
-        raise ValueError("artifact from wrong builder run")
+    receipt = collect_receipt(run, request, token)
     with open(os.environ["GITHUB_OUTPUT"], "a") as f:
         print("request_id=" + request["request_id"], file=f)
         print("builder_run_id=" + str(run["id"]), file=f)
         print("builder_url=" + run["html_url"], file=f)
+        print("drive_folder_id=" + receipt["folder_id"], file=f)
     with open(os.environ["GITHUB_STEP_SUMMARY"], "a") as f:
-        print("### Verified firmware build" + chr(10) + "[Builder run](" + run["html_url"] + ")" + chr(10) + "Firmware commit: " + request["firmware_sha"] + chr(10) + "Mode: " + manifest["status"], file=f)
+        print("### Private Google Drive delivery" + chr(10) + "Builder readback attestation accepted from [exact run](" + run["html_url"] + ")." + chr(10) + "[Private folder](https://drive.google.com/drive/folders/" + receipt["folder_id"] + ")" + chr(10) + "Path: " + request["variant"] + "/" + request["build_tag"] + chr(10) + "Firmware commit: " + request["firmware_sha"] + chr(10) + "SHA256SUMS SHA-256: " + receipt["checksums_sha256"] + chr(10) + "COMPLETE.json SHA-256: " + receipt["completion_sha256"] + chr(10) + "Caller authenticated the builder attestation; it did not independently download Drive bytes.", file=f)
 
 
 if __name__ == "__main__":
