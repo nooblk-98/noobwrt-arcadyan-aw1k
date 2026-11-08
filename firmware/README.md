@@ -6,7 +6,7 @@ The source and all feeds are locked to full commits. The Go toolchain override a
 
 ## Migration baseline
 
-PassWall2: all 48 overlay files are copied byte-for-byte with original modes from builder commit `8bd5548270418c7d8fa93e2a0cdd73bcadfe1634`. PassWall1: all 49 files are preserved from `5316950f953eb7a3ee46b46efd059e30403585ff`, including its PassWall defaults and fragment fix. `overlay-baseline.json` proves initial migration parity. It is a historical baseline, not a restriction against future firmware changes: update migration-only tests deliberately when modifying overlays. The original src/compile.conf, src/packages.conf and release template are retained as migration reference; they are not sourced by the new engine. Active settings are the JSON manifest, packages.json, kconfig and hooks.
+PassWall2: all 48 overlay files are copied byte-for-byte with original modes from builder commit `8bd5548270418c7d8fa93e2a0cdd73bcadfe1634`. PassWall1: all 49 files are preserved from `5316950f953eb7a3ee46b46efd059e30403585ff`, including its PassWall defaults and fragment fix. `overlay-baseline.json` proves initial migration parity. It is a historical baseline, not a restriction against future firmware changes; this repository has no migration test suite. The original src/compile.conf, src/packages.conf and release template are retained as migration reference; they are not sourced by the new engine. Active settings are the JSON manifest, packages.json, kconfig and hooks.
 
 ## RJ11 / FXS
 
@@ -16,7 +16,7 @@ Never commit the private header or generated patch to this repository. Mount the
 
 ## Adding another router
 
-Add a device/variant descriptor with its real OpenWrt target/subtarget/profile, compatible packages, locked sources and necessary defaults. Avoid copying AW1000 hooks into unrelated routers. The builder discovers output images from profiles.json, not AW1000-specific filenames. Only reviewed approved commits should execute on the self-hosted runner; PR validation is data-only.
+Add a device/variant descriptor with its real OpenWrt target/subtarget/profile, compatible packages, locked sources and necessary defaults. Avoid copying AW1000 hooks into unrelated routers. The builder discovers output images from profiles.json, not AW1000-specific filenames. Only reviewed approved commits should execute on the self-hosted runner; PRs do not automatically execute tests or device hooks.
 
 ## Supported AW1000 variants
 

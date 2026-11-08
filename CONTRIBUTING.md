@@ -9,11 +9,10 @@ workflow inputs. Do not duplicate feed-owned packages in the builder repository.
 1. Fork this repository and create a focused branch.
 2. Explain the device/variant, expected behavior and rollback in your PR.
 3. Preserve executable modes, licensing notices and upstream attribution.
-4. Run the local validation command in docs/build-dispatch.md. JSON must be valid;
-   paths must stay within the repository; no private keys, stock private tables,
-   credentials, generated images or personal network settings may be committed.
-5. Submit a PR targeting main. Hosted validation does not execute hooks or flash
-   hardware. Maintainers review and merge before scheduling a trusted build.
+4. Keep JSON valid and paths within the repository; do not commit private keys,
+   stock private tables, credentials, generated images or personal network settings.
+5. Submit a PR targeting main. This firmware repository has no automated test suite
+   or PR test workflow. Maintainers review and merge before scheduling a trusted build.
 
 Official builds are started from Actions → Build Firmware on main. Contributors
 must not receive access to the persistent runner or build dispatch credentials.

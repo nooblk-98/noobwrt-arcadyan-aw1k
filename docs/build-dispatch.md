@@ -11,8 +11,8 @@ self-hosted runner. Generated images are Release assets, not tracked source.
 On the firmware repository's main branch open **Actions → Build Firmware → Run workflow**.
 Choose device arcadyan-aw1000 and variant passwall1 or passwall2. Start with validate_only=true:
 this proves request, reviewed-commit validation, result upload/download, provenance
-and checksums without compiling or executing device hooks. Public PR validation
-is fully self-contained and never needs access to the private builder repository.
+and checksums without compiling or executing device hooks. This firmware
+repository has no automated test suite or PR test workflow.
 
 For compilation set validate_only=false. Optional release_tag=vX.Y.Z creates a
 **draft** release only after verification; existing releases/tags are never
@@ -38,8 +38,8 @@ require approving the fine-grained token or enabling SSO.
 
 GITHUB_TOKEN remains contents:read during compilation; the separate draft-release
 job gets contents:write only in this firmware repository. No callback secret is
-needed in the builder. Fork PR validation receives no TOKEN and never schedules
-the persistent runner.
+needed in the builder. Fork PRs receive no TOKEN and never schedule the
+persistent runner.
 
 ## Request and verification protocol
 
@@ -53,9 +53,8 @@ The builder checks its own SHA and that the firmware commit is an ancestor of
 origin/main, and that builder SHA is on origin/main. Validation runs
 on the existing self-hosted runner using only approved builder code, without
 executing firmware hooks. This avoids GitHub-hosted minutes in the private
-builder repository. Public contribution checks run separately on disposable
-GitHub-hosted runners in the public firmware repository. Only reviewed full
-builds execute device hooks.
+builder repository. Contributions are reviewed in the public firmware repository;
+there is no automatic PR test job. Only reviewed full builds execute device hooks.
 The compile job also uses the firmware-build deployment environment, whose
 server-side branch policy permits main. Keep this policy in place; workflow
 ancestry checks alone are not an independent trust boundary. The historical
@@ -100,15 +99,18 @@ the generic launcher does not interpret its contents. The current runner uses
 trees are never uploaded; the generated runtime SLIC patch is inside the firmware
 image when enabled. Only an explicit image/metadata allowlist is packaged.
 
-## Local checks
+## Optional definition inspection
 
-    python3 -m unittest discover -s tests -v
+This repository does not contain a test suite or run automatic PR tests.
+For an optional offline manifest/path check (no hooks or compilation):
+
     python3 scripts/validate_firmware.py .
 
-These contributor checks need only Python 3.9+ and this public repository. They
-do not require builder access, dispatch credentials, Docker or private phone data.
-Maintainers can additionally validate with the private builder entry point.
+The helper needs only Python 3.9+; builder access, credentials, Docker and private
+phone data are not required. The manually requested build still verifies reviewed
+commits, definitions, artifact checksums and provenance. Builder-engine tests
+remain in the separate builder repository.
 
 Firmware engine/definition contracts are documented in the builder's
-external-firmware documentation. Keep scripts/dispatch_protocol.py and its tests
-identical in both repositories when changing the request schema.
+external-firmware documentation. Keep scripts/dispatch_protocol.py identical in
+both repositories when changing the request schema.
