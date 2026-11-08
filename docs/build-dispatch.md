@@ -95,8 +95,12 @@ image when enabled. Only an explicit image/metadata allowlist is packaged.
 
 ## Local checks
 
-    python3 -m unittest discover -s tests -p 'test_dispatch*.py' -v
-    bash ../builder/scripts/build-firmware.sh --firmware-dir "$PWD" --device arcadyan-aw1000 --variant passwall2 --validate-only
+    python3 -m unittest discover -s tests -v
+    python3 scripts/validate_firmware.py .
+
+These contributor checks need only Python 3.9+ and this public repository. They
+do not require builder access, dispatch credentials, Docker or private phone data.
+Maintainers can additionally validate with the private builder entry point.
 
 Firmware engine/definition contracts are documented in the builder's
 external-firmware documentation. Keep scripts/dispatch_protocol.py and its tests
