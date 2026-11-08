@@ -19,7 +19,7 @@ except ImportError:
 def request(**kwargs):
     value = dict(schema_version=1, firmware_repository=protocol.FIRMWARE_REPO,
                  firmware_sha='a' * 40, builder_sha='b' * 40, request_id='fw-123-1',
-                 device='arcadyan-aw1000', variant='passwall2',
+                 device='sample-router', variant='minimal',
                  validate_only=True, clean=False, verbose=False)
     value.update(kwargs)
     return value

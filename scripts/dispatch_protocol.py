@@ -191,7 +191,7 @@ def main():
     if args.command == "validate":
         r = read_request(args.request)
         verify_checkout(args.firmware_dir, r["firmware_sha"], "main")
-        verify_checkout(args.builder_dir, r["builder_sha"], "passwall2+stable")
+        verify_checkout(args.builder_dir, r["builder_sha"], "main")
     elif args.command == "package":
         package_result(args.request, args.destination, args.output, args.run_id)
     else:
