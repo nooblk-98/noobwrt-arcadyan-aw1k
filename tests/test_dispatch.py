@@ -26,6 +26,16 @@ def request(**kwargs):
 
 
 class ProtocolTests(unittest.TestCase):
+    def test_builder_repository_and_main_ancestry_contract(self):
+        self.assertEqual(protocol.BUILDER_REPO, 'NoobWRT/noobwrt-builder')
+        from unittest.mock import patch
+        with patch.object(protocol, 'git', return_value='a' * 40), patch.object(protocol.subprocess, 'run') as run:
+            protocol.verify_checkout('/checkout', 'a' * 40, 'main')
+            self.assertIn('origin/main', run.call_args.args[0])
+        with patch.object(protocol, 'git', return_value='b' * 40):
+            with self.assertRaises(ValueError):
+                protocol.verify_checkout('/checkout', 'a' * 40, 'main')
+
     def test_valid_request(self):
         self.assertEqual(protocol.validate_request(request()), request())
 
