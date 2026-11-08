@@ -1,0 +1,6 @@
+config vnstat
+	list interface		br-lan
+	list interface		wwan0
+	option database_dir '/etc/vnstat'
+#	option remote		http://example.org/vnstat/
+#	option symlink		/www/vnstat

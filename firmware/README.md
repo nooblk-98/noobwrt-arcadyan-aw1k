@@ -1,0 +1,19 @@
+# Firmware definitions
+
+`devices/arcadyan-aw1000/variants/passwall2/firmware.json` is the canonical build recipe. Package selection is `packages.json`; additional configuration is `kconfig`; router defaults are under `files/`; reviewed device policy is in `hooks/`. Edit these files here, not in the builder.
+
+The source and all feeds are locked to full commits. The Go toolchain override and PassWall2 override also use immutable commits; Xray and Tailscale source versions have SHA-256 pins in the device hook. Host compiler/container dependencies and package downloads are not claimed bit-reproducible. The selected OpenWrt baseline is v25.12.5, matching the previous GitHub workflow default.
+
+## Migration baseline
+
+All 48 overlay files are copied byte-for-byte with original modes from builder commit `8bd5548270418c7d8fa93e2a0cdd73bcadfe1634`. `overlay-baseline.json` proves initial migration parity. It is a historical baseline, not a restriction against future firmware changes: update migration-only tests deliberately when modifying overlays. The original src/compile.conf, src/packages.conf and release template are retained as migration reference; they are not sourced by the new engine. Active settings are the JSON manifest, packages.json, kconfig and hooks.
+
+## RJ11 / FXS
+
+`luci-app-fxs` is selected from noobwrt-custom-feeds; its dependencies supply `fxsd` and `kmod-aw1000-fxs`. No legacy aw1000-rj11 submodule or second driver implementation is used. The feed currently does not ship the private ProSLIC DSP patch. The device overlay hook converts a locally supplied `si3226x_stock_tables.h` from `RJ11_PRIVATE_DIR` (default `/private`) to the firmware runtime file `/etc/fxs/si3226x_patch.bin`. Missing private input fails explicitly rather than silently dropping phone support.
+
+Never commit the private header or generated patch to this repository. Mount the private directory read-only for official builds. Output artifacts contain firmware images and metadata, not headers or source trees. Firmware images with phone support necessarily contain the runtime DSP patch; confirm redistribution rights before publishing those images. A public no-phone variant should be an explicit reviewed definition omitting luci-app-fxs and the private-data hook, not an environment-dependent silent fallback.
+
+## Adding another router
+
+Add a device/variant descriptor with its real OpenWrt target/subtarget/profile, compatible packages, locked sources and necessary defaults. Avoid copying AW1000 hooks into unrelated routers. The builder discovers output images from profiles.json, not AW1000-specific filenames. Only reviewed approved commits should execute on the self-hosted runner; PR validation is data-only.

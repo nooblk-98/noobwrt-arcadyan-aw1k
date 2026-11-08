@@ -1,0 +1,21 @@
+name: Validate Firmware Definitions
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+    paths: ['firmware/**', 'scripts/**', 'tests/**', '.github/workflows/**']
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Run offline protocol and migration parity tests
+        run: python3 -m unittest discover -s tests -v
+      - name: Validate all public definitions without private builder access or hooks
+        run: python3 scripts/validate_firmware.py .

@@ -1,0 +1,44 @@
+#!/bin/sh
+#=================================================
+# Copyright (c) 2026 Lahiru S Liyanage (NoobLK) <liyanagelsofficial@gmail.com>
+# GitHub: https://github.com/nooblk-98/wrt-builder-aw1000
+# Telegram: @itsme_nooblk
+# License: All rights reserved
+#=================================================
+
+# Populate Sri Lanka mobile USSD codes for sms-tool.
+
+rm -f /etc/modem/ussdcodes.user
+cat << 'EOF' >> /etc/modem/ussdcodes.user
+=== Dialog ===  ;
+Dialog Main Menu ;#107#
+Dialog Plans & Offers ;#678#
+Dialog Roaming ;#103#
+Dialog TV Services ;#679#
+=== SLT-Mobitel ===  ;
+Mobitel Self-Care ;#888#
+Mobitel Balance ;*100#
+Mobitel Previous Day Usage ;#1001#
+Mobitel Broadband ;#170#
+Mobitel CBC Plans ;#160#
+Mobitel Postpaid Billing ;#1456#
+Mobitel Loyalty ;#557#
+Mobitel Club Points ;#556#
+Mobitel Store Locator ;#138#
+Mobitel Cash Bonanza ;#151#
+=== Hutch ===  ;
+Hutch Main Menu ;*123#
+Hutch Data Plans ;*131#
+Hutch Data Activation ;*145*2*2#
+Hutch Prepaid Balance ;*344#
+Hutch Postpaid Balance ;*444#
+=== Airtel ===  ;
+Airtel Balance & Packs ;*550#
+Airtel Recharge ;*567*PIN#
+Airtel Data Loan ;*345#
+Airtel Share Credit ;*235*Amount*Number#
+Airtel Check Number ;*11#
+Airtel SIM Ownership ;#132#
+EOF
+
+exit 0

@@ -1,0 +1,7 @@
+
+config ipinfo 'config'
+	option enable '1'
+	list isp 'ip'
+	list isp 'name'
+	list loc 'city'
+	list loc 'country'
