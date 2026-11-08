@@ -11,7 +11,8 @@ self-hosted runner. Generated images are Release assets, not tracked source.
 On the firmware repository's main branch open **Actions → Build Firmware → Run workflow**.
 Choose device arcadyan-aw1000 and variant passwall2. Start with validate_only=true:
 this proves request, reviewed-commit validation, result upload/download, provenance
-and checksums without compiling or using the persistent runner.
+and checksums without compiling or executing device hooks. Public PR validation
+is fully self-contained and never needs access to the private builder repository.
 
 For compilation set validate_only=false. Optional release_tag=vX.Y.Z creates a
 **draft** release only after verification; existing releases/tags are never
@@ -46,8 +47,18 @@ repository and canonical SHA/identifier/boolean values are accepted.
 
 The builder checks its own SHA and that the firmware commit is an ancestor of
 origin/main, and that builder SHA is on origin/passwall2+stable. Validation runs
-on a disposable GitHub-hosted runner without executing firmware hooks. Only
-reviewed full builds proceed to the builder's existing self-hosted runner.
+on the existing self-hosted runner using only approved builder code, without
+executing firmware hooks. This avoids GitHub-hosted minutes in the private
+builder repository. Public contribution checks run separately on disposable
+GitHub-hosted runners in the public firmware repository. Only reviewed full
+builds execute device hooks.
+The compile job also uses the firmware-build deployment environment, whose
+server-side branch policy permits only passwall2+stable. Keep this policy in
+place; workflow ancestry checks alone are not an independent trust boundary.
+Repository administrators and anyone able to modify workflows must be trusted
+as build-host administrators: a repository-scoped runner cannot isolate itself
+from malicious repository writers. Legacy workflows remain maintainer-only
+rollback paths and are not safe entry points for untrusted contributions.
 
 A unique run-name external-<request_id> binds the caller to the builder run.
 The caller accepts only that exact workflow-dispatch run with matching head_sha

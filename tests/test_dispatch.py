@@ -29,6 +29,11 @@ class ProtocolTests(unittest.TestCase):
     def test_valid_request(self):
         self.assertEqual(protocol.validate_request(request()), request())
 
+    def test_identifier_contract_supports_underscores_and_80_characters(self):
+        protocol.validate_request(request(device="router_model", variant="v" * 80))
+        with self.assertRaises(ValueError):
+            protocol.validate_request(request(variant="v" * 81))
+
     def test_reject_request_injection(self):
         for field, value in [('device', '../bad'), ('variant', 'x;id'),
                              ('request_id', 'x' + chr(10) + 'injected=true'),

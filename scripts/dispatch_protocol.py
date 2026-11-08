@@ -14,7 +14,7 @@ FIRMWARE_REPO = "nooblk-98/noobwrt-arcadyan-aw1k"
 BUILDER_REPO = "NoobWRT/arcadyan-aw1000-builder"
 WORKFLOW = "external-build.yml"
 SHA = re.compile(r"^[0-9a-f]{40}$")
-ID = re.compile(r"^[a-z0-9][a-z0-9-]{0,63}$")
+ID = re.compile(r"^[a-z0-9][a-z0-9_-]{0,79}$")
 REQUEST = re.compile(r"^[a-z0-9][a-z0-9-]{0,95}$")
 KEYS = {"schema_version", "firmware_repository", "firmware_sha", "builder_sha", "request_id", "device", "variant", "validate_only", "clean", "verbose"}
 

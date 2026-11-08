@@ -14,34 +14,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          path: firmware
           persist-credentials: false
-      - name: Resolve approved builder default branch
-        id: builder
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          ref=$(gh api repos/NoobWRT/arcadyan-aw1000-builder --jq .default_branch)
-          sha=$(gh api "repos/NoobWRT/arcadyan-aw1000-builder/commits/$ref" --jq .sha)
-          [[ "$sha" =~ ^[0-9a-f]{40}$ ]]
-          echo "sha=$sha" >> "$GITHUB_OUTPUT"
-      - uses: actions/checkout@v4
-        with:
-          repository: NoobWRT/arcadyan-aw1000-builder
-          ref: ${{ steps.builder.outputs.sha }}
-          path: builder
-          persist-credentials: false
-      - name: Run offline orchestration tests
-        run: python3 -m unittest discover -s firmware/tests -p 'test_dispatch*.py' -v
-      - name: Validate every definition without executing hooks
-        run: |
-          python3 - <<'PY'
-          from pathlib import Path
-          import subprocess
-          manifests = sorted(Path('firmware/firmware/devices').glob('*/variants/*/firmware.json'))
-          if not manifests:
-              raise ValueError('no firmware definitions')
-          for manifest in manifests:
-              device, variant = manifest.parts[-4], manifest.parts[-2]
-              subprocess.run(['bash', 'builder/scripts/build-firmware.sh', '--firmware-dir', str(Path('firmware').resolve()), '--device', device, '--variant', variant, '--validate-only'], check=True)
-          PY
+      - name: Run offline protocol and migration parity tests
+        run: python3 -m unittest discover -s tests -v
+      - name: Validate all public definitions without private builder access or hooks
+        run: python3 scripts/validate_firmware.py .

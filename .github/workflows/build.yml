@@ -82,7 +82,11 @@ jobs:
           if ! [[ "$RELEASE_TAG" =~ ^v[0-9]+[.][0-9]+[.][0-9]+(-[a-zA-Z0-9.-]+)?$ ]]; then
             echo 'release_tag must look like v1.2.3 or v1.2.3-rc.1' >&2; exit 1
           fi
+          if gh api "repos/$GH_REPO/git/ref/tags/$RELEASE_TAG" > /dev/null 2>&1; then
+            echo "Refusing existing release tag: $RELEASE_TAG" >&2; exit 1
+          fi
           notes=(--notes "Verified external build; provenance and checksums attached.")
           if [ -f verified-result/metadata/release.md ]; then notes=(--notes-file verified-result/metadata/release.md); fi
           tar -czf firmware-bundle.tar.gz -C verified-result .
-          gh release create "$RELEASE_TAG" --draft --target "$GITHUB_SHA" --title "NoobWRT $RELEASE_TAG" "${notes[@]}" firmware-bundle.tar.gz verified-result/images/* verified-result/SHA256SUMS verified-result/result.json
+          gh api --method POST "repos/$GH_REPO/git/refs" -f "ref=refs/tags/$RELEASE_TAG" -f "sha=$GITHUB_SHA" > /dev/null
+          gh release create "$RELEASE_TAG" --draft --verify-tag --target "$GITHUB_SHA" --title "NoobWRT $RELEASE_TAG" "${notes[@]}" firmware-bundle.tar.gz verified-result/images/* verified-result/SHA256SUMS verified-result/result.json
