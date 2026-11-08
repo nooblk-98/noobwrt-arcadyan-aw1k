@@ -98,6 +98,30 @@ class ProtocolTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 protocol.package_result(root / "request.json", root / "bad-result", output, 123)
 
+    def test_profile_declared_nonstandard_image_format(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            output = root / "output"
+            output.mkdir()
+            r = request(validate_only=False)
+            (root / "request.json").write_text(json.dumps(r))
+            (output / "router.trx").write_bytes(b"firmware")
+            (output / "unselected.bin").write_bytes(b"not-selected")
+            metadata = dict(firmware_commit=r["firmware_sha"], builder_commit=r["builder_sha"], device=r["device"], variant=r["variant"], images=[dict(name="router.trx", sha256=hashlib.sha256(b"firmware").hexdigest())])
+            (output / "build.json").write_text(json.dumps(metadata))
+            protocol.package_result(root / "request.json", root / "result", output, 123)
+            self.assertEqual([p.name for p in (root / "result/images").iterdir()], ["router.trx"])
+
+    def test_nested_checksum_file_is_not_exempt(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / 'request.json').write_text(json.dumps(request()))
+            protocol.package_result(root / 'request.json', root / 'result', root, 123)
+            (root / 'result/metadata').mkdir()
+            (root / 'result/metadata/SHA256SUMS').write_text('unlisted')
+            with self.assertRaises(ValueError):
+                protocol.verify_result(root / 'result', request())
+
     def test_zip_roundtrip(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)

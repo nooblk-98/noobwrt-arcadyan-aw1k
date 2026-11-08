@@ -83,7 +83,7 @@ def checksum_files(root):
     for p in sorted(root.rglob("*")):
         if p.is_symlink():
             raise ValueError("symlink in result")
-        if p.is_file() and p.name != "SHA256SUMS":
+        if p.is_file() and p.relative_to(root).as_posix() != "SHA256SUMS":
             result[p.relative_to(root).as_posix()] = hashlib.sha256(p.read_bytes()).hexdigest()
     return result
 
@@ -138,22 +138,28 @@ def package_result(request_path, destination, output, builder_run_id):
     images = root / "images"
     if not request["validate_only"]:
         images.mkdir()
-        allowed = {".bin", ".ubi", ".itb", ".img", ".gz"}
-        found = []
-        for p in sorted(Path(output).rglob("*")):
-            if p.is_symlink():
-                raise ValueError("symlink in build output")
-            if p.is_file() and p.suffix in allowed:
-                found.append(p)
-                if (images / p.name).exists():
-                    raise ValueError("duplicate image name")
-                shutil.copyfile(p, images / p.name)
-        if not found:
+        if any(p.is_symlink() for p in Path(output).rglob("*")):
+            raise ValueError("symlink in build output")
+        manifests = list(Path(output).rglob("build.json"))
+        if len(manifests) != 1:
+            raise ValueError("missing or ambiguous engine build metadata")
+        engine = json.loads(manifests[0].read_text())
+        declared_images = engine.get("images", [])
+        if not declared_images:
             raise ValueError("build completed without firmware images")
+        for item in declared_images:
+            name = item.get("name", "")
+            safe_relative(name)
+            if PurePosixPath(name).name != name:
+                raise ValueError("engine image must have a plain filename")
+            p = manifests[0].parent / name
+            if not p.is_file() or p.is_symlink() or (images / name).exists():
+                raise ValueError("missing, symlinked or duplicate engine image")
+            shutil.copyfile(p, images / name)
         metadata = root / "metadata"
         metadata.mkdir()
         for p in sorted(Path(output).rglob("*")):
-            if p.is_file() and p.name in {"build.json", "release.md", "config", "sources.lock.json", "profiles.json", "config.buildinfo", "feeds.buildinfo", "version.buildinfo"}:
+            if p.is_file() and (p.name in {"build.json", "release.md", "config", "sources.lock.json", "profiles.json", "config.buildinfo", "feeds.buildinfo", "version.buildinfo"} or p.suffix == ".manifest"):
                 if (metadata / p.name).exists():
                     raise ValueError("ambiguous build metadata")
                 shutil.copyfile(p, metadata / p.name)

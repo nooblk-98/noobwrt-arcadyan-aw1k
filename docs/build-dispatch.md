@@ -2,13 +2,13 @@
 
 ## Ownership
 
-This repository owns firmware definitions, overlays, packages, source pins and
-AW1000 hooks. NoobWRT/arcadyan-aw1000-builder owns the build engine and its
+The firmware repository, nooblk-98/noobwrt-arcadyan-aw1k, owns firmware
+definitions, overlays, packages, source pins and AW1000 hooks. NoobWRT/arcadyan-aw1000-builder owns the build engine and its
 self-hosted runner. Generated images are Release assets, not tracked source.
 
 ## Run a build
 
-On this repository's main branch open **Actions → Build Firmware → Run workflow**.
+On the firmware repository's main branch open **Actions → Build Firmware → Run workflow**.
 Choose device arcadyan-aw1000 and variant passwall2. Start with validate_only=true:
 this proves request, reviewed-commit validation, result upload/download, provenance
 and checksums without compiling or using the persistent runner.
@@ -68,15 +68,17 @@ signature or proof that arbitrary firmware is safe to flash.
 ## Persistent state and phone support
 
 External builds use noobwrt-ext-src-<hash> and noobwrt-ext-ccache-<hash> volumes.
-The hash includes builder SHA, device, variant and the definition tree, preventing
+The hash includes builder SHA, firmware SHA, device, variant and the definition tree, preventing
 cross-router/configuration contamination. Legacy volumes are untouched. Builds
 are capped at four compiler jobs to protect the shared host. Volume garbage
 collection is a manual maintenance task: inspect usage; never globally prune.
 
 Phone driver, daemon and LuCI app come from the feed. There is no copied RJ11
 submodule in the external path. The device-owned hook currently still needs the
-private stock SLIC tables; for AW1000 only the runner mounts
-/home/lahiru/aw1000-rj11/private read-only at /private. Source tables and raw build
+private stock SLIC tables. The builder repository variable FIRMWARE_PRIVATE_DIR
+selects an optional maintainer-controlled directory mounted read-only at /private;
+the generic launcher does not interpret its contents. The current runner uses
+/home/lahiru/aw1000-rj11/private for AW1000 builds. Source tables and raw build
 trees are never uploaded; the generated runtime SLIC patch is inside the firmware
 image when enabled. Only an explicit image/metadata allowlist is packaged.
 
