@@ -3,8 +3,9 @@
 ## Run and find the files
 
 On firmware main, open **Actions → Build Firmware → Run workflow**. Select the
-device and variant, and enter a new **build_tag** (lowercase letters/digits,
-hyphens/underscores; 1–80 characters). Start with validate_only=true and a
+device and variant, and enter a new **build_tag** (letters/digits, dots,
+hyphens/underscores; start with a letter or digit; 1–80 characters, e.g.
+v1.2.3, 25.12.5-rc1 or Release-AW1K_1.0). Start with validate_only=true and a
 separate unused validation tag. This is a manually requested transport check,
 not a public-repository test workflow. Full compilation uses validate_only=false.
 
@@ -123,6 +124,11 @@ builder head SHA and request creation time, waits for success, and reads jobs
 from THAT run's exact run_attempt via GitHub Actions API. It requires exactly one
 successful receipt job with matching run ID/head SHA and full canonical request
 hash. It rejects missing/ambiguous/malformed/wrong-request/failed receipts.
+The exact ASCII job-name byte length is checked immediately after reserving the
+Drive folder ID and BEFORE writing/uploading any files. An unusually long folder
+ID that exceeds 255 bytes for the complete name fails closed and can leave only
+an empty reserved folder (Drive generates the ID at folder creation); it never
+uploads pending/payload/completion files. Never reuse that reserved tag.
 Job metadata carries only a bounded completion attestation, not firmware/logs or
 an Actions artifact. No broad Drive credential is added to the caller.
 

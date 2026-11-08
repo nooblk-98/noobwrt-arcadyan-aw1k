@@ -28,7 +28,7 @@ on:
         type: boolean
         default: false
       build_tag:
-        description: Unique unused Drive folder tag (lowercase letters, digits, hyphens, underscores; max 80)
+        description: Unique unused Drive folder tag (letters, digits, dots, hyphens, underscores; start alphanumeric; max 80)
         type: string
         required: true
 permissions:

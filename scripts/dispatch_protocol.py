@@ -15,6 +15,7 @@ BUILDER_REPO = "NoobWRT/noobwrt-builder"
 WORKFLOW = "external-build.yml"
 SHA = re.compile(r"^[0-9a-f]{40}$")
 ID = re.compile(r"^[a-z0-9][a-z0-9_-]{0,79}$")
+TAG = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]{0,79}$")
 REQUEST = re.compile(r"^[a-z0-9][a-z0-9-]{0,95}$")
 KEYS = {"schema_version", "firmware_repository", "firmware_sha", "builder_sha", "request_id", "device", "variant", "validate_only", "clean", "verbose", "build_tag", "drive_root_id"}
 
@@ -29,9 +30,11 @@ def validate_request(value):
     for key in ("firmware_sha", "builder_sha"):
         if not isinstance(value[key], str) or not SHA.fullmatch(value[key]):
             raise ValueError("invalid " + key)
-    for key in ("device", "variant", "build_tag"):
+    for key in ("device", "variant"):
         if not isinstance(value[key], str) or not ID.fullmatch(value[key]):
             raise ValueError("invalid " + key)
+    if not isinstance(value["build_tag"], str) or not TAG.fullmatch(value["build_tag"]):
+        raise ValueError("invalid build tag")
     if not isinstance(value["request_id"], str) or not REQUEST.fullmatch(value["request_id"]):
         raise ValueError("invalid request ID")
     if not isinstance(value["drive_root_id"], str) or not re.fullmatch(r"[A-Za-z0-9_-]{10,128}", value["drive_root_id"]):
