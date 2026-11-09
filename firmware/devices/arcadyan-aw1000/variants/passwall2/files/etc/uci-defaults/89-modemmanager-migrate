@@ -99,6 +99,12 @@ case "$(uci -q get noobwrt.toolbar_status.url)" in
 		uci commit noobwrt
 		;;
 esac
+case "$(uci -q get noobwrt.toolbar_sms.url)" in
+	"/cgi-bin/luci/admin/modem/luci-app-sms-tool-js")
+		uci set noobwrt.toolbar_sms.url='/cgi-bin/luci/admin/modem/5gmodem/readsms'
+		uci commit noobwrt
+		;;
+esac
 case "$(uci -q get noobwrt.toolbar_modem.url)" in
 	"/cgi-bin/luci/admin/modem/qmodem"|"/cgi-bin/luci/admin/modem/bandlock"|"/cgi-bin/luci/admin/modem/modemmanager"|"/cgi-bin/luci/admin/modem/5gmodem")
 		uci set noobwrt.toolbar_modem.url='/cgi-bin/luci/admin/modem/5gmodem'

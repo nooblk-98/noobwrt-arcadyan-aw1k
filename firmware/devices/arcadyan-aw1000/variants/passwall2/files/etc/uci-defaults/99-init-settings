@@ -56,29 +56,6 @@ uci -q get firewall.@zone[1].network | tr ' ' '\n' | grep -qx openvpn || uci add
 uci commit firewall
 /etc/init.d/firewall restart
 
-#-----------------------------------------------------------------------------
-# set auto /dev/ttyusb
-# Wait for the Quectel modem to finish enumerating its AT serial port.
-# On a cold flash the modem attaches ttyUSB0..3 around ~24s after boot, but
-# uci-defaults run from S10boot much earlier — without this wait set_tty comes
-# back empty and the SMS tool gets a bad port (works only after reboot).
-i=0
-while [ ! -e /dev/ttyUSB3 ] && [ "$i" -lt 45 ]; do
-	sleep 1
-	i=$((i + 1))
-done
-set_tty=$(ls /dev/ttyUSB* 2>/dev/null | sort -V | tail -n 1)
-
-# sms messages
-uci set sms_tool_js.@sms_tool_js[0].readport=$set_tty
-uci set sms_tool_js.@sms_tool_js[0].pnumber='6'
-uci set sms_tool_js.@sms_tool_js[0].sendport=$set_tty
-uci set sms_tool_js.@sms_tool_js[0].ussdport=$set_tty
-uci set sms_tool_js.@sms_tool_js[0].atport=$set_tty
-uci set sms_tool_js.@sms_tool_js[0].lednotify='1'
-uci set sms_tool_js.@sms_tool_js[0].smsled='green:phone'
-uci commit sms_tool_js
-
 # Remove the old QModem status widget if an upgrade left it behind.
 rm -f /www/luci-static/resources/view/status/include/11_modem.js
 
