@@ -57,6 +57,25 @@ uci set network.mmwan.init_epsbearer='default'
 uci set network.mmwan.disabled='0'
 uci commit network
 
+# The carrier/APN rejects an IPv6 PDP; QMI returns CallFailed for IPv6.
+# Use IPv4 and keep the established APN unless the user picked another one.
+if [ "$(uci -q get network.mmwan.iptype)" != "ipv4" ]; then
+	uci set network.mmwan.iptype='ipv4'
+	uci commit network
+fi
+case "$(uci -q get network.mmwan.apn)" in
+	''|'www.wap.airtel.lk')
+		uci set network.mmwan.apn='internet'
+		uci commit network
+		;;
+esac
+
+# Do not let 5gmodem auto-replace the pinned APN for this interface.
+for _5gm in $(uci -q show 5gmodem 2>/dev/null | sed -n "s/^5gmodem\.\(m_[^.=]*\)\.network='mmwan'$/\1/p"); do
+	uci set "5gmodem.$_5gm.apn_mode=manual"
+done
+uci -q commit 5gmodem 2>/dev/null
+
 # Configs from the removed modemdata / SMS-tool / graphical UI stack.
 rm -f /etc/config/modemdata /etc/config/defmodems /etc/config/sms_tool_js \
 	/etc/config/mm_bandlock /etc/config/modemmanager
