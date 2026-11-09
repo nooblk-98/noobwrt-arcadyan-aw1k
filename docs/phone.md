@@ -12,7 +12,8 @@ The AW1000 RJ11 phone port works on NoobWRT with [openwrt-aw1000-phone](https://
 - The phone LED follows the line: ready, ringing and off hook
 - Call history with search, filters, CSV export and optional auto delete
 - LuCI pages for status, settings and a line test
-- SIP calling through QModem voice (experimental, off by default). From release `v2026-10-30-2` the QModem voice packages are included; turn it on in LuCI under `Modem` then `QModem` then `SIP Service`. See [SIP calling](https://github.com/Perz3us/openwrt-aw1000-phone#sip-calling-experimental)
+- SIP calling is not included in ModemManager images. The phone port keeps
+  working through the modem's built-in VoLTE call control.
 
 ## Requirements
 
@@ -57,13 +58,17 @@ The modem audio interface must be in **slave mode**. From release `v2026-10-30` 
 If the phone does not ring, or LuCI shows **"Modem audio not set to slave mode"**, set it by hand:
 
 ```sh
-ubus call at-daemon sendat '{"at_port":"/dev/ttyUSB2","at_cmd":"AT+QDAI=x,1,0,4,0,0,1,1","timeout":3}'
-ubus call at-daemon sendat '{"at_port":"/dev/ttyUSB2","at_cmd":"AT+CFUN=1,1","timeout":3}'
+mmcli -m any --command='AT+QDAI=x,1,0,4,0,0,1,1'
+mmcli -m any --command='AT+CFUN=1,1'
 ```
 
 The second command restarts the modem. The modem remembers the setting after that.
 
 To go back to the factory setting, run `AT+QDAI=x,0,0,4,0,0,1,1` the same way, then restart the modem again with `AT+CFUN=1,1`.
+
+ModemManager must allow AT commands over D-Bus for these commands; NoobWRT builds
+it with that option enabled. If `mmcli --command` is unavailable, the phone
+service still talks to the modem directly on its AT port.
 
 !!! tip "Older releases"
     On `v2026-10-24` and older images the phone service may not set slave mode by itself. Run the commands above once, or upgrade to the latest release.

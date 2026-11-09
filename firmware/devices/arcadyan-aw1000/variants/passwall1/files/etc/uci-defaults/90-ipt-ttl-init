@@ -18,13 +18,11 @@ chain mangle_postrouting_ttl64 {
 chain mangle_prerouting_hoplimit64 {
   type filter hook prerouting priority 300; policy accept;
   iifname "wwan0" counter ip6 hoplimit set 64
-  iifname "wwan0_1" counter ip6 hoplimit set 64
 }
 
 chain mangle_postrouting_hoplimit64 {
   type filter hook postrouting priority 300; policy accept;
   oifname "wwan0" counter ip6 hoplimit set 64
-  oifname "wwan0_1" counter ip6 hoplimit set 64
 }
 
 EOF
@@ -33,9 +31,7 @@ sleep 1
 cat <<EOF > /root/ttl2
 nft add rule inet mangle_prerouting ip ttl set 64
 nft add rule inet mangle_postrouting ip ttl set 64
-nft add rule inet mangle_prerouting iifname "wwan0_1" ip6 hoplimit set 64
 nft add rule inet mangle_prerouting iifname "wwan0" ip6 hoplimit set 64
-nft add rule inet mangle_postrouting oifname "wwan0_1" ip6 hoplimit set 64
 nft add rule inet mangle_postrouting oifname "wwan0" ip6 hoplimit set 64
 
 EOF

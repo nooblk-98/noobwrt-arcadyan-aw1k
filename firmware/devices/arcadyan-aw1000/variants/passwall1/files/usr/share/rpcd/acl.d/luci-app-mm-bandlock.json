@@ -1,0 +1,17 @@
+{
+	"luci-app-mm-bandlock": {
+		"description": "Grant access to the ModemManager band lock helper",
+		"read": {
+			"file": {
+				"/usr/bin/mm-bandlock": [ "exec" ]
+			},
+			"uci": [ "mm_bandlock" ]
+		},
+		"write": {
+			"file": {
+				"/usr/bin/mm-bandlock": [ "exec" ]
+			},
+			"uci": [ "mm_bandlock" ]
+		}
+	}
+}

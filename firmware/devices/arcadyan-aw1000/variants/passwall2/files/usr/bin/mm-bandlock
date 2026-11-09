@@ -1,0 +1,234 @@
+#!/bin/sh
+#=================================================
+# Copyright (c) 2026 Lahiru S Liyanage (NoobLK) <liyanagelsofficial@gmail.com>
+# GitHub: https://github.com/nooblk-98/noobwrt-arcadyan-aw1k
+# Telegram: @itsme_nooblk
+# License: All rights reserved
+#
+# ModemManager band lock helper for the Arcadyan AW1000 / Quectel RG500Q-EA.
+#=================================================
+
+set -u
+
+CFG="mm_bandlock"
+TAG="mm-bandlock"
+
+log() {
+	logger -t "$TAG" "$*" 2>/dev/null
+	printf '%s\n' "$*" >&2
+}
+
+usage() {
+	cat <<'EOF'
+Usage: mm-bandlock <command> [args]
+
+Commands:
+  status                 Show modem state and band settings
+  apply [--wait]         Apply the saved band lists to the modem
+  save LTE NR            Save space-separated LTE and NR band lists
+  lock LTE NR            Apply band lists now without saving
+  unlock                 Disable the boot lock and restore all supported bands
+  enable | disable       Enable or disable applying the saved lock at boot
+  list                   Show the bands supported by the modem
+EOF
+}
+
+mm_index() {
+	mmcli -L 2>/dev/null | sed -n 's|.*/Modem/\([0-9][0-9]*\).*|\1|p' | head -n 1
+}
+
+wait_modem() {
+	_tries=${1:-120}
+	_i=0
+	while [ "$_i" -lt "$_tries" ]; do
+		_idx=$(mm_index)
+		if [ -n "$_idx" ]; then
+			printf '%s\n' "$_idx"
+			return 0
+		fi
+		sleep 1
+		_i=$((_i + 1))
+	done
+	return 1
+}
+
+json_get() {
+	mmcli -m "$1" -J 2>/dev/null | jsonfilter -e "$2" 2>/dev/null
+}
+
+kv_get() {
+	mmcli -m "$1" --output-keyvalue 2>/dev/null |
+		sed -n "s/^$2\.value\[[0-9][0-9]*\] *: *//p" | paste -sd'|' -
+}
+
+kv_get_one() {
+	mmcli -m "$1" --output-keyvalue 2>/dev/null |
+		sed -n "s/^$2 *: *//p" | head -n 1
+}
+
+json_get_one() {
+	_value=$(json_get "$1" "$2")
+	[ -n "$_value" ] || _value=$(kv_get_one "$1" "$3")
+	printf '%s\n' "$_value"
+}
+
+current_bands() {
+	_json=$(json_get "$1" '@.modem.generic["current-bands"][*]' | paste -sd'|' -)
+	[ -n "$_json" ] || _json=$(kv_get "$1" "modem.generic.current-bands")
+	printf '%s\n' "$_json"
+}
+
+supported_bands() {
+	_json=$(json_get "$1" '@.modem.generic["supported-bands"][*]' | paste -sd'|' -)
+	[ -n "$_json" ] || _json=$(kv_get "$1" "modem.generic.supported-bands")
+	printf '%s\n' "$_json"
+}
+
+validate_bands() {
+	_kind=$1
+	shift
+	for _b in "$@"; do
+		case "$_b" in
+			''|*[!0-9]*) log "invalid $_kind band: $_b"; return 1 ;;
+		esac
+		if [ "$_b" -lt 1 ] || [ "$_b" -gt 999 ]; then
+			log "invalid $_kind band: $_b"
+			return 1
+		fi
+	done
+	return 0
+}
+
+build_bands() {
+	_lte=$1
+	_nr=$2
+	_out=""
+	for _b in $_lte; do
+		_out="${_out}${_out:+|}eutran-$_b"
+	done
+	for _b in $_nr; do
+		_out="${_out}${_out:+|}ngran-$_b"
+	done
+	[ -n "$_out" ] || return 1
+	printf '%s\n' "$_out"
+}
+
+set_bands() {
+	_lte=$1
+	_nr=$2
+	_tries=${3:-120}
+
+	validate_bands lte $_lte || return 1
+	validate_bands nr $_nr || return 1
+	_bands=$(build_bands "$_lte" "$_nr") || {
+		log "no bands selected"
+		return 1
+	}
+	_idx=$(wait_modem "$_tries") || {
+		log "no ModemManager modem found"
+		return 1
+	}
+	log "setting modem $_idx bands: $_bands"
+	if ! mmcli -m "$_idx" --timeout 120 --set-current-bands="$_bands" >/dev/null 2>&1; then
+		log "ModemManager rejected the band list"
+		return 1
+	fi
+	log "band lock applied"
+	return 0
+}
+
+cmd_status() {
+	_idx=$(mm_index)
+	[ -n "$_idx" ] || {
+		echo "No ModemManager modem found"
+		return 1
+	}
+	echo "Modem: $_idx"
+	echo "State: $(json_get_one "$_idx" '@.modem.generic.state' 'modem.generic.state')"
+	echo "Power: $(json_get_one "$_idx" '@.modem.generic["power-state"]' 'modem.generic.power-state')"
+	_tech=$(json_get "$_idx" '@.modem.generic["access-technologies"][*]' | paste -sd'|' -)
+	[ -n "$_tech" ] || _tech=$(kv_get "$_idx" "modem.generic.access-technologies")
+	echo "Access tech: $_tech"
+	echo "Operator: $(json_get_one "$_idx" '@.modem["3gpp"]["operator-name"]' 'modem.3gpp.operator-name')"
+	echo "Signal: $(json_get_one "$_idx" '@.modem.generic["signal-quality"].value' 'modem.generic.signal-quality.value')%"
+	echo "Current bands: $(current_bands "$_idx")"
+	echo "Supported bands: $(supported_bands "$_idx")"
+	echo "Configured LTE: $(uci -q get "$CFG.main.lte")"
+	echo "Configured NR: $(uci -q get "$CFG.main.nr")"
+	echo "Boot apply: $(uci -q get "$CFG.main.enabled")"
+}
+
+cmd_apply() {
+	_wait=30
+	[ "${1:-}" = "--wait" ] && _wait=120
+	_lte=$(uci -q get "$CFG.main.lte")
+	_nr=$(uci -q get "$CFG.main.nr")
+	set_bands "$_lte" "$_nr" "$_wait"
+}
+
+cmd_save() {
+	if [ "$#" -ne 2 ]; then
+		usage
+		return 1
+	fi
+	validate_bands lte $1 || return 1
+	validate_bands nr $2 || return 1
+	uci -q get "$CFG.main" >/dev/null 2>&1 || uci set "$CFG.main=main"
+	uci set "$CFG.main.lte=$1"
+	uci set "$CFG.main.nr=$2"
+	uci commit "$CFG"
+	log "saved LTE='$1' NR='$2'"
+}
+
+cmd_lock() {
+	if [ "$#" -ne 2 ]; then
+		usage
+		return 1
+	fi
+	set_bands "$1" "$2" 120
+}
+
+cmd_unlock() {
+	uci set "$CFG.main.enabled=0"
+	uci commit "$CFG"
+	_idx=$(wait_modem 120) || {
+		log "no ModemManager modem found"
+		return 1
+	}
+	_bands=$(supported_bands "$_idx")
+	[ -n "$_bands" ] || _bands="any"
+	if mmcli -m "$_idx" --timeout 120 --set-current-bands="$_bands" >/dev/null 2>&1; then
+		log "band lock removed"
+	else
+		log "ModemManager rejected the band reset"
+		return 1
+	fi
+}
+
+cmd_enable() {
+	uci -q get "$CFG.main" >/dev/null 2>&1 || uci set "$CFG.main=main"
+	uci set "$CFG.main.enabled=$1"
+	uci commit "$CFG"
+	log "boot band lock: $1"
+}
+
+cmd_list() {
+	_idx=$(wait_modem 30) || {
+		echo "No ModemManager modem found"
+		return 1
+	}
+	supported_bands "$_idx"
+}
+
+case "${1:-}" in
+	status) cmd_status ;;
+	apply) shift; cmd_apply "${1:-}" ;;
+	save) shift; cmd_save "$@" ;;
+	lock) shift; cmd_lock "$@" ;;
+	unlock) cmd_unlock ;;
+	enable) cmd_enable 1 ;;
+	disable) cmd_enable 0 ;;
+	list) cmd_list ;;
+	*) usage; exit 1 ;;
+esac
+exit $?

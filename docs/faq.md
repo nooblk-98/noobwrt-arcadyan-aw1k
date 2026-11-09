@@ -25,14 +25,28 @@ Yes. Use the U-Boot recovery page to upload a stock or factory image.
 
 ## How do I lock specific LTE or 5G bands?
 
-Go to `Modem` then `qModem` then `Advanced Modem Settings` then `Lock Band`.
+Go to `Modem` then `Band Lock` in LuCI, select the LTE and 5G NR bands, enable
+`Apply at boot` if the lock should survive reboots, then click `Apply`.
+
+The same settings are available from SSH:
+
+```sh
+uci set mm_bandlock.main.enabled='1'
+uci set mm_bandlock.main.lte='1 3 40'
+uci set mm_bandlock.main.nr='78'
+uci commit mm_bandlock
+mm-bandlock apply
+```
+
+`mm-bandlock status` shows the current and supported bands, and
+`mm-bandlock unlock` removes the lock.
 
 ## How do I lock to a specific cell tower?
 
-1. Go to `Modem` then `qModem` then `Advanced Modem Settings` then `Neighbor Cell`.
-2. Click `Run Scan` to discover nearby towers.
-3. Select the preferred tower and enter PCI and ARFCN values.
-4. Click `Submit`.
+ModemManager does not expose per-cell PCI/ARFCN locking. Lock the LTE or 5G NR
+bands instead (see above); the modem then chooses the best cell inside those
+bands. Per-cell locking was a QModem feature and is not available after the
+QModem to ModemManager migration.
 
 ## How do I change the UI theme?
 

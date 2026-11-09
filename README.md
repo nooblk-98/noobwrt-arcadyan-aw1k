@@ -51,7 +51,7 @@ RJ11 driver, daemon and LuCI application come from the package feed. Device-spec
 
 - **Up-to-date OpenWrt base** with the latest upstream packages, security patches and bug fixes
 - **PassWall 1 / PassWall 2** with a tested, bundled Xray-core
-- **Cellular modem management** via QModem, modem data, SMS tool and TTL tools
+- **Cellular modem management** via ModemManager, band lock, modem data, SMS tool and TTL tools
 - **Networking extras:** SQM, mwan3, banIP, AdGuard Home, SmartDNS, HomeProxy
 - **VPN & remote access:** Tailscale, ZeroTier, OpenVPN, Cloudflared, FRP client
 - **Monitoring:** network status, bandwidth monitoring (nlbwmon, wrtbwmon), statistics

@@ -1,0 +1,13 @@
+{
+	"admin/modem/bandlock": {
+		"title": "Band Lock",
+		"order": 20,
+		"action": {
+			"type": "view",
+			"path": "mm/bandlock"
+		},
+		"depends": {
+			"acl": [ "luci-app-mm-bandlock" ]
+		}
+	}
+}
