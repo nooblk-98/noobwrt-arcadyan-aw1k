@@ -31,8 +31,6 @@ Each image includes only one PassWall version: the PassWall 1 image includes `lu
 | `modemmanager` | yes |
 | `luci-proto-modemmanager` | yes |
 | `luci-app-5gmodem` | yes |
-| `luci-app-modemband` | yes |
-| `modemband` | yes |
 | `qmi-utils` | yes |
 | `uqmi` | yes |
 | `umbim` | yes |

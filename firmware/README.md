@@ -15,8 +15,7 @@ its vendor QMI driver and its TTL/voice packages are not selected. The
 `mm-uplink` init script waits for the USB modem and brings the `mmwan` netifd
 interface up once after ModemManager starts; `5gmodem` sessionwatch handles
 ongoing reconnect. Modem metrics, carrier aggregation,
-SMS/USSD/AT and band control are provided by `luci-app-5gmodem`; the dedicated
-`luci-app-modemband` page is also included. `kmod-usb-acm` and
+SMS/USSD/AT and band control are provided by `luci-app-5gmodem`. `kmod-usb-acm` and
 `kmod-usb-serial-qualcomm` are selected to satisfy the 5G Modem package modem-port
 support.
 

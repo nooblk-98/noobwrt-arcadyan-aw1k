@@ -78,13 +78,7 @@ uci -q commit 5gmodem 2>/dev/null
 
 # Configs from the removed modemdata / SMS-tool / graphical UI stack.
 rm -f /etc/config/modemdata /etc/config/defmodems /etc/config/sms_tool_js \
-	/etc/config/mm_bandlock /etc/config/modemmanager
-
-# Keep modemband but point it at the ModemManager uplink.
-if uci -q get modemband.@modemband[0] >/dev/null 2>&1; then
-	uci set modemband.@modemband[0].iface='mmwan'
-	uci commit modemband
-fi
+	/etc/config/modemband /etc/config/mm_bandlock /etc/config/modemmanager
 
 # 5gmodem auto-detects the modem, but pin the uplink for consistency.
 if uci -q get 5gmodem.@5gmodem[0] >/dev/null 2>&1; then

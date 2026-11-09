@@ -27,9 +27,7 @@ Yes. Use the U-Boot recovery page to upload a stock or factory image.
 
 Use the modem GUI in LuCI:
 
-- `Modem` → `5G Modem` → `4G bands` / `5G bands`, or
-- `Modem` → `Preferred LTE/5G Bands`.
-
+Go to `Modem` → `5G Modem` → `4G bands` / `5G bands`.
 Select the bands and apply. The modem GUI also shows the current carrier
 aggregation and 5G NSA status.
 
