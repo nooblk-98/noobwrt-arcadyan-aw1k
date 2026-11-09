@@ -38,6 +38,16 @@ bands instead (see above); the modem then chooses the best cell inside those
 bands. Per-cell locking was a QModem feature and is not available after the
 QModem to ModemManager migration.
 
+## Does the modem support IPv6?
+
+Yes. The ModemManager uplink defaults to dual-stack (`ipv4v6`), and the router
+keeps its IPv6 stack, LAN ULA and firewall. Whether the WAN gets an IPv6 address
+depends on the carrier and APN. If the carrier rejects the IPv6 PDP, IPv4 still
+works and ModemManager logs a `QMI protocol error (14): 'CallFailed'` for the
+IPv6 part. Check `ifstatus mmwan` for `ipv6-address`/`ipv6-prefix`; if they stay
+empty, the SIM/APN is not providing IPv6 internet. Do not set `iptype=ipv4`
+unless you intentionally want to stop requesting IPv6.
+
 ## How do I change the UI theme?
 
 Go to `System` then `System` then `Language and Style` then `Design`.

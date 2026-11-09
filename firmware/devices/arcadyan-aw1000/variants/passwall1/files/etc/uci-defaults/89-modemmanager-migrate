@@ -57,12 +57,6 @@ uci set network.mmwan.init_epsbearer='default'
 uci set network.mmwan.disabled='0'
 uci commit network
 
-# The carrier/APN rejects an IPv6 PDP; QMI returns CallFailed for IPv6.
-# Use IPv4 and keep the established APN unless the user picked another one.
-if [ "$(uci -q get network.mmwan.iptype)" != "ipv4" ]; then
-	uci set network.mmwan.iptype='ipv4'
-	uci commit network
-fi
 case "$(uci -q get network.mmwan.apn)" in
 	''|'www.wap.airtel.lk')
 		uci set network.mmwan.apn='internet'
