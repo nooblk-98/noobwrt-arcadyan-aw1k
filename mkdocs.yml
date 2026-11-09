@@ -7,6 +7,7 @@ site_url: !ENV [MKDOCS_SITE_URL, http://127.0.0.1:8001/]
 nav:
   - Home: index.md
   - Releases: builds.md
+  - Build Delivery: build-dispatch.md
   - Installation: installation.md
   - Getting Started: getting-started.md
   - Phone (RJ11): phone.md

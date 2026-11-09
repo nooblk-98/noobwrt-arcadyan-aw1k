@@ -1,14 +1,40 @@
 # Firmware Releases
 
-Always download the latest firmware from:
+## Maintainer builds (current)
+
+New maintainer builds are delivered privately in Google Drive. This build path
+creates no GitHub Actions artifacts and no automatic GitHub releases.
+
+Start one from **Actions → Build Firmware** on `main`: choose the device and
+variant, and enter a new `build_tag`. To test the dispatch and delivery transport
+without compiling, run it once with `validate_only=true` and a separate unused
+tag. Files land unzipped at `ROOT/<variant>/<build_tag>/`:
+
+- `images/` — individual firmware images
+- `metadata/` — build details, profiles, package and source pins
+- `logs/` — build log
+- `SHA256SUMS`, `result.json`, `COMPLETE.json` — checksums and receipts
+
+Access stays private; links do not grant access. See
+[build dispatch and verification](build-dispatch.md) for the layout and
+verification steps.
+
+Image names come from the selected profile, for example
+`openwrt-qualcommax-ipq807x-arcadyan_aw1000-squashfs-sysupgrade.bin`.
+
+## Historical stable releases
+
+Published stable releases remain available:
 
 [NoobWRT Releases](https://github.com/nooblk-98/noobwrt-arcadyan-aw1k/releases/latest)
 
-Read the release notes before upgrading. Each release lists its build info, image variants and any known issues with workarounds.
+Read the release notes before upgrading. Each release lists its build info, image
+variants and any known issues with workarounds.
 
-## Firmware Images
+### Firmware Images
 
-Current releases ship two sysupgrade images. Both include RJ11 phone port support.
+Historical releases ship two sysupgrade images. Both include RJ11 phone port
+support.
 
 | Image | PassWall | Allow Insecure |
 |---|---|---|
