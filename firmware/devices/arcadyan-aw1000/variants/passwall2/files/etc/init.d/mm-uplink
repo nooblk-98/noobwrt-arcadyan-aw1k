@@ -33,12 +33,6 @@ start() {
 			fi
 		fi
 
-		# Apply the band lock before connecting, so ModemManager does not
-		# have to tear down an active bearer to change bands.
-		if [ "$(uci -q get mm_bandlock.main.enabled)" = "1" ]; then
-			/usr/bin/mm-bandlock apply --wait
-		fi
-
 		# The interface is autostarted before ModemManager starts at boot.
 		# Retry once the modem is managed so DHCP/netifd can attach.
 		_n=0

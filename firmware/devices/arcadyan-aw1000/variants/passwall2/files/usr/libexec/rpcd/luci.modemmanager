@@ -1,0 +1,396 @@
+#!/bin/sh
+. /usr/share/libubox/jshn.sh
+
+MMCLI="$(command -v mmcli 2>/dev/null)"
+
+mm_index() {
+	[ -z "$MMCLI" ] && { echo ""; return; }
+	$MMCLI -L 2>/dev/null | grep -oE '/Modem/[0-9]+' | grep -oE '[0-9]+' | head -n1
+}
+
+get_val() {
+	local raw="$1" key="$2"
+	echo "$raw" | awk -F':' -v k="$key" '
+	{
+		key=$1
+		val=$0
+		sub(/^[^:]*:/, "", val)
+		gsub(/^ +| +$/, "", key)
+		gsub(/^ +| +$/, "", val)
+		if (key == k) { print val; exit }
+	}'
+}
+
+list_band_values() {
+	local raw="$1" section="$2"
+	echo "$raw" | awk -F':' -v s="$section" '
+	{
+		key=$1
+		val=$0
+		sub(/^[^:]*:/, "", val)
+		gsub(/^ +| +$/, "", key)
+		gsub(/^ +| +$/, "", val)
+		if (key ~ ("^modem\\.generic\\." s "\\.value\\[[0-9]+\\]$"))
+		print val
+	}'
+}
+
+list_port_values() {
+	local raw="$1"
+	echo "$raw" | awk -F':' '
+	{
+		key=$1
+		val=$0
+		sub(/^[^:]*:/, "", val)
+		gsub(/^ +| +$/, "", key)
+		gsub(/^ +| +$/, "", val)
+		if (key ~ /^modem\.generic\.ports\.value\[[0-9]+\]$/)
+		print val
+	}'
+}
+
+add_json_strings_from_lines() {
+	local lines="$1" line
+	IFS='
+'
+	for line in $lines; do
+		[ -n "$line" ] && json_add_string "" "$line"
+	done
+	unset IFS
+}
+
+find_cell_iface() {
+	local iface
+	iface="$(uci show network 2>/dev/null | grep -E "\.proto='(modemmanager|qmi)'" | head -n1 | cut -d. -f2)"
+	[ -z "$iface" ] && iface="$(uci show network 2>/dev/null | grep -E '\.proto="(modemmanager|qmi)"' | head -n1 | cut -d. -f2)"
+	[ -z "$iface" ] && iface="wan"
+	echo "$iface"
+}
+
+cdc_wdm() {
+	ls /dev/cdc-wdm* 2>/dev/null | head -n1
+}
+
+wwan_if() {
+	local d
+	d="$(ls /sys/class/net 2>/dev/null | grep -E '^(wwan|qmi)' | head -n1)"
+	[ -n "$d" ] && echo "$d" || echo "wwan0"
+}
+
+switch_to_mm() {
+	local name="$1" wdm sysdev IDX
+	wdm="$(cdc_wdm)"; [ -z "$wdm" ] && wdm="/dev/cdc-wdm0"
+
+	/sbin/ifdown "$name" >/dev/null 2>&1 || true
+	killall -9 uqmi 2>/dev/null || true
+	/etc/init.d/modemmanager enable >/dev/null 2>&1 || true
+	/etc/init.d/modemmanager start >/dev/null 2>&1 || true
+	sleep 2
+
+	uci set "network.${name}.proto=modemmanager"
+	uci -q delete "network.${name}.raw_ip" 2>/dev/null || true
+
+	sysdev=""
+	if [ -n "$MMCLI" ]; then
+		IDX="$(mm_index)"
+		if [ -n "$IDX" ]; then
+			sysdev="$($MMCLI -m "$IDX" -K 2>/dev/null | awk -F: '/modem.generic.device/{gsub(/^ +| +$/, "", $2); print $2; exit}')"
+		fi
+	fi
+
+	if [ -n "$sysdev" ] && [ "$sysdev" != "--" ]; then
+		uci set "network.${name}.device=$sysdev"
+	else
+		uci set "network.${name}.device=$wdm"
+	fi
+
+	uci commit network
+	/sbin/ifup "$name" >/dev/null 2>&1 || true
+}
+
+switch_to_qmi() {
+	local name="$1" wdm wwan
+	wdm="$(cdc_wdm)"; [ -z "$wdm" ] && wdm="/dev/cdc-wdm0"
+	wwan="$(wwan_if)"
+
+	/sbin/ifdown "$name" >/dev/null 2>&1 || true
+	/etc/init.d/modemmanager stop >/dev/null 2>&1 || true
+	/etc/init.d/modemmanager disable >/dev/null 2>&1 || true
+	killall -9 ModemManager modemmanager 2>/dev/null || true
+
+	uci set "network.${name}.proto=qmi"
+	uci set "network.${name}.raw_ip=1"
+	uci set "network.${name}.device=$wdm"
+	uci commit network
+
+	uqmi -d "$wdm" --sync >/dev/null 2>&1 || true
+	uqmi -d "$wdm" --wda-set-data-format raw-ip >/dev/null 2>&1 || true
+	echo 1 > "/sys/class/net/${wwan}/qmi/raw_ip" 2>/dev/null || true
+
+	/sbin/ifup "$name" >/dev/null 2>&1 || true
+}
+
+resolve_brand() {
+	local spn="$1" code="$2"
+	local up_spn="$(echo "$spn" | tr 'a-z' 'A-Z')"
+	case "$up_spn" in
+		*VERY*) echo "Very Mobile" ; return ;;
+		*HO*|*HO.*) echo "ho. Mobile" ; return ;;
+		*KENA*) echo "Kena Mobile" ; return ;;
+		*ILIAD*) echo "Iliad" ; return ;;
+		*FASTWEB*) echo "Fastweb Mobile" ; return ;;
+		*COOP*) echo "CoopVoce" ; return ;;
+		*POSTE*) echo "PosteMobile" ; return ;;
+		*SPUSU*) echo "Spusu" ; return ;;
+		*LYCA*) echo "Lycamobile" ; return ;;
+	esac
+	case "$code" in
+		22288|22299) echo "Wind Tre" ;;
+		22201) echo "TIM" ;;
+		22210|22206) echo "Vodafone IT" ;;
+		22250) echo "Iliad" ;;
+		22253) echo "CoopVoce" ;;
+		22233) echo "PosteMobile" ;;
+		22208) echo "Fastweb Mobile" ;;
+		*) echo "${spn:-$code}" ;;
+	esac
+}
+
+case "$1" in
+list)
+echo '{
+"status":{},
+"bands_list":{"tech":"str"},
+"set_bands":{"bands":"str","tech":"str"},
+"reset_bands":{},
+"restart_modem":{},
+"restart_wan":{},
+"diag_usb":{},
+"diag_ports":{},
+"diag_mmcli":{}
+}'
+;;
+call)
+read INPUT
+case "$2" in
+status)
+json_init
+if [ -z "$MMCLI" ]; then
+	json_add_boolean installed 0
+	json_dump; exit 0
+fi
+
+IDX=$(mm_index)
+if [ -z "$IDX" ]; then
+	json_add_boolean installed 1
+	json_add_boolean modem_present 0
+	json_dump; exit 0
+fi
+
+RAW=$($MMCLI -m "$IDX" -K 2>/dev/null)
+
+json_add_boolean installed 1
+json_add_boolean modem_present 1
+json_add_string  modem_index "$IDX"
+json_add_string  manufacturer   "$(get_val "$RAW" 'modem.generic.manufacturer')"
+json_add_string  model          "$(get_val "$RAW" 'modem.generic.model')"
+json_add_string  revision       "$(get_val "$RAW" 'modem.generic.revision')"
+json_add_string  hw_revision    "$(get_val "$RAW" 'modem.generic.hardware-revision')"
+
+IMEI="$(get_val "$RAW" 'modem.3gpp.imei')"
+[ -z "$IMEI" ] || [ "$IMEI" = "--" ] && IMEI="$(get_val "$RAW" 'modem.generic.equipment-identifier')"
+json_add_string  imei           "$IMEI"
+
+NET_OP_NAME="$(get_val "$RAW" 'modem.3gpp.operator-name')"
+NET_OP_CODE="$(get_val "$RAW" 'modem.3gpp.operator-code')"
+
+json_add_string  operator_name  "$NET_OP_NAME"
+json_add_string  operator_code  "$NET_OP_CODE"
+json_add_string  reg_state      "$(get_val "$RAW" 'modem.3gpp.registration-state')"
+json_add_string  state          "$(get_val "$RAW" 'modem.generic.state')"
+json_add_string  state_reason   "$(get_val "$RAW" 'modem.generic.state-failed-reason')"
+json_add_string  power_state    "$(get_val "$RAW" 'modem.generic.power-state')"
+json_add_string  access_tech    "$(get_val "$RAW" 'modem.generic.access-technologies')"
+json_add_int     signal_quality "$(get_val "$RAW" 'modem.generic.signal-quality.value')"
+json_add_string  sim_path       "$(get_val "$RAW" 'modem.generic.sim')"
+json_add_string  primary_port   "$(get_val "$RAW" 'modem.generic.primary-port')"
+json_add_string  device         "$(get_val "$RAW" 'modem.generic.device')"
+
+PORTS="$(list_port_values "$RAW")"
+json_add_array ports
+add_json_strings_from_lines "$PORTS"
+json_close_array
+
+$MMCLI -m "$IDX" --signal-setup=10 >/dev/null 2>&1
+SIG=$($MMCLI -m "$IDX" --signal-get -K 2>/dev/null)
+if [ -n "$SIG" ]; then
+	json_add_object signal
+	json_add_string lte_rssi  "$(get_val "$SIG" 'modem.signal.lte.rssi')"
+	json_add_string lte_rsrp  "$(get_val "$SIG" 'modem.signal.lte.rsrp')"
+	json_add_string lte_rsrq  "$(get_val "$SIG" 'modem.signal.lte.rsrq')"
+	json_add_string lte_snr   "$(get_val "$SIG" 'modem.signal.lte.snr')"
+	json_add_string nr5g_rssi "$(get_val "$SIG" 'modem.signal.5g.rssi')"
+	json_add_string nr5g_rsrp "$(get_val "$SIG" 'modem.signal.5g.rsrp')"
+	json_add_string nr5g_rsrq "$(get_val "$SIG" 'modem.signal.5g.rsrq')"
+	json_add_string nr5g_snr  "$(get_val "$SIG" 'modem.signal.5g.snr')"
+	json_close_object
+fi
+
+LOC=$($MMCLI -m "$IDX" --location-get -K 2>/dev/null)
+if [ -n "$LOC" ]; then
+	json_add_object cell
+	json_add_string mcc "$(get_val "$LOC" 'modem.location.3gpp.mcc')"
+	json_add_string mnc "$(get_val "$LOC" 'modem.location.3gpp.mnc')"
+	json_add_string lac "$(get_val "$LOC" 'modem.location.3gpp.lac')"
+	json_add_string tac "$(get_val "$LOC" 'modem.location.3gpp.tac')"
+	json_add_string cid "$(get_val "$LOC" 'modem.location.3gpp.cell-id')"
+	json_close_object
+fi
+
+SIM_PATH="$(get_val "$RAW" 'modem.generic.sim')"
+SIM_BRAND=""
+if [ -n "$SIM_PATH" ] && [ "$SIM_PATH" != "--" ]; then
+	SIMRAW=$($MMCLI -i "$SIM_PATH" -K 2>/dev/null)
+	S_IMSI="$(get_val "$SIMRAW" 'sim.properties.imsi')"
+	S_ICCID="$(get_val "$SIMRAW" 'sim.properties.iccid')"
+	S_OP_NAME="$(get_val "$SIMRAW" 'sim.properties.operator-name')"
+	S_OP_CODE="$(get_val "$SIMRAW" 'sim.properties.operator-code')"
+	S_ACTIVE="$(get_val "$SIMRAW" 'sim.properties.active')"
+
+	SIM_BRAND="$(resolve_brand "$S_OP_NAME" "$S_OP_CODE")"
+
+	json_add_object sim
+	json_add_string imsi       "$S_IMSI"
+	json_add_string iccid      "$S_ICCID"
+	json_add_string op_name    "$S_OP_NAME"
+	json_add_string op_code    "$S_OP_CODE"
+	json_add_string brand      "$SIM_BRAND"
+	json_add_string active     "$S_ACTIVE"
+	json_close_object
+fi
+
+json_add_string display_operator "${SIM_BRAND:-$NET_OP_NAME}"
+
+CUR_BANDS="$(list_band_values "$RAW" "current-bands")"
+SUP_BANDS="$(list_band_values "$RAW" "supported-bands")"
+
+json_add_array current_bands
+add_json_strings_from_lines "$CUR_BANDS"
+json_close_array
+
+json_add_array supported_bands
+add_json_strings_from_lines "$SUP_BANDS"
+json_close_array
+
+json_dump
+;;
+bands_list)
+json_init
+IDX=$(mm_index)
+if [ -z "$IDX" ]; then json_add_boolean ok 0; json_dump; exit 0; fi
+RAW=$($MMCLI -m "$IDX" -K 2>/dev/null)
+json_add_boolean ok 1
+json_add_array current
+add_json_strings_from_lines "$(list_band_values "$RAW" "current-bands")"
+json_close_array
+json_add_array supported
+add_json_strings_from_lines "$(list_band_values "$RAW" "supported-bands")"
+json_close_array
+json_dump
+;;
+set_bands)
+json_load "$INPUT"
+json_get_var BANDS bands
+IDX=$(mm_index)
+json_init
+if [ -z "$IDX" ] || [ -z "$BANDS" ]; then
+	json_add_boolean ok 0
+	json_add_string error "no modem or empty bands"
+	json_dump; exit 0
+fi
+ERR=$($MMCLI -m "$IDX" --set-current-bands="$BANDS" --timeout=30 2>&1)
+RC=$?
+if [ $RC -eq 0 ]; then
+	json_add_boolean ok 1
+	json_add_string applied "$BANDS"
+else
+	json_add_boolean ok 0
+	json_add_string error "$ERR"
+fi
+json_dump
+;;
+reset_bands)
+IDX=$(mm_index)
+json_init
+if [ -z "$IDX" ]; then json_add_boolean ok 0; json_dump; exit 0; fi
+ERR=$($MMCLI -m "$IDX" --set-current-bands="any" --timeout=30 2>&1)
+RC=$?
+if [ $RC -eq 0 ]; then json_add_boolean ok 1
+else json_add_boolean ok 0; json_add_string error "$ERR"; fi
+json_dump
+;;
+restart_modem)
+IFACE="$(find_cell_iface)"
+PROTO="$(uci -q get network.${IFACE}.proto)"
+json_init
+case "$PROTO" in
+qmi)
+	switch_to_mm "$IFACE"
+	json_add_boolean ok 1
+	json_add_string from "qmi"
+	json_add_string to "modemmanager"
+	json_add_string interface "$IFACE"
+;;
+modemmanager)
+	switch_to_qmi "$IFACE"
+	json_add_boolean ok 1
+	json_add_string from "modemmanager"
+	json_add_string to "qmi"
+	json_add_string interface "$IFACE"
+;;
+*)
+	IDX=$(mm_index)
+	$MMCLI -m "$IDX" --disable >/dev/null 2>&1
+	sleep 1
+	$MMCLI -m "$IDX" --enable >/dev/null 2>&1
+	json_add_boolean ok 1
+	json_add_string from "${PROTO:-unknown}"
+	json_add_string to "mmcli-restart"
+	json_add_string interface "$IFACE"
+;;
+esac
+json_dump
+;;
+restart_wan)
+json_init
+ifup wan >/dev/null 2>&1 && json_add_boolean ok 1 || json_add_boolean ok 0
+json_dump
+;;
+diag_usb)
+json_init
+OUT=$(cat /sys/kernel/debug/usb/devices 2>/dev/null || echo "N/A")
+json_add_string output "$OUT"
+json_dump
+;;
+diag_ports)
+json_init
+OUT=$(ls /dev/ 2>/dev/null | grep -E '^(tty(USB|ACM)|cdc-wdm|wwan)' || echo "none")
+json_add_string output "$OUT"
+json_dump
+;;
+diag_mmcli)
+json_init
+IDX=$(mm_index)
+OUT="$($MMCLI -L 2>&1)
+---
+$($MMCLI -m ${IDX:-0} 2>&1)
+---
+$($MMCLI -m ${IDX:-0} --signal-get 2>&1)
+---
+$($MMCLI -m ${IDX:-0} --location-get 2>&1)"
+json_add_string output "$OUT"
+json_dump
+;;
+esac
+;;
+esac

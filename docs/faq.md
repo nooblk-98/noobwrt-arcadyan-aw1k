@@ -25,21 +25,13 @@ Yes. Use the U-Boot recovery page to upload a stock or factory image.
 
 ## How do I lock specific LTE or 5G bands?
 
-Go to `Modem` then `Band Lock` in LuCI, select the LTE and 5G NR bands, enable
-`Apply at boot` if the lock should survive reboots, then click `Apply`.
+Use the modem GUI in LuCI:
 
-The same settings are available from SSH:
+- `Modem` → `5G Modem` → `4G bands` / `5G bands`, or
+- `Modem` → `Preferred LTE/5G Bands`.
 
-```sh
-uci set mm_bandlock.main.enabled='1'
-uci set mm_bandlock.main.lte='1 3 40'
-uci set mm_bandlock.main.nr='78'
-uci commit mm_bandlock
-mm-bandlock apply
-```
-
-`mm-bandlock status` shows the current and supported bands, and
-`mm-bandlock unlock` removes the lock.
+Select the bands and apply. The modem GUI also shows the current carrier
+aggregation and 5G NSA status.
 
 ## How do I lock to a specific cell tower?
 

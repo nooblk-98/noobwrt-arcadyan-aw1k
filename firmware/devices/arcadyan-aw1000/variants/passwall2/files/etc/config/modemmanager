@@ -1,0 +1,4 @@
+config modemmanager 'main'
+option modem_index '0'
+option auto_refresh '1'
+option refresh_interval '5'
