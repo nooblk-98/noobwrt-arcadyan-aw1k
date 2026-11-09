@@ -33,7 +33,7 @@
     },
     "noobwrt": {
       "url": "https://github.com/nooblk-98/noobwrt-custom-feeds.git",
-      "commit": "3950806ab166fc37de83609e9048aa8dfd160424"
+      "commit": "036d16cf3cd634f30a9c7883241c25c3dcc69df3"
     }
   },
   "packages": "firmware/devices/arcadyan-aw1000/variants/passwall2/packages.json",
