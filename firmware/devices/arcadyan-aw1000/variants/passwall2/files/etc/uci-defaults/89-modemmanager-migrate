@@ -83,10 +83,12 @@ fi
 /etc/init.d/dbus enable 2>/dev/null
 /etc/init.d/modemmanager enable 2>/dev/null
 /etc/init.d/mm-uplink enable 2>/dev/null
+/etc/init.d/mm-watchdog enable 2>/dev/null
 
 # Overlay init scripts have no package postinst, so make the first boot work
 # even if rcS already built its service list before these symlinks existed.
 /etc/init.d/dbus start 2>/dev/null
 /etc/init.d/modemmanager start 2>/dev/null
 /etc/init.d/mm-uplink start >/dev/null 2>&1 &
+/etc/init.d/mm-watchdog start >/dev/null 2>&1 &
 exit 0

@@ -15,7 +15,10 @@ its vendor QMI driver and its TTL/voice packages are not selected. The
 `mm-uplink` init script waits for the USB modem, retries the `mmwan` netifd
 interface after ModemManager starts, and applies the boot band lock when enabled.
 LuCI exposes the lock under **Modem → Band Lock**; the `mm-bandlock` CLI can
-apply, save, inspect and remove LTE/5G NR band lists.
+apply, save, inspect and remove LTE/5G NR band lists. It uses ModemManager's
+band API and falls back to the Quectel `AT+QNWPREFCFG` commands used by the
+known-working AW1000 images. `mm-watchdog` retries `mmwan` if netifd reports it
+down after a bearer disconnect.
 
 ## RJ11 / FXS
 
