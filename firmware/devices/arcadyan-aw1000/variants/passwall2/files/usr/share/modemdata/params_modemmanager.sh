@@ -207,8 +207,11 @@ if [ -c "$QDEV" ] && command -v qmicli >/dev/null 2>&1; then
 		if [ "$NR" -lt 600000 ]; then F=$((NR * 5 / 1000)); else F=$((3000 + (NR - 600000) * 15 / 1000)); fi
 		NB="NR ($F MHz)"
 		[ "$F" -ge 3300 ] && [ "$F" -le 3800 ] && NB="n78"
-		_MODE="5G NSA"
-		[ -n "$PB" ] && _MODE="5G NSA ($PB + $NB)"
+		_lte_scc=$(printf '%s\n' "$SCELLS" | awk -F'|' 'NF{printf "%s%s", sep, $1; sep=" + "}')
+		_scc_count=$(printf '%s\n' "$SCELLS" | grep -c . 2>/dev/null || true)
+		_cc=$((2 + _scc_count))
+		_pcc=${PB:-LTE}
+		_MODE="EN-DC ${_cc}CC (${_pcc}${_lte_scc:+ + $_lte_scc} + $NB)"
 		N=$((N + 1)); I=$((40 + N * 10))
 		qadd $I "(S$N) band" "$NB"
 		qadd $((I + 4)) "(S$N) EARFCN" "$NR"

@@ -208,7 +208,8 @@ cmd_status() {
 	esac
 	_qca=$(mmcli -m "$_idx" --command='AT+QCAINFO' 2>/dev/null)
 	_scc=$(printf '%s\n' "$_qca" | grep -c '+QCAINFO: "SCC"' 2>/dev/null || true)
-	echo "CA secondary carriers: $_scc"
+	_cc=$((_scc + 1))
+	echo "CA carriers: $_cc total (1 PCC + $_scc SCC)"
 	echo "Operator: $(json_get_one "$_idx" '@.modem["3gpp"]["operator-name"]' 'modem.3gpp.operator-name')"
 	echo "Signal: $(json_get_one "$_idx" '@.modem.generic["signal-quality"].value' 'modem.generic.signal-quality.value')%"
 	echo "Current bands: $(current_bands "$_idx")"
