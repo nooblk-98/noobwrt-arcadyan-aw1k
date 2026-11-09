@@ -33,19 +33,15 @@ start() {
 			fi
 		fi
 
-		# The interface is autostarted before ModemManager starts at boot.
-		# Retry once the modem is managed so DHCP/netifd can attach.
-		_n=0
-		while [ "$_n" -lt 6 ]; do
-			ifstatus mmwan 2>/dev/null | grep -q '"up": true' && break
-			logger -t mm-uplink "bringing up mmwan (attempt $((_n + 1)))"
+		# 5gmodem's sessionwatch owns ongoing reconnect handling. This is
+		# only the one-shot boot ensure after the modem is managed.
+		if ! ifstatus mmwan 2>/dev/null | grep -q '"up": true'; then
+			logger -t mm-uplink "bringing up mmwan"
 			ifup mmwan >/dev/null 2>&1
 			sleep 10
-			_n=$((_n + 1))
-		done
+		fi
 
 		# Some carriers/APNs reject a dual-stack PDP even though IPv4 works.
-		# Fall back once, then let mm-watchdog keep retrying.
 		if ! ifstatus mmwan 2>/dev/null | grep -q '"up": true'; then
 			_cur=$(uci -q get network.mmwan.iptype)
 			if [ "$_cur" != "ipv4" ]; then

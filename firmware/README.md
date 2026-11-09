@@ -12,9 +12,9 @@ PassWall2: all 48 overlay files are copied byte-for-byte with original modes fro
 
 Both variants use ModemManager with QMI, MBIM and AT-over-D-Bus support. QModem,
 its vendor QMI driver and its TTL/voice packages are not selected. The
-`mm-uplink` init script waits for the USB modem and retries the `mmwan` netifd
-interface after ModemManager starts. `mm-watchdog` retries `mmwan` if netifd
-reports it down after a bearer disconnect. Modem metrics, carrier aggregation,
+`mm-uplink` init script waits for the USB modem and brings the `mmwan` netifd
+interface up once after ModemManager starts; `5gmodem` sessionwatch handles
+ongoing reconnect. Modem metrics, carrier aggregation,
 SMS/USSD/AT and band control are provided by `luci-app-5gmodem`; the dedicated
 `luci-app-modemband` page is also included. `kmod-usb-acm` and
 `kmod-usb-serial-qualcomm` are selected to satisfy the 5G Modem package modem-port
