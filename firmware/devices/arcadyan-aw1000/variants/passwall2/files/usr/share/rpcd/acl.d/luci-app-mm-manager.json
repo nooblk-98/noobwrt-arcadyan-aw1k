@@ -1,0 +1,18 @@
+{
+	"luci-app-mm-manager": {
+		"description": "ModemManager status and control",
+		"read": {
+			"file": {
+				"/usr/bin/mmcli": [ "exec" ],
+				"/usr/bin/mm-bandlock": [ "exec" ]
+			}
+		},
+		"write": {
+			"file": {
+				"/usr/bin/mmcli": [ "exec" ],
+				"/usr/bin/mm-bandlock": [ "exec" ],
+				"/sbin/ifup": [ "exec" ]
+			}
+		}
+	}
+}

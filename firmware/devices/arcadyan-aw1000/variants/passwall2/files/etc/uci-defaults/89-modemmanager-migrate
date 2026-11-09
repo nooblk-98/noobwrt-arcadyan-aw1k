@@ -78,10 +78,12 @@ if [ -n "$_zone" ]; then
 fi
 
 # Point the existing theme toolbar entry at the new band-lock page.
-if [ "$(uci -q get noobwrt.toolbar_modem.url)" = "/cgi-bin/luci/admin/modem/qmodem" ]; then
-	uci set noobwrt.toolbar_modem.url='/cgi-bin/luci/admin/modem/bandlock'
-	uci commit noobwrt
-fi
+case "$(uci -q get noobwrt.toolbar_modem.url)" in
+	"/cgi-bin/luci/admin/modem/qmodem"|"/cgi-bin/luci/admin/modem/bandlock")
+		uci set noobwrt.toolbar_modem.url='/cgi-bin/luci/admin/modem/modemmanager'
+		uci commit noobwrt
+		;;
+esac
 
 /etc/init.d/dbus enable 2>/dev/null
 /etc/init.d/modemmanager enable 2>/dev/null
