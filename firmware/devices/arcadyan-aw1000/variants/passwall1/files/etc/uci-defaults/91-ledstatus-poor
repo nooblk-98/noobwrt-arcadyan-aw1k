@@ -1,7 +1,7 @@
 #!/bin/sh
 # Keep the 5G LED steady blue when SINR is poor; do not blink red+blue.
 if uci -q get ledstatus.settings >/dev/null 2>&1; then
-	uci set ledstatus.settings.color_5g_poor='blue'
+	uci set ledstatus.settings.color_5g_poor='cyan'
 	uci commit ledstatus
 fi
 exit 0
