@@ -56,9 +56,17 @@ json_get() {
 	mmcli -m "$1" -J 2>/dev/null | jsonfilter -e "$2" 2>/dev/null
 }
 
+join_lines() {
+	_join=""
+	while IFS= read -r _line; do
+		_join="${_join}${_join:+|}${_line}"
+	done
+	printf '%s\n' "$_join"
+}
+
 kv_get() {
 	mmcli -m "$1" --output-keyvalue 2>/dev/null |
-		sed -n "s/^$2\.value\[[0-9][0-9]*\] *: *//p" | paste -sd'|' -
+		sed -n "s/^$2\.value\[[0-9][0-9]*\] *: *//p" | join_lines
 }
 
 kv_get_one() {
@@ -73,13 +81,13 @@ json_get_one() {
 }
 
 current_bands() {
-	_json=$(json_get "$1" '@.modem.generic["current-bands"][*]' | paste -sd'|' -)
+	_json=$(json_get "$1" '@.modem.generic["current-bands"][*]' | join_lines)
 	[ -n "$_json" ] || _json=$(kv_get "$1" "modem.generic.current-bands")
 	printf '%s\n' "$_json"
 }
 
 supported_bands() {
-	_json=$(json_get "$1" '@.modem.generic["supported-bands"][*]' | paste -sd'|' -)
+	_json=$(json_get "$1" '@.modem.generic["supported-bands"][*]' | join_lines)
 	[ -n "$_json" ] || _json=$(kv_get "$1" "modem.generic.supported-bands")
 	printf '%s\n' "$_json"
 }
@@ -190,9 +198,17 @@ cmd_status() {
 	echo "Modem: $_idx"
 	echo "State: $(json_get_one "$_idx" '@.modem.generic.state' 'modem.generic.state')"
 	echo "Power: $(json_get_one "$_idx" '@.modem.generic["power-state"]' 'modem.generic.power-state')"
-	_tech=$(json_get "$_idx" '@.modem.generic["access-technologies"][*]' | paste -sd'|' -)
+	_tech=$(json_get "$_idx" '@.modem.generic["access-technologies"][*]' | join_lines)
 	[ -n "$_tech" ] || _tech=$(kv_get "$_idx" "modem.generic.access-technologies")
 	echo "Access tech: $_tech"
+	_qeng=$(mmcli -m "$_idx" --command='AT+QENG="servingcell"' 2>/dev/null)
+	case "$_qeng" in
+		*NR5G-NSA*) echo "5G NSA: yes" ;;
+		*) echo "5G NSA: no" ;;
+	esac
+	_qca=$(mmcli -m "$_idx" --command='AT+QCAINFO' 2>/dev/null)
+	_scc=$(printf '%s\n' "$_qca" | grep -c '+QCAINFO: "SCC"' 2>/dev/null || true)
+	echo "CA secondary carriers: $_scc"
 	echo "Operator: $(json_get_one "$_idx" '@.modem["3gpp"]["operator-name"]' 'modem.3gpp.operator-name')"
 	echo "Signal: $(json_get_one "$_idx" '@.modem.generic["signal-quality"].value' 'modem.generic.signal-quality.value')%"
 	echo "Current bands: $(current_bands "$_idx")"

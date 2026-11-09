@@ -18,7 +18,9 @@ LuCI exposes the lock under **Modem → Band Lock**; the `mm-bandlock` CLI can
 apply, save, inspect and remove LTE/5G NR band lists. It uses ModemManager's
 band API and falls back to the Quectel `AT+QNWPREFCFG` commands used by the
 known-working AW1000 images. `mm-watchdog` retries `mmwan` if netifd reports it
-down after a bearer disconnect.
+down after a bearer disconnect. The `modemdata` ModemManager backend also falls
+back to `AT+QCAINFO`, so LTE PCC/SCC and 5G NSA secondary carriers are shown
+even when the installed `qmicli` lacks the cphy CA query.
 
 ## RJ11 / FXS
 

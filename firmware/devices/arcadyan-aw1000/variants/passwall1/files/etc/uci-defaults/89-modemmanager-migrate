@@ -68,10 +68,13 @@ fi
 # The WAN firewall zone must include the new uplink.
 _zone=$(uci -q show firewall 2>/dev/null | sed -n "s/^firewall\.\(@zone\[[0-9]*\]\)\.name='wan'$/\1/p" | head -n 1)
 if [ -n "$_zone" ]; then
+	for _old in 4_1 4_1v6 wan6; do
+		uci -q del_list "firewall.$_zone.network=$_old"
+	done
 	if ! uci -q get "firewall.$_zone.network" | tr ' ' '\n' | grep -qx 'mmwan'; then
 		uci add_list "firewall.$_zone.network=mmwan"
-		uci commit firewall
 	fi
+	uci commit firewall
 fi
 
 # Point the existing theme toolbar entry at the new band-lock page.

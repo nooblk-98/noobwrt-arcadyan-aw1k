@@ -51,7 +51,7 @@ uci set network.openvpn.device='tun0'
 uci commit network
 
 # setup firewall - openvpn in WAN zone (mmwan is added by 89-modemmanager-migrate)
-uci add_list firewall.@zone[1].network='openvpn'
+uci -q get firewall.@zone[1].network | tr ' ' '\n' | grep -qx openvpn || uci add_list firewall.@zone[1].network='openvpn'
 
 uci commit firewall
 /etc/init.d/firewall restart
