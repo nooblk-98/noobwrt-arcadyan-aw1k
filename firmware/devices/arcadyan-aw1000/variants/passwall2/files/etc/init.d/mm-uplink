@@ -49,6 +49,18 @@ start() {
 			sleep 10
 			_n=$((_n + 1))
 		done
+
+		# Some carriers/APNs reject a dual-stack PDP even though IPv4 works.
+		# Fall back once, then let mm-watchdog keep retrying.
+		if ! ifstatus mmwan 2>/dev/null | grep -q '"up": true'; then
+			_cur=$(uci -q get network.mmwan.iptype)
+			if [ "$_cur" != "ipv4" ]; then
+				logger -t mm-uplink "mmwan failed with iptype=$_cur; retrying with ipv4"
+				uci set network.mmwan.iptype='ipv4'
+				uci commit network
+				ifup mmwan >/dev/null 2>&1
+			fi
+		fi
 	) >/dev/null 2>&1 &
 }
 
