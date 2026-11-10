@@ -64,6 +64,36 @@ case "$(uci -q get network.mmwan.apn)" in
 		;;
 esac
 
+# Tie the onboard modem to mmwan. Without this 5gmodem finds no interface for
+# 4-1 on first boot, builds its own qmiraw one and inhibits ModemManager, so
+# the two fight over the modem on every boot.
+_gone=""
+uci set network.mmwan.modem_path='4-1'
+for _if in $(uci -q show network | sed -n "s/^network\.\([^.]*\)\.modem_path='4-1'$/\1/p"); do
+	[ "$_if" = mmwan ] && continue
+	case "$(uci -q get "network.$_if.proto")" in
+		qmi|qmiraw|mbim)
+			uci -q delete "network.$_if"
+			_gone="$_gone $_if"
+			;;
+	esac
+done
+uci commit network
+if [ -f /etc/config/5gmodem ]; then
+	uci -q get 5gmodem.m_4_1 >/dev/null 2>&1 || {
+		uci set 5gmodem.m_4_1=modem
+		uci set 5gmodem.m_4_1.path='4-1'
+	}
+	uci set 5gmodem.m_4_1.network='mmwan'
+	uci set 5gmodem.m_4_1.iface_proto='modemmanager'
+	uci set 5gmodem.m_4_1.mm_exclude='0'
+	if uci -q get 5gmodem.sms >/dev/null 2>&1; then
+		uci set 5gmodem.sms.sms_via_mm='1'
+		uci set 5gmodem.sms.ussd_via_mm='1'
+	fi
+	uci commit 5gmodem
+fi
+
 # Do not let 5gmodem auto-replace the pinned APN for this interface.
 for _5gm in $(uci -q show 5gmodem 2>/dev/null | sed -n "s/^5gmodem\.\(m_[^.=]*\)\.network='mmwan'$/\1/p"); do
 	uci set "5gmodem.$_5gm.apn_mode=manual"
@@ -77,13 +107,14 @@ rm -f /etc/config/modemdata /etc/config/defmodems /etc/config/sms_tool_js \
 # 5gmodem auto-detects the modem, but pin the uplink for consistency.
 if uci -q get 5gmodem.@5gmodem[0] >/dev/null 2>&1; then
 	uci set 5gmodem.@5gmodem[0].network='mmwan'
+	uci set 5gmodem.@5gmodem[0].iface_proto='modemmanager'
 	uci commit 5gmodem
 fi
 
 # The WAN firewall zone must include the new uplink.
 _zone=$(uci -q show firewall 2>/dev/null | sed -n "s/^firewall\.\(@zone\[[0-9]*\]\)\.name='wan'$/\1/p" | head -n 1)
 if [ -n "$_zone" ]; then
-	for _old in 4_1 4_1v6 wan6; do
+	for _old in 4_1 4_1v6 wan6 $_gone; do
 		uci -q del_list "firewall.$_zone.network=$_old"
 	done
 	if ! uci -q get "firewall.$_zone.network" | tr ' ' '\n' | grep -qx 'mmwan'; then
