@@ -6,10 +6,11 @@
 # License: All rights reserved
 #=================================================
 
-# Populate Sri Lanka mobile USSD codes for sms-tool.
+# Populate Sri Lanka mobile USSD codes for the 5G Modem USSD tab.
 
-rm -f /etc/modem/ussdcodes.user
-cat << 'EOF' >> /etc/modem/ussdcodes.user
+mkdir -p /etc/5gmodem/modem
+rm -f /etc/5gmodem/modem/ussdcodes.user
+cat << 'EOF' >> /etc/5gmodem/modem/ussdcodes.user
 === Dialog ===  ;
 Dialog Main Menu ;#107#
 Dialog Plans & Offers ;#678#

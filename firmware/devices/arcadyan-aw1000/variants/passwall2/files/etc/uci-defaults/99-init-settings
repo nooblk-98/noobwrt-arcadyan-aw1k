@@ -40,9 +40,8 @@ uci -q delete network.wan
 uci -q delete network.wan6
 #uci set network.globals.packet_steering='0'
 
-# The modem uplink interface (4_1 / 4_1v6) is created and managed by qmodem.
-# Do not define a second DHCP interface on wwan0 here: two udhcpc clients on one
-# device fight each other.
+# The modem uplink (mmwan) is created by ModemManager. Do not define a second
+# DHCP interface on wwan0 here: two DHCP clients on one device fight each other.
 uci commit network
 
 # openvpn interface
@@ -51,42 +50,14 @@ uci set network.openvpn.proto='none'
 uci set network.openvpn.device='tun0'
 uci commit network
 
-# setup firewall - openvpn in WAN zone (qmodem adds its own interfaces itself)
-uci add_list firewall.@zone[1].network='openvpn'
+# setup firewall - openvpn in WAN zone (mmwan is added by 89-modemmanager-migrate)
+uci -q get firewall.@zone[1].network | tr ' ' '\n' | grep -qx openvpn || uci add_list firewall.@zone[1].network='openvpn'
 
 uci commit firewall
 /etc/init.d/firewall restart
 
-#-----------------------------------------------------------------------------
-# set auto /dev/ttyusb
-# Wait for the Quectel modem to finish enumerating its AT serial port.
-# On a cold flash the modem attaches ttyUSB0..3 around ~24s after boot, but
-# uci-defaults run from S10boot much earlier — without this wait set_tty comes
-# back empty and sms/modemband get a bad port (works only after reboot).
-i=0
-while [ ! -e /dev/ttyUSB3 ] && [ "$i" -lt 45 ]; do
-	sleep 1
-	i=$((i + 1))
-done
-set_tty=$(ls /dev/ttyUSB* 2>/dev/null | sort -V | tail -n 1)
-
-# lock band
-uci set modemband.@modemband[0].iface='wwan0'
-uci set modemband.@modemband[0].set_port=$set_tty
-uci commit modemband
-
-# sms messages
-uci set sms_tool_js.@sms_tool_js[0].readport=$set_tty
-uci set sms_tool_js.@sms_tool_js[0].pnumber='6'
-uci set sms_tool_js.@sms_tool_js[0].sendport=$set_tty
-uci set sms_tool_js.@sms_tool_js[0].ussdport=$set_tty
-uci set sms_tool_js.@sms_tool_js[0].atport=$set_tty
-uci set sms_tool_js.@sms_tool_js[0].lednotify='1'
-uci set sms_tool_js.@sms_tool_js[0].smsled='green:phone'
-uci commit sms_tool_js
-
-#remove qmodem overview
-rm -r /www/luci-static/resources/view/status/include/11_modem.js
+# Remove the old QModem status widget if an upgrade left it behind.
+rm -f /www/luci-static/resources/view/status/include/11_modem.js
 
 # Bridge lan1-lan4 plus the (unused-as-uplink) wan port into br-lan, so the
 # physical WAN port works as a 5th LAN port and serves internet to a connected
@@ -98,38 +69,6 @@ uci commit network
 uci delete wireless.radio0.disabled='1'
 uci delete wireless.radio1.disabled='1'
 uci commit wireless
-
-# modemdata: QModem 3.4 names the modem's logical interface after its config
-# section (4_1, device wwan0_1); there is no "wwan0" interface any more, so
-# modemdata showed the modem as disconnected and hid the band table. Also
-# migrates upgrades that kept the old value.
-if [ "$(uci -q get defmodems.@defmodems[0].network)" = "wwan0" ]; then
-	uci set defmodems.@defmodems[0].network='4_1'
-	uci commit defmodems
-fi
-
-#Qmodem preset
-uci set qmodem.4_1.apn='internet'
-uci set qmodem.4_1.at_port='/dev/ttyUSB3'
-uci set qmodem.4_1.sms_at_port='/dev/ttyUSB3'
-
-# Dual-stack dial: QModem creates the 4_1v6 DHCPv6 interface and extends the
-# carrier's IPv6 prefix to the LAN (needs an IPv6-capable APN)
-uci set qmodem.4_1.pdp_type='ipv4v6'
-uci set qmodem.4_1.extend_prefix='1'
-
-# CRITICAL FIX: Add network binding to prevent qmodem from creating multiple interfaces
-# This ensures qmodem manages ONLY wwan0 and coordinates with netifd properly
-uci set qmodem.4_1.iface='wwan0'
-
-# Set reasonable modem polling timeouts to prevent excessive AT commands
-uci set qmodem.4_1.signal_poll_interval='30'
-uci set qmodem.4_1.status_poll_interval='30'
-
-uci commit qmodem
-uci set qmodem_ttl.main.enable='1'
-uci set qmodem_ttl.main.ttl='64'
-uci commit qmodem_ttl
 
 #-----------------------------------------------------------------------------
 # remove rules passwall2

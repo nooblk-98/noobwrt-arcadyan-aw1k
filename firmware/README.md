@@ -8,6 +8,19 @@ The source and all feeds are locked to full commits. The Go toolchain override a
 
 PassWall2: all 48 overlay files are copied byte-for-byte with original modes from builder commit `8bd5548270418c7d8fa93e2a0cdd73bcadfe1634`. PassWall1: all 49 files are preserved from `5316950f953eb7a3ee46b46efd059e30403585ff`, including its PassWall defaults and fragment fix. `overlay-baseline.json` proves initial migration parity. It is a historical baseline, not a restriction against future firmware changes; this repository has no migration test suite. The original src/compile.conf, src/packages.conf and release template are retained as migration reference; they are not sourced by the new engine. Active settings are the JSON manifest, packages.json, kconfig and hooks.
 
+## Modem stack
+
+Both variants use ModemManager with QMI, MBIM and AT-over-D-Bus support. QModem,
+its vendor QMI driver and its TTL/voice packages are not selected. The
+`mm-uplink` init script waits for the USB modem and brings the `mmwan` netifd
+interface up once after ModemManager starts; `5gmodem` sessionwatch handles
+ongoing reconnect. Modem metrics, carrier aggregation,
+SMS/USSD/AT and band control are provided by `luci-app-5gmodem`. `kmod-usb-acm` and
+`kmod-usb-serial-qualcomm` are selected to satisfy the 5G Modem package modem-port
+support. The `mmwan` bearer defaults to dual-stack `ipv4v6`; if the carrier/APN
+rejects the IPv6 PDP, IPv4 remains up and IPv6 will attach when the network
+provides it.
+
 ## RJ11 / FXS
 
 `luci-app-fxs` is selected from noobwrt-custom-feeds; its dependencies supply `fxsd` and `kmod-aw1000-fxs`. No legacy aw1000-rj11 submodule or second driver implementation is used. The feed currently does not ship the private ProSLIC DSP patch. The device overlay hook converts a locally supplied `si3226x_stock_tables.h` from `RJ11_PRIVATE_DIR` (default `/private`) to the firmware runtime file `/etc/fxs/si3226x_patch.bin`. Missing private input fails explicitly rather than silently dropping phone support.
@@ -23,4 +36,4 @@ Add a device/variant descriptor with its real OpenWrt target/subtarget/profile, 
 - `passwall1`: luci-app-passwall 26.1.1-1 (commit `0d24d8fc24d9eb508a4df599a0a4d673c8a35cc7`), Xray-core 25.12.8 with the original SHA-256 pin. No PassWall2 Go or Tailscale override is applied.
 - `passwall2`: luci-app-passwall2 26.9.16-1, Xray-core 26.9.9 and its existing Go/Tailscale overrides.
 
-Both use locked OpenWrt v25.12.5 and feed revisions, retain their complete 142-package baseline plus feed-provided FXS, and keep separate overlays and device hooks. Definition validation is not a full compile or hardware flash test.
+Both use locked OpenWrt v25.12.5 and feed revisions, retain their complete package baseline (with ModemManager replacing QModem) plus feed-provided FXS, and keep separate overlays and device hooks. Definition validation is not a full compile or hardware flash test.

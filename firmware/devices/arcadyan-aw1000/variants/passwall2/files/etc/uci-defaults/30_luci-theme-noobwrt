@@ -48,9 +48,9 @@ seed_toolbar() {
 }
 
 seed_toolbar toolbar_home     'Home'        '/cgi-bin/luci/admin/status/overview'           home.png     1 1
-seed_toolbar toolbar_status   'Status'      '/cgi-bin/luci/admin/modem/modemdata'             signal.png   1 2
-seed_toolbar toolbar_modem    'Modem'       '/cgi-bin/luci/admin/modem/qmodem'              cell.png     0 3
-seed_toolbar toolbar_sms      'SMS'         '/cgi-bin/luci/admin/modem/luci-app-sms-tool-js' sms.png    1 4
+seed_toolbar toolbar_status   'Status'      '/cgi-bin/luci/admin/status/overview'             signal.png   1 2
+seed_toolbar toolbar_modem    'Modem'       '/cgi-bin/luci/admin/modem/5gmodem'              cell.png     0 3
+seed_toolbar toolbar_sms      'SMS'         '/cgi-bin/luci/admin/modem/5gmodem/readsms'      sms.png    1 4
 seed_toolbar toolbar_data     'Data Usage'  '/cgi-bin/luci/admin/tools/netstat'             network.png  1 5
 seed_toolbar toolbar_nas      'NAS'         '/cgi-bin/luci/admin/services/samba4'           nas.png      0 6
 seed_toolbar toolbar_wireless 'Wireless'    '/cgi-bin/luci/admin/network/wireless'          wifi.png     1 7

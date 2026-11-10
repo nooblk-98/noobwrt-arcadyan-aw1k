@@ -28,12 +28,12 @@ Each image includes only one PassWall version: the PassWall 1 image includes `lu
 | `nftables` | yes |
 | `kmod-nft-core` | yes |
 | `iptables-nft` | yes |
-| `luci-app-qmodem` | yes |
-| `luci-app-sms-tool-js` | yes |
-| `luci-app-qmodem-ttl` | yes |
-| `quectel-CM-5G-M` | yes |
-| `tom_modem` | yes |
-| `luci-app-modemdata` | yes |
+| `modemmanager` | yes |
+| `luci-proto-modemmanager` | yes |
+| `luci-app-5gmodem` | yes |
+| `qmi-utils` | yes |
+| `kmod-usb-acm` | yes |
+| `kmod-usb-serial-qualcomm` | yes |
 | `comgt` | yes |
 | `luci-app-passwall` | PassWall 1 image |
 | `luci-app-passwall2` | PassWall 2 image |

@@ -67,7 +67,7 @@ jq -r --argjson imgs "$IMG_JSON" --arg bver "$BRANCH_VER" --arg sysimg "$SYSIMG_
     (.size | if . >= 1073741824 then (. / 1073741824 | floor | tostring) + " GB"
              elif . >= 1048576 then (. / 1048576 | floor | tostring) + " MB"
              else (. / 1024 | floor | tostring) + " KB" end) as $size |
-    "| `\(.name)` | \($bver) | .\($ext) (\($type)) | \($size) | APK | Qmodem |"
+    "| `\(.name)` | \($bver) | .\($ext) (\($type)) | \($size) | APK | ModemManager |"
   ) | join("\n")) as $img_table |
   (if $sysimg != "" then
     "## Upgrade\n\n" +

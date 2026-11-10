@@ -1,0 +1,59 @@
+#!/bin/sh /etc/rc.common
+#=================================================
+# Copyright (c) 2026 Lahiru S Liyanage (NoobLK) <liyanagelsofficial@gmail.com>
+# GitHub: https://github.com/nooblk-98/noobwrt-arcadyan-aw1k
+# Telegram: @itsme_nooblk
+# License: All rights reserved
+#
+# Bring the ModemManager uplink up after the USB modem enumerates.
+#=================================================
+
+# shellcheck disable=SC2034
+START=99
+STOP=10
+
+start() {
+	(
+		# Wait for ModemManager to see the onboard Quectel modem.
+		_i=0
+		while [ "$_i" -lt 90 ]; do
+			mmcli -L 2>/dev/null | grep -q '/Modem/' && break
+			sleep 2
+			_i=$((_i + 1))
+		done
+
+		# Keep the configured sysfs path canonical; mmcli matches the
+		# physical device path reported by ModemManager, not a symlink.
+		_dev=$(readlink -f /sys/bus/usb/devices/4-1 2>/dev/null)
+		if [ -n "$_dev" ] && [ -d "$_dev" ]; then
+			_cur=$(uci -q get network.mmwan.device)
+			if [ "$_cur" != "$_dev" ]; then
+				uci set network.mmwan.device="$_dev"
+				uci commit network
+			fi
+		fi
+
+		# 5gmodem's sessionwatch owns ongoing reconnect handling. This is
+		# only the one-shot boot ensure after the modem is managed.
+		if ! ifstatus mmwan 2>/dev/null | grep -q '"up": true'; then
+			logger -t mm-uplink "bringing up mmwan"
+			ifup mmwan >/dev/null 2>&1
+			sleep 10
+		fi
+
+		# Some carriers/APNs reject a dual-stack PDP even though IPv4 works.
+		if ! ifstatus mmwan 2>/dev/null | grep -q '"up": true'; then
+			_cur=$(uci -q get network.mmwan.iptype)
+			if [ "$_cur" != "ipv4" ]; then
+				logger -t mm-uplink "mmwan failed with iptype=$_cur; retrying with ipv4"
+				uci set network.mmwan.iptype='ipv4'
+				uci commit network
+				ifup mmwan >/dev/null 2>&1
+			fi
+		fi
+	) >/dev/null 2>&1 &
+}
+
+boot() {
+	start
+}
