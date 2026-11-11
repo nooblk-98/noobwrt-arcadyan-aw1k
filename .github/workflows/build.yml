@@ -39,7 +39,9 @@ concurrency:
 jobs:
   request:
     if: github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
+    # Self-hosted on purpose: this job only dispatches to the builder and then polls
+    # it for hours. On a hosted runner that is hours of billable minutes per build.
+    runs-on: [self-hosted, Linux, X64]
     timeout-minutes: 315
     outputs:
       request_id: ${{ steps.build.outputs.request_id }}
