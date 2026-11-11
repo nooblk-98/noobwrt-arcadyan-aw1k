@@ -92,31 +92,13 @@ For first-time installation, CLI flashing and recovery, follow the [Installation
 
 ---
 
-## 📸 Screenshots
+## 📸 Preview
 
 <div align="center">
 
 ![NoobWRT Demo](/images/demo.gif)
 
-| Login | Passwall |
-| :---: | :---: |
-| ![Login](/images/01-login.png) | ![Passwall](/images/03-passwall.png) |
-
-| Network Status | Bandix |
-| :---: | :---: |
-| ![Network Status](/images/04-netstat.png) | ![Bandix](/images/05-bandix.png) |
-
-| Theme |
-| :---: |
-| ![Theme](/images/06-theme.png) |
-
 </div>
-
-### 🎬 Demo Video
-
-[![Watch on YouTube](https://img.youtube.com/vi/pxMpUKWQ3nU/maxresdefault.jpg)](https://www.youtube.com/watch?v=pxMpUKWQ3nU)
-
-*Click the image to watch on YouTube.*
 
 ---
 
