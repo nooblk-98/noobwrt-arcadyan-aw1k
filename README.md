@@ -96,7 +96,7 @@ For first-time installation, CLI flashing and recovery, follow the [Installation
 
 <div align="center">
 
-![Dashboard](/images/dash.png)
+![NoobWRT Demo](/images/demo.gif)
 
 | Login | Passwall |
 | :---: | :---: |
