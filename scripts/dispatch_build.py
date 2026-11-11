@@ -93,6 +93,7 @@ def request_from_env(builder_sha):
 def main():
     p = argparse.ArgumentParser()
     p.add_argument("--timeout", type=int, default=18000)
+    p.add_argument("--no-wait", action="store_true", help="return after dispatch instead of polling the builder")
     args = p.parse_args()
     if not 60 <= args.timeout <= 18600:
         raise ValueError("timeout outside supported bounds")
@@ -109,6 +110,29 @@ def main():
     # If branch advances before dispatch, wrong head_sha is never accepted.
     created = datetime.datetime.now(datetime.timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
     api("repos/" + BUILDER_REPO + "/actions/workflows/" + WORKFLOW + "/dispatches", token, {"ref": ref, "inputs": {"request": json.dumps(request, separators=(",", ":")), "request_id": request["request_id"]}})
+    if args.no_wait or os.environ.get("BUILDER_NO_WAIT") == "true":
+        # Fire-and-forget: the builder validates, compiles and uploads to Drive on
+        # its own runner. Polling it here would hold a runner for hours.
+        run = None
+        deadline = time.monotonic() + 120
+        while time.monotonic() < deadline and run is None:
+            time.sleep(5)
+            listing = api("repos/" + BUILDER_REPO + "/actions/runs?event=workflow_dispatch&per_page=30", token)
+            run = find_run(listing.get("workflow_runs", []), request, created)
+        if run is None:
+            raise RuntimeError("builder run not visible yet; check " + BUILDER_REPO + "/actions")
+        with open(os.environ["GITHUB_OUTPUT"], "a") as f:
+            print("request_id=" + request["request_id"], file=f)
+            print("builder_run_id=" + str(run["id"]), file=f)
+            print("builder_url=" + run["html_url"], file=f)
+        with open(os.environ["GITHUB_STEP_SUMMARY"], "a") as f:
+            print("### Builder dispatched" + chr(10) +
+                  "Not waiting: the builder compiles and uploads to Google Drive on its own runner." + chr(10) +
+                  "[Builder run](" + run["html_url"] + ")" + chr(10) +
+                  "Path: " + request["variant"] + "/" + request["build_tag"] + chr(10) +
+                  "Firmware commit: " + request["firmware_sha"], file=f)
+        print("builder_url=" + run["html_url"])
+        return
     run = wait_run(request, created, args.timeout, token)
     receipt = collect_receipt(run, request, token)
     with open(os.environ["GITHUB_OUTPUT"], "a") as f:
