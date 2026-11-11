@@ -140,7 +140,13 @@
     "tcping",
     "unzip",
     "wget-ssl",
-    "luci-app-fxs"
+    "luci-app-fxs",
+    "modem-sip",
+    "luci-app-modem-sip",
+    "kmod-ip6tables",
+    "kmod-ipt-ipset",
+    "kmod-ipt-conntrack-extra",
+    "kmod-ipt-core"
   ],
   "remove": [
     "dnsmasq",
@@ -150,7 +156,6 @@
     "iptables-mod-tproxy",
     "iptables-mod-conntrack-extra",
     "iptables-mod-ipopt",
-    "kmod-ipt-core",
     "kmod-ipt-nat",
     "iptables-nft",
     "https-dns-proxy",
