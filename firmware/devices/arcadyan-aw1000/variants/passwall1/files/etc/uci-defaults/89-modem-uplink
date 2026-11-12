@@ -1,0 +1,157 @@
+#!/bin/sh
+#=================================================
+# Copyright (c) 2026 Lahiru S Liyanage (NoobLK) <liyanagelsofficial@gmail.com>
+# GitHub: https://github.com/nooblk-98/noobwrt-arcadyan-aw1k
+# Telegram: @itsme_nooblk
+# License: All rights reserved
+#
+# One-shot setup of the onboard modem uplink (network.modem, proto qmiraw).
+# Runs on a fresh install and once on an upgrade that keeps /etc/config.
+#
+# The onboard Quectel RG500Q is natively raw-ip, so 5gmodem's mkiface picks
+# qmiraw for it. Creating a ModemManager interface here only made 5gmodem tear
+# it down again on first boot, and the two fought over the modem. Pin qmiraw
+# instead. ModemManager stays installed for other modems: 5gmodem's mmneed
+# starts it only when an interface actually uses proto modemmanager.
+#=================================================
+
+MODEM_USB='4-1'
+
+# Carry over the APN and IP type from an older uplink (modem, mmwan, QModem).
+_apn=$(uci -q get network.modem.apn)
+[ -n "$_apn" ] || _apn=$(uci -q get network.mmwan.apn)
+_pdp=$(uci -q get network.modem.pdptype)
+[ -n "$_pdp" ] || _pdp=$(uci -q get network.mmwan.iptype)
+if [ -f /etc/config/qmodem ]; then
+	_first=$(uci -q show qmodem | sed -n 's/^qmodem\.\([^.]*\)=modem-device$/\1/p' | head -n 1)
+	[ -n "$_apn" ] || _apn=$(uci -q get "qmodem.$_first.apn")
+	[ -n "$_pdp" ] || _pdp=$(uci -q get "qmodem.$_first.pdp_type")
+	for _s in $(uci -q show qmodem | sed -n 's/^qmodem\.\([^.]*\)=modem-device$/\1/p'); do
+		uci -q delete "network.$_s"
+		uci -q delete "network.${_s}v6"
+	done
+fi
+
+case "$_apn" in
+	''|'www.wap.airtel.lk') _apn='internet' ;;
+esac
+# IPv4-only connects fastest and avoids the dual-stack PDP rejects seen on
+# local carriers; a user who set ipv4v6/ipv6 keeps it.
+case "$_pdp" in
+	ipv4|ipv6|ipv4v6) ;;
+	ip) _pdp='ipv4' ;;
+	*) _pdp='ipv4' ;;
+esac
+
+# QModem and its optional voice/TTL configs are no longer used.
+rm -f /etc/config/qmodem /etc/config/qmodem_ttl \
+	/etc/config/qmodem_voip /etc/config/qmodem_sip
+for _f in /etc/rc.d/S*qmodem* /etc/rc.d/K*qmodem*; do
+	[ -e "$_f" ] || [ -L "$_f" ] && rm -f "$_f"
+done
+
+# Drop every other uplink on the onboard modem so only one owner remains.
+_gone=""
+for _if in mmwan 4_1 4_1v6; do
+	uci -q get "network.$_if" >/dev/null 2>&1 || continue
+	uci -q delete "network.$_if"
+	_gone="$_gone $_if"
+done
+for _if in $(uci -q show network | sed -n "s/^network\.\([^.]*\)\.modem_path='$MODEM_USB'$/\1/p"); do
+	[ "$_if" = modem ] && continue
+	case "$(uci -q get "network.$_if.proto")" in
+		qmi|qmiraw|qmip|mbim|modemmanager)
+			uci -q delete "network.$_if"
+			_gone="$_gone $_if"
+			;;
+	esac
+done
+
+# devpath lets qmiraw find the control port even if cdc-wdm renumbers.
+uci -q get network.modem >/dev/null 2>&1 || uci set network.modem=interface
+uci set network.modem.proto='qmiraw'
+uci set network.modem.device='/dev/cdc-wdm0'
+uci set network.modem.devpath="/sys/bus/usb/devices/$MODEM_USB"
+uci set network.modem.apn="$_apn"
+uci set network.modem.pdptype="$_pdp"
+[ -n "$(uci -q get network.modem.auth)" ] || uci set network.modem.auth='none'
+[ -n "$(uci -q get network.modem.metric)" ] || uci set network.modem.metric='110'
+uci set network.modem.modem_path="$MODEM_USB"
+uci -q delete network.modem.disabled
+uci commit network
+
+# Tie the onboard modem to network.modem and lock the protocol so 5gmodem's
+# auto mode never rebuilds it. mm_exclude keeps ModemManager (if anything
+# starts it) off this modem's ports, so it cannot fight uqmi or sms_tool.
+if [ -f /etc/config/5gmodem ]; then
+	_sec="m_$(echo "$MODEM_USB" | sed 's/[^A-Za-z0-9]/_/g')"
+	uci -q get "5gmodem.$_sec" >/dev/null 2>&1 || {
+		uci set "5gmodem.$_sec=modem"
+		uci set "5gmodem.$_sec.path=$MODEM_USB"
+	}
+	uci set "5gmodem.$_sec.network=modem"
+	uci set "5gmodem.$_sec.iface_proto=qmiraw"
+	uci set "5gmodem.$_sec.mm_exclude=1"
+	uci set "5gmodem.$_sec.apn_mode=manual"
+	for _5gm in $(uci -q show 5gmodem | sed -n "s/^5gmodem\.\(m_[^.=]*\)\.network='mmwan'$/\1/p"); do
+		uci set "5gmodem.$_5gm.network=modem"
+	done
+	if uci -q get 5gmodem.@5gmodem[0] >/dev/null 2>&1; then
+		uci set 5gmodem.@5gmodem[0].network='modem'
+		uci set 5gmodem.@5gmodem[0].iface_proto='qmiraw'
+	fi
+	# SMS/USSD go over the AT port; ModemManager is not running for them.
+	if uci -q get 5gmodem.sms >/dev/null 2>&1; then
+		uci set 5gmodem.sms.sms_via_mm='0'
+		uci set 5gmodem.sms.ussd_via_mm='0'
+	fi
+	uci commit 5gmodem
+fi
+
+# Configs from the removed modemdata / SMS-tool / graphical UI stack.
+rm -f /etc/config/modemdata /etc/config/defmodems /etc/config/sms_tool_js \
+	/etc/config/modemband /etc/config/mm_bandlock
+
+# The WAN firewall zone must include the uplink.
+_zone=$(uci -q show firewall 2>/dev/null | sed -n "s/^firewall\.\(@zone\[[0-9]*\]\)\.name='wan'$/\1/p" | head -n 1)
+if [ -n "$_zone" ]; then
+	for _old in 4_1 4_1v6 wan6 mmwan $_gone; do
+		uci -q del_list "firewall.$_zone.network=$_old"
+	done
+	if ! uci -q get "firewall.$_zone.network" | tr ' ' '\n' | grep -qx 'modem'; then
+		uci add_list "firewall.$_zone.network=modem"
+	fi
+	uci commit firewall
+fi
+
+# Point the existing theme toolbar entries at the 5G Modem app.
+case "$(uci -q get noobwrt.toolbar_status.url)" in
+	"/cgi-bin/luci/admin/modem/modemdata")
+		uci set noobwrt.toolbar_status.url='/cgi-bin/luci/admin/status/overview'
+		uci commit noobwrt
+		;;
+esac
+case "$(uci -q get noobwrt.toolbar_sms.url)" in
+	"/cgi-bin/luci/admin/modem/luci-app-sms-tool-js")
+		uci set noobwrt.toolbar_sms.url='/cgi-bin/luci/admin/modem/5gmodem/readsms'
+		uci commit noobwrt
+		;;
+esac
+case "$(uci -q get noobwrt.toolbar_modem.url)" in
+	"/cgi-bin/luci/admin/modem/qmodem"|"/cgi-bin/luci/admin/modem/bandlock"|"/cgi-bin/luci/admin/modem/modemmanager")
+		uci set noobwrt.toolbar_modem.url='/cgi-bin/luci/admin/modem/5gmodem'
+		uci commit noobwrt
+		;;
+esac
+
+# ModemManager is not needed for the qmiraw uplink. Keep it off at boot;
+# 5gmodem's mmneed turns it back on if a modemmanager interface is created.
+/etc/init.d/modemmanager disable 2>/dev/null
+/etc/init.d/modemmanager stop 2>/dev/null
+# The old MM boot helper is gone from the image; drop any leftover links.
+rm -f /etc/rc.d/S*mm-uplink /etc/rc.d/K*mm-uplink
+
+# Overlay init scripts have no package postinst, so enable them here.
+/etc/init.d/modem-tune enable 2>/dev/null
+/etc/init.d/modem-tune start >/dev/null 2>&1
+exit 0

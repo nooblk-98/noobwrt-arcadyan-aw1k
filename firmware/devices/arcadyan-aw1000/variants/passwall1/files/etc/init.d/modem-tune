@@ -1,0 +1,39 @@
+#!/bin/sh /etc/rc.common
+#=================================================
+# Copyright (c) 2026 Lahiru S Liyanage (NoobLK) <liyanagelsofficial@gmail.com>
+# GitHub: https://github.com/nooblk-98/noobwrt-arcadyan-aw1k
+# Telegram: @itsme_nooblk
+# License: All rights reserved
+#
+# Move the onboard modem's USB (xhci) interrupt off CPU0.
+# Every received cellular packet raises this IRQ; by default all of them land
+# on CPU0 together with the timer and most other interrupts, which caps 5G
+# download. smp_affinity (S93) spreads the Wi-Fi and Ethernet IRQs but leaves
+# xhci alone, so this runs right after it.
+#=================================================
+
+# shellcheck disable=SC2034
+START=94
+
+MODEM_USB='4-1'
+MODEM_IRQ_CPU='1'
+
+start() {
+	_bus=$(readlink -f "/sys/bus/usb/devices/$MODEM_USB" 2>/dev/null)
+	[ -n "$_bus" ] || return 0
+	# .../xhci-hcd.N.auto/usbB/4-1 -> the controller; its IRQ is named after
+	# the lowest root-hub bus number on it (xhci-hcd:usb3 on the AW1000).
+	_ctl=$(dirname "$(dirname "$_bus")")
+	_first=$(for _h in "$_ctl"/usb[0-9]*; do basename "$_h"; done | sed 's/^usb//' | sort -n | head -n 1)
+	[ -n "$_first" ] || return 0
+
+	_mask=$(printf '%x' $((1 << MODEM_IRQ_CPU)))
+	for _irq in $(awk -v n="xhci-hcd:usb$_first" '$NF == n { sub(":", "", $1); print $1 }' /proc/interrupts); do
+		echo "$_mask" > "/proc/irq/$_irq/smp_affinity" 2>/dev/null &&
+			logger -t modem-tune "pinned IRQ $_irq (xhci-hcd:usb$_first) to CPU $MODEM_IRQ_CPU"
+	done
+}
+
+boot() {
+	start
+}
