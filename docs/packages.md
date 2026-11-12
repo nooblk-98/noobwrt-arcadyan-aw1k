@@ -97,10 +97,12 @@ Each image includes only one PassWall version: the PassWall 1 image includes `lu
 
 ## Phone (RJ11) Packages
 
-These packages from [openwrt-aw1000-phone](https://github.com/Perz3us/openwrt-aw1000-phone) run the RJ11 phone port. See [Phone (RJ11)](phone.md).
+These packages from [noobwrt-aw1000-voice](https://github.com/nooblk-98/noobwrt-aw1000-voice) run the RJ11 phone port and SIP phones. See [Phone (RJ11)](phone.md).
 
 | Package | Purpose |
 |---------|---------|
 | `kmod-aw1000-fxs` | Kernel driver for the SLIC chip and the PCM audio bus |
 | `fxsd` | Phone line service: ringing, dial tone, digits and modem calls |
-| `luci-app-fxs` | LuCI pages for status, settings, speed dial and blocked numbers |
+| `modem-sip` | SIP server so phones and apps on the LAN share the SIM with the RJ11 phone |
+| `aw1000-voice-web` | Management interface on port 7766: missed calls, history, recordings, settings, line health, missed-call alerts |
+| `luci-app-aw1000-voice` | `Services` → `Phone` in LuCI with an **Open management interface** button |
