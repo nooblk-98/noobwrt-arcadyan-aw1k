@@ -146,18 +146,21 @@
     "kmod-ip6tables",
     "kmod-ipt-ipset",
     "kmod-ipt-conntrack-extra",
-    "kmod-ipt-core"
+    "kmod-ipt-core",
+    "mwan3",
+    "luci-app-mwan3",
+    "iptables-nft",
+    "ip6tables-nft",
+    "iptables-mod-conntrack-extra",
+    "iptables-mod-ipopt",
+    "ipset"
   ],
   "remove": [
     "dnsmasq",
     "firewall",
     "firewall3",
-    "iptables",
     "iptables-mod-tproxy",
-    "iptables-mod-conntrack-extra",
-    "iptables-mod-ipopt",
     "kmod-ipt-nat",
-    "iptables-nft",
     "https-dns-proxy",
     "luci-app-https-dns-proxy",
     "wpad-basic-mbedtls"

@@ -26,6 +26,18 @@ to CPU1. The bearer defaults to `ipv4`, because dual-stack PDP requests are
 rejected by local carriers; an existing `ipv4v6` choice is kept on upgrade.
 Flow offloading stays off: it would bypass the TTL/hop-limit 64 mangle rules.
 
+## Multi-WAN (mwan3)
+
+Both variants include `mwan3` and `luci-app-mwan3` (Network → MultiWAN Manager) for
+5G and Ethernet WAN failover or load balancing. mwan3 2.12 still uses iptables and ipset,
+so these packages are selected and kept: `iptables-nft`, `ip6tables-nft`, `iptables-mod-conntrack-extra`,
+`iptables-mod-ipopt` and `ipset`, along with `kmod-ipt-core`, `kmod-ip6tables`, `kmod-ipt-ipset` and
+`kmod-ipt-conntrack-extra`. The `iptables-nft` tools write their rules through nftables, so the fw4
+firewall stays in charge. PassWall keeps using nftables because `prefer_nft` defaults to
+`1`. The old first-boot script that deleted `iptables-nft` is gone, since it would have broken
+mwan3. mwan3 ships with sample interfaces (`wan`, `wanb` and their IPv6 versions). Set up your
+real ones (`modem` and your Ethernet WAN) and a policy on its page before relying on it.
+
 ## RJ11 / FXS
 
 The phone stack comes from [noobwrt-aw1000-voice](https://github.com/nooblk-98/noobwrt-aw1000-voice) through noobwrt-custom-feeds: `aw1000-voice-web` (the management interface on port 7766, which replaces `luci-app-fxs` and `luci-app-modem-sip`), `luci-app-aw1000-voice` and `modem-sip` are selected, and their dependencies supply `fxsd` and `kmod-aw1000-fxs`. No legacy aw1000-rj11 submodule or second driver implementation is used. The feed currently does not ship the private ProSLIC DSP patch. The device overlay hook converts a locally supplied `si3226x_stock_tables.h` from `RJ11_PRIVATE_DIR` (default `/private`) to the firmware runtime file `/etc/fxs/si3226x_patch.bin`. Missing private input fails explicitly rather than silently dropping phone support.
