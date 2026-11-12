@@ -40,13 +40,20 @@ QModem to ModemManager migration.
 
 ## Does the modem support IPv6?
 
-Yes. The ModemManager uplink defaults to dual-stack (`ipv4v6`), and the router
-keeps its IPv6 stack, LAN ULA and firewall. Whether the WAN gets an IPv6 address
-depends on the carrier and APN. If the carrier rejects the IPv6 PDP, IPv4 still
-works and ModemManager logs a `QMI protocol error (14): 'CallFailed'` for the
-IPv6 part. Check `ifstatus mmwan` for `ipv6-address`/`ipv6-prefix`; if they stay
-empty, the SIM/APN is not providing IPv6 internet. Do not set `iptype=ipv4`
-unless you intentionally want to stop requesting IPv6.
+The router keeps its IPv6 stack, LAN ULA and firewall, but the ModemManager
+uplink (`modem`) requests IPv4 only by default: local carriers reject the
+dual-stack PDP, and an IPv4-only bearer connects fastest. To try IPv6, set the
+IP type to `ipv4v6`:
+
+```sh
+uci set network.modem.iptype='ipv4v6'
+uci commit network
+ifup modem
+```
+
+Then check `ifstatus modem` for `ipv6-address`/`ipv6-prefix`. If they stay empty,
+or ModemManager logs `QMI protocol error (14): 'CallFailed'`, the SIM/APN is not
+providing IPv6; set `iptype` back to `ipv4`.
 
 ## How do I change the UI theme?
 

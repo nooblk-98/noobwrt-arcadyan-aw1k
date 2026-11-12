@@ -11,15 +11,20 @@ PassWall2: all 48 overlay files are copied byte-for-byte with original modes fro
 ## Modem stack
 
 Both variants use ModemManager with QMI, MBIM and AT-over-D-Bus support. QModem,
-its vendor QMI driver and its TTL/voice packages are not selected. The
-`mm-uplink` init script waits for the USB modem and brings the `mmwan` netifd
-interface up once after ModemManager starts; `5gmodem` sessionwatch handles
-ongoing reconnect. Modem metrics, carrier aggregation,
-SMS/USSD/AT and band control are provided by `luci-app-5gmodem`. `kmod-usb-acm` and
-`kmod-usb-serial-qualcomm` are selected to satisfy the 5G Modem package modem-port
-support. The `mmwan` bearer defaults to dual-stack `ipv4v6`; if the carrier/APN
-rejects the IPv6 PDP, IPv4 remains up and IPv6 will attach when the network
-provides it.
+its vendor QMI driver and its TTL/voice packages are not selected.
+`uci-defaults/89-modem-uplink` creates the `modem` netifd interface
+(`proto modemmanager`) for the onboard modem at USB port `4-1` and pins
+`luci-app-5gmodem` to `iface_proto=modemmanager`. 5gmodem only swaps an uplink
+to another protocol while that choice is `auto`, so the pin keeps ModemManager
+in charge. `hotplug.d/usb/30-modem-devpath` keeps `network.modem.device` on the
+modem's physical sysfs path when it enumerates; `5gmodem` sessionwatch handles
+ongoing reconnect. Modem metrics, carrier aggregation, SMS/USSD/AT and band
+control are provided by `luci-app-5gmodem`; SMS and USSD go through ModemManager.
+`kmod-usb-acm` and `kmod-usb-serial-qualcomm` are selected to satisfy the 5G
+Modem package modem-port support. `init.d/modem-tune` pins the modem's xhci IRQ
+to CPU1. The bearer defaults to `ipv4`, because dual-stack PDP requests are
+rejected by local carriers; an existing `ipv4v6` choice is kept on upgrade.
+Flow offloading stays off: it would bypass the TTL/hop-limit 64 mangle rules.
 
 ## RJ11 / FXS
 
