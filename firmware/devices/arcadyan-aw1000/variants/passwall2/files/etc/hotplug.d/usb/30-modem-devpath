@@ -1,0 +1,26 @@
+#=================================================
+# Copyright (c) 2026 Lahiru S Liyanage (NoobLK) <liyanagelsofficial@gmail.com>
+# GitHub: https://github.com/nooblk-98/noobwrt-arcadyan-aw1k
+# Telegram: @itsme_nooblk
+# License: All rights reserved
+#=================================================
+
+# The netifd modemmanager proto finds the modem by its physical sysfs path.
+# Keep network.modem.device on the path the onboard modem really enumerated
+# at, so a renamed sysfs node (kernel update, first boot before the modem was
+# up) does not leave the uplink stuck on "Device not managed by ModemManager".
+[ "$ACTION" = add ] && [ "$DEVTYPE" = usb_device ] || exit 0
+case "$DEVPATH" in
+	*/4-1) ;;
+	*) exit 0 ;;
+esac
+[ "$(uci -q get network.modem.proto)" = modemmanager ] || exit 0
+
+_dev="/sys$DEVPATH"
+[ -d "$_dev" ] || exit 0
+[ "$(uci -q get network.modem.device)" = "$_dev" ] && exit 0
+
+uci set network.modem.device="$_dev"
+uci commit network
+logger -t modem-uplink "network.modem.device -> $_dev"
+ubus call network reload
