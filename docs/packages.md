@@ -103,6 +103,6 @@ These packages from [noobwrt-aw1000-voice](https://github.com/nooblk-98/noobwrt-
 |---------|---------|
 | `kmod-aw1000-fxs` | Kernel driver for the SLIC chip and the PCM audio bus |
 | `fxsd` | Phone line service: ringing, dial tone, digits and modem calls |
-| `modem-sip` | SIP server so phones and apps on the LAN share the SIM with the RJ11 phone |
-| `aw1000-voice-web` | Management interface on port 7766: missed calls, history, recordings, settings, line health, missed-call alerts |
+| `modem-sip` | SIP server so phones and apps on the LAN share the SIM with the RJ11 phone, for calls and SMS |
+| `aw1000-voice-web` | Management interface on port 7766: missed calls, history, SMS inbox, recordings, settings, line health, alerts for missed calls and SMS |
 | `luci-app-aw1000-voice` | `Services` → `Phone` in LuCI with an **Open management interface** button |

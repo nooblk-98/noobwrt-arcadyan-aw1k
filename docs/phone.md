@@ -13,8 +13,14 @@ The AW1000 RJ11 phone port works on NoobWRT with [noobwrt-aw1000-voice](https://
 - Do not disturb windows, holidays, alarm calls, call recording and MQTT
 - SIP phones and apps on the LAN share the SIM with the RJ11 phone (Modem SIP)
 - A management interface on its own port: missed calls, call history with CSV export,
-  recordings, every setting, line health, and **push alerts for missed calls**
-  (ntfy, Telegram or a webhook)
+  an **SMS inbox**, recordings, every setting, line health, and **push alerts for missed
+  calls and new SMS** (ntfy, Telegram or a webhook)
+- **SMS over SIP:** new SMS arrive in the chat of the SIP phones and apps, and a chat
+  reply goes out as an SMS
+
+!!! note "Tested with ModemManager only"
+    The phone stack is tested on NoobWRT with **ModemManager** driving the modem. It is
+    not tested with QModem. SMS (inbox, alerts, SMS over SIP) needs ModemManager.
 
 ## Requirements
 
@@ -72,6 +78,18 @@ In the management interface open **Alerts**, pick ntfy, a Telegram bot or a webh
 the events (missed calls by default) and press **Send a test**. The alert carries the caller's
 name from the phonebook. If you already use `/etc/fxs/hook.sh` for your own script, it is
 left alone; call `/usr/libexec/aw1000-voice-notify "$1" "$2"` from it to keep both.
+
+## SMS
+
+The **Messages** page shows the SMS on the SIM as conversations, with names from the
+phonebook. Reply to a conversation or press **New message** to send an SMS.
+
+With **Send SMS to SIP phones** on (the default), every new SMS also arrives in the chat of
+the SIP phones and apps, from the sender's number. Answer in that chat and the reply is sent
+as an SMS. A phone that is away gets the message when it logs in again. Senders with a name
+instead of a number, like a carrier, cannot be answered.
+
+Turn on **New SMS** on the Alerts page to also get each SMS, with its text, as a push alert.
 
 ## Modem Slave Mode
 
