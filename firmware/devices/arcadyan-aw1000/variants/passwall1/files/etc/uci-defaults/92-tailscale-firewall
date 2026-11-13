@@ -1,0 +1,46 @@
+#!/bin/sh
+# Tailscale firewall zone bound to the tailscale0 device. No netifd interface:
+# a proto 'none' interface on tailscale0 makes netifd flush the tailnet IPs
+# when it claims the device, and the router stops answering on its 100.x IP.
+
+if [ "$(uci -q get network.tailscale.device)" = tailscale0 ]; then
+	uci delete network.tailscale
+	uci commit network
+fi
+
+TS_ZONE=$(uci show firewall | sed -n "s/^firewall\.\([^.]*\)\.name='tailscale'\$/\1/p" | head -1)
+if [ -z "$TS_ZONE" ]; then
+	TS_ZONE=tailscale
+	uci set firewall.tailscale=zone
+	uci set firewall.tailscale.name='tailscale'
+	uci set firewall.tailscale.input='ACCEPT'
+	uci set firewall.tailscale.output='ACCEPT'
+	uci set firewall.tailscale.forward='ACCEPT'
+	uci set firewall.tailscale.masq='1'
+	uci set firewall.tailscale.mtu_fix='1'
+fi
+[ "$(uci -q get firewall.$TS_ZONE.network)" = tailscale ] && uci delete firewall.$TS_ZONE.network
+case " $(uci -q get firewall.$TS_ZONE.device) " in
+	*" tailscale0 "*) ;;
+	*) uci add_list firewall.$TS_ZONE.device='tailscale0' ;;
+esac
+
+ts_has_fwd() {
+	for s in $(uci show firewall | sed -n "s/^firewall\.\([^.]*\)=forwarding\$/\1/p"); do
+		[ "$(uci -q get firewall.$s.src)" = "$1" ] && [ "$(uci -q get firewall.$s.dest)" = "$2" ] && return 0
+	done
+	return 1
+}
+if ! ts_has_fwd lan tailscale; then
+	uci set firewall.lan_tailscale=forwarding
+	uci set firewall.lan_tailscale.src='lan'
+	uci set firewall.lan_tailscale.dest='tailscale'
+fi
+if ! ts_has_fwd tailscale lan; then
+	uci set firewall.tailscale_lan=forwarding
+	uci set firewall.tailscale_lan.src='tailscale'
+	uci set firewall.tailscale_lan.dest='lan'
+fi
+uci commit firewall
+
+exit 0
