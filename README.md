@@ -65,8 +65,6 @@ See the full [package list](https://aw1k-docs.itsnooblk.com/packages/).
 
 ### Phone port (RJ11)
 
-RJ11 phone port working with [openwrt-aw1000-phone](https://github.com/Perz3us/openwrt-aw1000-phone). Plug in a normal desk phone and make and take calls with the SIM in the 5G modem (VoLTE).
-
 - Incoming and outgoing calls, dial tone, ringing tone and busy tone
 - HD calling (16 kHz wideband audio), switched on in Settings
 - Caller ID on phones with a display (FSK Bellcore, FSK ETSI or DTMF, before or after the first ring)
