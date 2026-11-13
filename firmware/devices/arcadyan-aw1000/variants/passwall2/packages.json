@@ -7,6 +7,7 @@
     "luci-app-mini-diskmanager",
     "luci-proto-modemmanager",
     "luci-app-5gmodem",
+    "auto-pci-cell",
     "kmod-usb-acm",
     "kmod-usb-serial-qualcomm",
     "luci-app-nlbwmon",
