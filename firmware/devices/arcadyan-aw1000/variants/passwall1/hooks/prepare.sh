@@ -26,5 +26,12 @@ git -C "$PW_TMP" fetch --depth=1 origin 0d24d8fc24d9eb508a4df599a0a4d673c8a35cc7
 git -C "$PW_TMP" checkout -q FETCH_HEAD
 [ "$(git -C "$PW_TMP" rev-parse HEAD)" = 0d24d8fc24d9eb508a4df599a0a4d673c8a35cc7 ]
 [ -f "$PW_TMP/luci-app-passwall/Makefile" ]
+# Local fixes on top of the pinned release (e.g. the mwan3 coexistence backport).
+# A patch that no longer applies fails the build instead of shipping unpatched.
+for p in "$HERE"/patches/*.patch; do
+  [ -f "$p" ] || continue
+  git -C "$PW_TMP" apply --whitespace=nowarn "$p"
+  echo "PassWall1 patch applied: $(basename "$p")"
+done
 rm -rf "$PASSWALL_DIR"
 cp -a "$PW_TMP/luci-app-passwall" "$PASSWALL_DIR"

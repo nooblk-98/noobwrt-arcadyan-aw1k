@@ -1,0 +1,226 @@
+#=================================================
+# Copyright (c) 2026 Lahiru S Liyanage (NoobLK) <liyanagelsofficial@gmail.com>
+# GitHub: https://github.com/nooblk-98/wrt-builder-aw1000
+# Telegram: @itsme_nooblk
+# License: All rights reserved
+#
+# File name: 0001-luci-app-passwall-coexist-with-mwan3.patch
+# Description: Applied to PassWall 26.1.1-1 at build time (hooks/prepare.sh)
+#              so PassWall 1 keeps working while mwan3 is running
+#=================================================
+
+From 69bc3b7cd46dd9ff8f5aa509504e1a9faf896d10 Mon Sep 17 00:00:00 2001
+From: Lahiru S Liyanage (NoobLK) <liyanagelsofficial@gmail.com>
+Date: Sat, 14 Nov 2026 08:45:18 +0530
+Subject: [PATCH] luci-app-passwall: coexist with mwan3 (backport)
+
+Backport of upstream Openwrt-Passwall/openwrt-passwall #4462 and #4466 (plus the
+mwan3 hook from b76289f) onto the pinned 26.1.1-1 release (0d24d8fc).
+
+- Use FWMARK 0x50535731 instead of 1 for TPROXY traffic. Its 0x3f00 bits are
+  non-zero, so mwan3 (mmx_mask 0x3F00) does not re-mark it, and the
+  'fwmark ... lookup 100' rule keeps matching. The rule gets priority 999 so
+  it runs before mwan3's policy rules (1001+).
+- Insert a connmark RETURN rule at the top of mwan3_hook (via iptables-nft,
+  where mwan3 lives) and hook it into /etc/init.d/mwan3 so it survives mwan3
+  restarts.
+- Match the 0xff self-traffic mark with a mask, so mwan3 bits do not break it.
+---
+ .../root/usr/share/passwall/nftables.sh       | 74 +++++++++++++++----
+ 1 file changed, 58 insertions(+), 16 deletions(-)
+
+diff --git a/luci-app-passwall/root/usr/share/passwall/nftables.sh b/luci-app-passwall/root/usr/share/passwall/nftables.sh
+index 8036d960..d6714700 100755
+--- a/luci-app-passwall/root/usr/share/passwall/nftables.sh
++++ b/luci-app-passwall/root/usr/share/passwall/nftables.sh
+@@ -32,6 +32,9 @@ USE_SHUNT_UDP=0
+ 
+ FWI=$(uci -q get firewall.passwall.path 2>/dev/null)
+ FAKE_IP="198.18.0.0/15"
++# Distinctive TPROXY mark (from upstream Passwall). Bits 0x3f00 are non-zero,
++# so mwan3 (mmx_mask 0x3F00) leaves these packets alone.
++FWMARK="0x50535731"
+ FAKE_IP_6="fc00::/18"
+ 
+ factor() {
+@@ -121,13 +124,13 @@ REDIRECT() {
+ 		local s="$s to :$1"
+ 		[ "$2" == "MARK" ] && s="counter meta mark set $1"
+ 		[ "$2" == "TPROXY" ] && {
+-			s="counter meta mark 1 tproxy to :$1"
++			s="counter meta mark ${FWMARK} tproxy to :$1"
+ 		}
+ 		[ "$2" == "TPROXY4" ] && {
+-			s="counter meta mark 1 tproxy ip to :$1"
++			s="counter meta mark ${FWMARK} tproxy ip to :$1"
+ 		}
+ 		[ "$2" == "TPROXY6" ] && {
+-			s="counter meta mark 1 tproxy ip6 to :$1"
++			s="counter meta mark ${FWMARK} tproxy ip6 to :$1"
+ 		}
+ 
+ 	}
+@@ -206,7 +209,7 @@ gen_nftset() {
+ get_jump_ipt() {
+ 	case "$1" in
+ 	direct)
+-		echo "mark != 1 counter return"
++		echo "mark != ${FWMARK} counter return"
+ 		;;
+ 	proxy)
+ 		if [ -n "$2" ] && [ -n "$(echo $2 | grep "^counter")" ]; then
+@@ -841,9 +844,39 @@ filter_direct_node_list() {
+ 	done
+ }
+ 
++# mwan3 coexistence (backported from upstream #4462/#4466): hook into mwan3's
++# init script so the exemption is re-added whenever mwan3 (re)starts.
++del_script_mwan3() {
++	[ -s "/etc/init.d/mwan3" ] && sed -i '/\/usr\/share\/passwall\/nftables.sh mwan3_/d' /etc/init.d/mwan3 >/dev/null 2>&1
++}
++
++add_script_mwan3() {
++	del_script_mwan3
++	[ -s "/etc/init.d/mwan3" ] && {
++		sed -i '/start_service()/,/}/ s/^}/    \/usr\/share\/passwall\/nftables.sh mwan3_start\n}/' /etc/init.d/mwan3
++		sed -i '/stop_service().*{/a \    \/usr\/share\/passwall\/nftables.sh mwan3_stop' /etc/init.d/mwan3
++	}
++}
++
++MWAN3_RULE_ARGS="-m connmark --mark ${FWMARK}/0xffffffff -j RETURN"
++
++mwan3_stop() {
++	nft list chain ip mangle mwan3_hook >/dev/null 2>&1 || return 0
++	while iptables -w 5 -t mangle -D mwan3_hook ${MWAN3_RULE_ARGS} >/dev/null 2>&1; do :; done
++}
++
++mwan3_start() {
++	nft list chain ip mangle mwan3_hook >/dev/null 2>&1 || return 0
++	mwan3_stop
++	iptables -w 5 -t mangle -I mwan3_hook 1 ${MWAN3_RULE_ARGS} >/dev/null 2>&1 || \
++		logger -t passwall "mwan3: failed to add ${FWMARK} exemption rule to mangle/mwan3_hook"
++}
++
+ add_firewall_rule() {
+ 	echolog "开始加载 nftables 防火墙规则..."
+ 	gen_nft_tables
++	add_script_mwan3
++	mwan3_start
+ 	gen_nftset $NFTSET_VPS ipv4_addr 0 0
+ 	gen_nftset $NFTSET_GFW ipv4_addr "2d" 0
+ 	gen_nftset $NFTSET_LOCAL ipv4_addr 0 "-1"
+@@ -1015,7 +1048,7 @@ add_firewall_rule() {
+ 
+ 	nft "add chain $NFTABLE_NAME PSW_DIVERT"
+ 	nft "flush chain $NFTABLE_NAME PSW_DIVERT"
+-	nft "add rule $NFTABLE_NAME PSW_DIVERT meta l4proto tcp socket transparent 1 mark set 1 counter accept"
++	nft "add rule $NFTABLE_NAME PSW_DIVERT meta l4proto tcp socket transparent 1 mark set ${FWMARK} counter accept"
+ 
+ 	nft "add chain $NFTABLE_NAME PSW_DNS"
+ 	nft "flush chain $NFTABLE_NAME PSW_DNS"
+@@ -1031,9 +1064,9 @@ add_firewall_rule() {
+ 	nft "add chain $NFTABLE_NAME PSW_RULE"
+ 	nft "flush chain $NFTABLE_NAME PSW_RULE"
+ 	nft "add rule $NFTABLE_NAME PSW_RULE meta mark set ct mark counter"
+-	nft "add rule $NFTABLE_NAME PSW_RULE meta mark 1 counter return"
+-	nft "add rule $NFTABLE_NAME PSW_RULE tcp flags &(fin|syn|rst|ack) == syn meta mark set mark and 0x0 xor 0x1 counter"
+-	nft "add rule $NFTABLE_NAME PSW_RULE meta l4proto udp ct state new meta mark set mark and 0x0 xor 0x1 counter"
++	nft "add rule $NFTABLE_NAME PSW_RULE meta mark ${FWMARK} counter return"
++	nft "add rule $NFTABLE_NAME PSW_RULE tcp flags &(fin|syn|rst|ack) == syn meta mark set ${FWMARK} counter"
++	nft "add rule $NFTABLE_NAME PSW_RULE meta l4proto udp ct state new meta mark set ${FWMARK} counter"
+ 	nft "add rule $NFTABLE_NAME PSW_RULE ct mark set mark counter"
+ 
+ 	#ipv4 tproxy mode and udp
+@@ -1049,7 +1082,7 @@ add_firewall_rule() {
+ 
+ 	[ "${USE_BLOCK_LIST}" = "1" ] && nft "add rule $NFTABLE_NAME PSW_OUTPUT_MANGLE ip daddr @$NFTSET_BLOCK counter drop"
+ 	[ "${USE_DIRECT_LIST}" = "1" ] && nft "add rule $NFTABLE_NAME PSW_OUTPUT_MANGLE ip daddr @$NFTSET_WHITE counter return"
+-	nft "add rule $NFTABLE_NAME PSW_OUTPUT_MANGLE meta mark 0xff counter return"
++	nft "add rule $NFTABLE_NAME PSW_OUTPUT_MANGLE meta mark and 0xff == 0xff counter return"
+ 
+ 	# jump chains
+ 	nft "add rule $NFTABLE_NAME mangle_prerouting ip protocol udp counter jump PSW_MANGLE"
+@@ -1070,7 +1103,7 @@ add_firewall_rule() {
+ 		nft "add rule $NFTABLE_NAME PSW_OUTPUT_NAT ip daddr @$NFTSET_VPS counter return"
+ 		[ "${USE_BLOCK_LIST}" = "1" ] && nft "add rule $NFTABLE_NAME PSW_OUTPUT_NAT ip daddr @$NFTSET_BLOCK counter drop"
+ 		[ "${USE_DIRECT_LIST}" = "1" ] && nft "add rule $NFTABLE_NAME PSW_OUTPUT_NAT ip daddr @$NFTSET_WHITE counter return"
+-		nft "add rule $NFTABLE_NAME PSW_OUTPUT_NAT meta mark 0xff counter return"
++		nft "add rule $NFTABLE_NAME PSW_OUTPUT_NAT meta mark and 0xff == 0xff counter return"
+ 	}
+ 
+ 	#icmp ipv6-icmp redirect
+@@ -1097,7 +1130,7 @@ add_firewall_rule() {
+ 	fi
+ 	unset WAN_IP
+ 
+-	ip rule add fwmark 1 lookup 100
++	ip rule add fwmark ${FWMARK} lookup 100 priority 999
+ 	ip route add local 0.0.0.0/0 dev lo table 100
+ 
+ 	#ipv6 tproxy mode and udp
+@@ -1112,7 +1145,7 @@ add_firewall_rule() {
+ 	nft "add rule $NFTABLE_NAME PSW_OUTPUT_MANGLE_V6 ip6 daddr @$NFTSET_VPS6 counter return"
+ 	[ "${USE_BLOCK_LIST}" = "1" ] && nft "add rule $NFTABLE_NAME PSW_OUTPUT_MANGLE_V6 ip6 daddr @$NFTSET_BLOCK6 counter drop"
+ 	[ "${USE_DIRECT_LIST}" = "1" ] && nft "add rule $NFTABLE_NAME PSW_OUTPUT_MANGLE_V6 ip6 daddr @$NFTSET_WHITE6 counter return"
+-	nft "add rule $NFTABLE_NAME PSW_OUTPUT_MANGLE_V6 meta mark 0xff counter return"
++	nft "add rule $NFTABLE_NAME PSW_OUTPUT_MANGLE_V6 meta mark and 0xff == 0xff counter return"
+ 
+ 	[ -n "$IPT_APPEND_DNS" ] && {
+ 		local local_dns dns_address dns_port
+@@ -1140,7 +1173,7 @@ add_firewall_rule() {
+ 		[ -n "${WAN6_IP}" ] && nft "add rule $NFTABLE_NAME PSW_MANGLE_V6 ip6 daddr ${WAN6_IP} counter return comment \"WAN6_IP_RETURN\""
+ 		unset WAN6_IP
+ 
+-		ip -6 rule add fwmark 1 table 100
++		ip -6 rule add fwmark ${FWMARK} table 100 priority 999
+ 		ip -6 route add local ::/0 dev lo table 100
+ 	}
+ 	
+@@ -1339,7 +1372,7 @@ add_firewall_rule() {
+ 		fi
+ 
+ 		nft "add rule $NFTABLE_NAME mangle_output oif lo counter return comment \"PSW_OUTPUT_MANGLE\""
+-		nft "add rule $NFTABLE_NAME mangle_output meta mark 1 counter return comment \"PSW_OUTPUT_MANGLE\""
++		nft "add rule $NFTABLE_NAME mangle_output meta mark ${FWMARK} counter return comment \"PSW_OUTPUT_MANGLE\""
+ 	}
+ 
+ 	#  加载ACLS
+@@ -1372,10 +1405,10 @@ del_firewall_rule() {
+ 	# Need to be removed at the end, otherwise it will show "Resource busy"
+ 	nft delete chain $NFTABLE_NAME handle $(nft -a list chains | grep -E "PSW_RULE" | awk -F '# handle ' '{print$2}') 2>/dev/null
+ 
+-	ip rule del fwmark 1 lookup 100 2>/dev/null
++	ip rule del fwmark ${FWMARK} lookup 100 2>/dev/null
+ 	ip route del local 0.0.0.0/0 dev lo table 100 2>/dev/null
+ 
+-	ip -6 rule del fwmark 1 table 100 2>/dev/null
++	ip -6 rule del fwmark ${FWMARK} table 100 2>/dev/null
+ 	ip -6 route del local ::/0 dev lo table 100 2>/dev/null
+ 
+ 	destroy_nftset $NFTSET_LOCAL
+@@ -1398,6 +1431,9 @@ del_firewall_rule() {
+ 	destroy_nftset $NFTSET_BLOCK6
+ 	destroy_nftset $NFTSET_WHITE6
+ 
++	mwan3_stop
++	del_script_mwan3
++
+ 	$DIR/app.sh echolog "删除 nftables 规则完成。"
+ }
+ 
+@@ -1498,6 +1534,12 @@ get_wan6_ip)
+ filter_direct_node_list)
+ 	filter_direct_node_list
+ 	;;
++mwan3_start)
++	mwan3_start
++	;;
++mwan3_stop)
++	mwan3_stop
++	;;
+ stop)
+ 	stop
+ 	;;
+-- 
+2.56.0.windows.3
+

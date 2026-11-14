@@ -42,6 +42,14 @@ firewall stays in charge. PassWall keeps using nftables because `prefer_nft` def
 mwan3. mwan3 ships with sample interfaces (`wan`, `wanb` and their IPv6 versions). Set up your
 real ones (`modem` and your Ethernet WAN) and a policy on its page before relying on it.
 
+PassWall 1 is pinned to 26.1.1-1, which marks proxied traffic with `1`. mwan3 adds its own bits
+(`0x3F00`) to every packet, so PassWall's `fwmark 1` rule stopped matching and the proxy broke while
+mwan3 ran. The passwall1 prepare hook applies `patches/0001-luci-app-passwall-coexist-with-mwan3.patch`,
+a backport of upstream fixes #4462 and #4466: PassWall 1 uses mark `0x50535731` with a priority 999
+rule, adds a RETURN rule at the top of `mwan3_hook` and hooks into `/etc/init.d/mwan3`, so the
+exemption comes back whenever mwan3 restarts. PassWall 2 (26.9.16-1) already has these fixes. The
+patch only covers the nftables backend (`use_nft=1`, the default).
+
 ## RJ11 / FXS
 
 The phone stack comes from [noobwrt-aw1000-voice](https://github.com/nooblk-98/noobwrt-aw1000-voice) through noobwrt-custom-feeds: `aw1000-voice-web` (the management interface on port 7766, which replaces `luci-app-fxs` and `luci-app-modem-sip`), `luci-app-aw1000-voice` and `modem-sip` are selected, and their dependencies supply `fxsd` and `kmod-aw1000-fxs`. No legacy aw1000-rj11 submodule or second driver implementation is used. The feed currently does not ship the private ProSLIC DSP patch. The device overlay hook converts a locally supplied `si3226x_stock_tables.h` from `RJ11_PRIVATE_DIR` (default `/private`) to the firmware runtime file `/etc/fxs/si3226x_patch.bin`. Missing private input fails explicitly rather than silently dropping phone support.
