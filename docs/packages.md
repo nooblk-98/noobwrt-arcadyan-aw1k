@@ -27,6 +27,8 @@ Each image includes only one PassWall version: the PassWall 1 image includes `lu
 | `firewall4` | yes |
 | `nftables` | yes |
 | `kmod-nft-core` | yes |
+| `kmod-dummy` | yes |
+| `kmod-zram` | yes |
 | `iptables-nft` | yes |
 | `modemmanager` | yes |
 | `luci-proto-modemmanager` | yes |
